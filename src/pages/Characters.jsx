@@ -4,7 +4,8 @@ import LessonForms from "../components/LessonForms";
 const Characters = () => {
   return (
     <div>
-      <LessonForms/>
+      <span>CHARACTERS</span>
+      <LessonForms />
     </div>
   );
 };
