@@ -18,25 +18,25 @@ export default function Navbar() {
           </Link>
         </li>
         <li className="nav-link-wrapper">
-          <Link to="/" className="nav-link-text-wrapper">
+          <Link to="/lesson" className="nav-link-text-wrapper">
             <LessonSVG />
             <span className="nav-link-text">LESSON</span>
           </Link>
         </li>
         <li className="nav-link-wrapper">
-          <Link to="/" className="nav-link-text-wrapper">
+          <Link to="/characters" className="nav-link-text-wrapper">
             <CharacterSVG />
-            <span className="nav-link-text">CHARACTER</span>
+            <span className="nav-link-text">CHARACTERS</span>
           </Link>
         </li>
         <li className="nav-link-wrapper">
-          <Link to="/" className="nav-link-text-wrapper">
+          <Link to="/profile" className="nav-link-text-wrapper">
             <ProfileSVG />
             <span className="nav-link-text">PROFILE</span>
           </Link>
         </li>
         <li className="nav-link-wrapper">
-          <Link to="/" className="nav-link-text-wrapper">
+          <Link to="/about" className="nav-link-text-wrapper">
             <AboutSVG />
             <span className="nav-link-text">ABOUT</span>
           </Link>
