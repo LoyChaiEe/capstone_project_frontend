@@ -1,12 +1,11 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 
-const Profile = () => {
+export default function Profile() {
   return (
     <div>
+      <Navbar />
       <span>PROFILE</span>
-      <a href="https://github.com/LoyChaiEe">This is my profile</a>
     </div>
   );
-};
-
-export default Profile;
+}

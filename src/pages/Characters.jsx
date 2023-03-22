@@ -1,13 +1,11 @@
 import React from "react";
-import LessonForms from "../components/LessonForms";
+import Navbar from "../components/Navbar";
 
-const Characters = () => {
+export default function Characters() {
   return (
     <div>
+      <Navbar />
       <span>CHARACTERS</span>
-      <LessonForms />
     </div>
   );
-};
-
-export default Characters;
+}
