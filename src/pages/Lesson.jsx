@@ -1,13 +1,13 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import LessonForms from "../components/LessonForms";
 
 export default function Lesson() {
   return (
-    <div>
-      <Navbar />
-      <span>LESSON</span>
-      <LessonForms />
+    <div className="lesson-section">
+      <div className="lesson-container">
+        <span>LESSON</span>
+        <LessonForms />
+      </div>
     </div>
   );
 }

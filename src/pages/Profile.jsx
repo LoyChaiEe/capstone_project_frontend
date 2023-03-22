@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 
 export default function Profile() {
   return (
-    <div>
-      <Navbar />
-      <span>PROFILE</span>
+    <div className="profile-section">
+      <div className="profile-container">
+        <span>PROFILE</span>
+      </div>
     </div>
   );
 }
