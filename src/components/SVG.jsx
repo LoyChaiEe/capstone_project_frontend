@@ -15,7 +15,7 @@ export function LessonSVG() {
     <img
       src={require("../assets/lesson.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="lesson-png"
     />
   );
 }
@@ -25,7 +25,7 @@ export function CharacterSVG() {
     <img
       src={require("../assets/character.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="character-png"
     />
   );
 }
@@ -35,7 +35,7 @@ export function ProfileSVG() {
     <img
       src={require("../assets/profile.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="profile-png"
     />
   );
 }
@@ -45,7 +45,7 @@ export function AboutSVG() {
     <img
       src={require("../assets/about.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="about-png"
     />
   );
 }

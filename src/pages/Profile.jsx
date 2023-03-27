@@ -1,5 +1,6 @@
 import React from "react";
 import "./profile.css";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   return (
@@ -28,7 +29,11 @@ export default function Profile() {
           <h1 className="profile-info">Country:</h1>
           <input className="profile-input-box" value={"singapore"} />
         </div>
-        <button>Edit Profile</button>
+        <button>
+          <Link to="/edit-profile" className="edit-profile-btn">
+            Edit Profile
+          </Link>
+        </button>
       </div>
     </div>
   );

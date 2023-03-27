@@ -36,6 +36,12 @@ export default function Navbar() {
           </Link>
         </li>
         <li className="nav-link-wrapper">
+          <Link to="/edit-profile" className="nav-link-text-wrapper">
+            <ProfileSVG />
+            <span className="nav-link-text">EDIT PROFILE</span>
+          </Link>
+        </li>
+        <li className="nav-link-wrapper">
           <Link to="/about" className="nav-link-text-wrapper">
             <AboutSVG />
             <span className="nav-link-text">ABOUT</span>
