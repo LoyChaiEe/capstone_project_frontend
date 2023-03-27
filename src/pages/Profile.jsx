@@ -6,6 +6,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function Profile() {
   const { user, isAuthenticated } = useAuth0();
 
+  const LogoutButton = () => {
+    const { logout } = useAuth0();
+
+    return (
+      <button
+        onClick={() =>
+          logout({ logoutParams: { returnTo: window.location.origin } })
+        }
+      >
+        Log Out
+      </button>
+    );
+  };
+
   return (
     <div className="profile-section">
       <div className="profile-container">
@@ -47,6 +61,7 @@ export default function Profile() {
             Edit Profile
           </Link>
         </button>
+        {LogoutButton()}
       </div>
     </div>
   );
