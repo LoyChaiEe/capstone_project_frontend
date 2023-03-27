@@ -65,6 +65,12 @@ export default function Navbar() {
               <span className="nav-link-text">ABOUT</span>
             </Link>
           </li>
+          <li className="nav-link-wrapper">
+            <Link to="/landing" className="nav-link-text-wrapper">
+              <AboutSVG />
+              <span className="nav-link-text">LANDING</span>
+            </Link>
+          </li>
         </ul>
       ) : (
         LoginButton()
