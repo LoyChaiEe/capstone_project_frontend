@@ -3,8 +3,11 @@ import "./navbar.css";
 import { Link } from "react-router-dom";
 import NavLogo from "./NavLogo";
 import { HomeSVG, LessonSVG, CharacterSVG, ProfileSVG, AboutSVG } from "./SVG";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Navbar() {
+  const { user, isAuthenticated } = useAuth0();
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -31,7 +34,16 @@ export default function Navbar() {
         </li>
         <li className="nav-link-wrapper">
           <Link to="/profile" className="nav-link-text-wrapper">
-            <ProfileSVG />
+            {isAuthenticated ? (
+              <img
+                src={user.picture}
+                alt={user.name}
+                className="nav-link-profile-image"
+              />
+            ) : (
+              <ProfileSVG />
+            )}
+
             <span className="nav-link-text">PROFILE</span>
           </Link>
         </li>
