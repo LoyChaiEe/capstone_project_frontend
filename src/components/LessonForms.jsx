@@ -13,6 +13,8 @@ const LessonForms = () => {
   const [hasSubmit, setHasSubmit] = useState(true)
   const [answer, setAnswer] = useState([])
   const [input, setInput] = useState(["はじめ","たまご","はち","とり"])
+  const [submittedAnswer, setSubmittedAnswer] = useState("")
+  const correctAns = "はち";
 
   //Functions that facilitate the interactivity of the component
   const next = () => {
@@ -20,7 +22,9 @@ const LessonForms = () => {
     setHasSubmit(true);
   };
   const submit = () => {
+    const ans = answer.join("")
     setHasSubmit(false);
+    setSubmittedAnswer(ans)
   };
   const add = (text) => {
     const ans = [...answer, text]
@@ -101,7 +105,15 @@ const LessonForms = () => {
         }}
       >
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()} disabled={hasSubmit}>
+          <Button
+            style={{
+              backgroundColor: submittedAnswer === correctAns ? "green" : "red",
+              color: "white",
+            }}
+            type="primary"
+            onClick={() => next()}
+            disabled={hasSubmit}
+          >
             Next
           </Button>
         )}
