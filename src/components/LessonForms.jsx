@@ -6,34 +6,58 @@ import {
 } from "@ant-design/icons";
 import { Button, message, Steps, theme } from "antd";
 import { useState } from "react";
-const steps = [
-  {
-    title: "First",
-    content: "First-content",
-  },
-  {
-    title: "Second",
-    content: "Second-content",
-  },
-  {
-    title: "Last",
-    content: "Last-content",
-  },
-];
+
 const LessonForms = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [hasSubmit, setHasSubmit] = useState(true)
+  const [answer, setAnswer] = useState([])
+  const [input, setInput] = useState(["はじめ","たまご","はち","とり"])
+
+  //Functions that facilitate the interactivity of the component
   const next = () => {
     setCurrent(current + 1);
-    setHasSubmit(true)
-  };
-  const prev = () => {
-    setCurrent(current - 1);
+    setHasSubmit(true);
   };
   const submit = () => {
-    setHasSubmit(false)
+    setHasSubmit(false);
+  };
+  const add = (text) => {
+    const arr = [...answer, text]
+    setAnswer(arr);
+  };
+  const remove = (text) => {
+    const index = answer.indexOf(text);
+    const arr = [...answer]
+    arr.splice(index, 1);
+    setAnswer(arr)
   }
+
+
+  const steps = [
+    {
+      title: "First",
+      content: "Translate this sentence: はち",
+      display: answer.map((x) =>{
+        return (
+          <Button onClick={(e) => remove(e.target.textContent)}>{x}</Button>
+        );
+      }),
+      input: input.map((x) => (
+        <Button onClick={(e) => add(e.target.textContent)}>{x}</Button>
+      )),
+    },
+    {
+      title: "Second",
+      content: "Second-content",
+      input: input,
+    },
+    {
+      title: "Last",
+      content: "Last-content",
+      input: input,
+    },
+  ];
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,
@@ -50,7 +74,11 @@ const LessonForms = () => {
   return (
     <>
       <Steps current={current} items={items} />
-      <div style={contentStyle}>{steps[current].content}</div>
+      <div style={contentStyle}>
+        {steps[current].content}
+        {steps[current].display}
+        {steps[current].input}
+      </div>
       <div
         style={{
           marginTop: 24,
@@ -72,16 +100,6 @@ const LessonForms = () => {
             onClick={() => message.success("Processing complete!")}
           >
             Done
-          </Button>
-        )}
-        {current > 0 && (
-          <Button
-            style={{
-              margin: "0 8px",
-            }}
-            onClick={() => prev()}
-          >
-            Previous
           </Button>
         )}
       </div>
