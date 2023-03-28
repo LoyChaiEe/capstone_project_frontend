@@ -1,12 +1,11 @@
 import React from "react";
-import LessonForms from "../components/LessonForms";
 
-const Characters = () => {
+export default function Characters() {
   return (
-    <div>
-      <LessonForms/>
+    <div className="character-section">
+      <div className="character-container">
+        <span>CHARACTERS</span>
+      </div>
     </div>
   );
-};
-
-export default Characters;
+}

@@ -1,12 +1,13 @@
 import React from "react";
 import LessonForms from "../components/LessonForms";
 
-const Lesson = () => {
+export default function Lesson() {
   return (
-    <div>
-      <LessonForms />
+    <div className="lesson-section">
+      <div className="lesson-container">
+        <span>LESSON</span>
+        <LessonForms />
+      </div>
     </div>
   );
-};
-
-export default Lesson;
+}
