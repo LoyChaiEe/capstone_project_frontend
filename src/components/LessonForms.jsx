@@ -23,14 +23,20 @@ const LessonForms = () => {
     setHasSubmit(false);
   };
   const add = (text) => {
-    const arr = [...answer, text]
-    setAnswer(arr);
+    const ans = [...answer, text]
+    const userInput = [...input]
+    const index = input.indexOf(text);
+    userInput.splice(index, 1);
+    setAnswer(ans);
+    setInput(userInput)
   };
   const remove = (text) => {
+    const ans = [...answer];
+    const userInput = [...input, text];
     const index = answer.indexOf(text);
-    const arr = [...answer]
-    arr.splice(index, 1);
-    setAnswer(arr)
+    ans.splice(index, 1);
+    setAnswer(ans)
+    setInput(userInput);
   }
 
 
@@ -38,13 +44,23 @@ const LessonForms = () => {
     {
       title: "First",
       content: "Translate this sentence: はち",
-      display: answer.map((x) =>{
+      display: answer.map((x) => {
         return (
-          <Button onClick={(e) => remove(e.target.textContent)}>{x}</Button>
+          <Button
+            style={{ color: "red" }}
+            onClick={(e) => remove(e.target.textContent)}
+          >
+            {x}
+          </Button>
         );
       }),
       input: input.map((x) => (
-        <Button onClick={(e) => add(e.target.textContent)}>{x}</Button>
+        <Button
+          style={{ color: "green" }}
+          onClick={(e) => add(e.target.textContent)}
+        >
+          {x}
+        </Button>
       )),
     },
     {
