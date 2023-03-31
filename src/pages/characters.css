@@ -1,0 +1,47 @@
+.character-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.hirgana-basic-grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto auto auto;
+}
+
+.character-wrapper {
+  display: flex;
+  padding: 5px;
+  flex-direction: column;
+  align-items: center;
+  border-style: solid;
+  border-width: 2px 2px 6px;
+  border-color: rgba(0, 0, 0, 0.298);
+  border-radius: 10px;
+  cursor: pointer;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+.character-wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.character {
+  font-size: 60px;
+  line-height: 60px;
+}
+
+.character-lower-wrapper {
+  width: 100%;
+}
+
+.pronounciation {
+  font-size: 20px;
+  line-height: 20px;
+}
