@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
 import NavLogo from "./NavLogo";
 import { HomeSVG, LessonSVG, CharacterSVG, ProfileSVG, AboutSVG } from "./SVG";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+import { Backend_URL } from "../BACKEND_URL.js";
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth0();
@@ -12,6 +14,26 @@ export default function Navbar() {
 
     return <button onClick={() => loginWithRedirect()}>Log In</button>;
   };
+  console.log(isAuthenticated, user, user?.email);
+
+  useEffect(() => {
+    console.log("step 1");
+    if (isAuthenticated) {
+      const userInfo = {
+        username: user?.nickname,
+        first_name: user?.given_name,
+        last_name: user?.family_name,
+        email_address: user?.email,
+        profile_pic_url: user?.picture,
+      };
+      console.log("step 2");
+      axios
+        .post(`${Backend_URL}/users/newUser`, userInfo, console.log("step 3"))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
 
   return (
     <div className="navbar">
