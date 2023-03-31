@@ -9,6 +9,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 
 root.render(
   <React.StrictMode>
@@ -18,7 +19,13 @@ root.render(
         clientId={clientId}
         authorizationParams={{
           redirect_uri: window.location.origin,
+          audience: `${audience}`,
+          // audience: `${domain}/api/v2/`,
+          // scope: "read:current_user",
         }}
+        // audience={`${domain}/api/v2/`}
+        // audience={audience}
+        // scope="read:current_user"
       >
         <App />
       </Auth0Provider>
