@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import NavLogo from "./NavLogo";
 import { HomeSVG, LessonSVG, CharacterSVG, ProfileSVG, AboutSVG } from "./SVG";
 import { useAuth0 } from "@auth0/auth0-react";
-// import axios from "axios";
-// import { Backend_URL } from "../BACKEND_URL.js";
+import axios from "axios";
+import { Backend_URL } from "../BACKEND_URL.js";
 
 export default function Navbar() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState({});
+  const [currentUser, setCurrentUser] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
 
   const LoginButton = () => {
     const { loginWithRedirect } = useAuth0();
@@ -17,57 +19,70 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const getUserMetaData = async () => {
-      const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-      // const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
-      try {
-        const accessToken = await getAccessTokenSilently({
-          // authorizationParams: {
-          audience: `https://${domain}/api/v2/`,
-          scope: "read:users",
-          // },
-        });
-        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
-        const metadataResponse = await fetch(userDetailsByIdUrl, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log("metadata response", metadataResponse);
-        const { user_metadata } = await metadataResponse.json();
-        console.log("user_metadata", user_metadata);
-        setUserMetadata(user_metadata);
-        console.log(
-          "authenticated",
-          isAuthenticated,
-          "user",
-          user,
-          "metadata",
-          userMetadata,
-          "user.sub",
-          user.sub
-        );
-      } catch (err) {
-        console.log("error", err.message);
-      }
-    };
-    // if (isAuthenticated) {
-    //   const userInfo = {
-    //     username: user?.nickname,
-    //     first_name: user?.given_name,
-    //     last_name: user?.family_name,
-    //     email_address: user?.email,
-    //     profile_pic_url: user?.picture,
-    //   };
-    //   console.log("step 2");
-    //   axios
-    //     .post(`${Backend_URL}/users/newUser`, userInfo, console.log("step 3"))
-    //     .catch((err) => {
-    //       console.log(err);
+    // const getUserMetaData = async () => {
+    //   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+    //   // const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+    //   try {
+    //     const accessToken = await getAccessTokenSilently({
+    //       // authorizationParams: {
+    //       audience: `https://${domain}/api/v2/`,
+    //       scope: "read:users",
+    //       // },
     //     });
-    // }
-    getUserMetaData();
+    //     const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
+    //     const metadataResponse = await fetch(userDetailsByIdUrl, {
+    //       headers: {
+    //         Authorization: `Bearer ${accessToken}`,
+    //       },
+    //     });
+    //     console.log("metadata response", metadataResponse);
+    //     const { user_metadata } = await metadataResponse.json();
+    //     console.log("user_metadata", user_metadata);
+    //     setUserMetadata(user_metadata);
+    //     console.log(
+    //       "authenticated",
+    //       isAuthenticated,
+    //       "user",
+    //       user,
+    //       "metadata",
+    //       userMetadata,
+    //       "user.sub",
+    //       user.sub
+    //     );
+    //   } catch (err) {
+    //     console.log("error", err.message);
+    //   }
+    // };
+    if (isAuthenticated) {
+      const userInfo = {
+        username: user?.nickname,
+        first_name: user?.given_name || user?.name,
+        last_name: user?.family_name || "",
+        email_address: user?.email,
+        profile_pic_url: user?.picture,
+      };
+      axios
+        .post(`${Backend_URL}/users/newUser`, userInfo)
+        .then(setUserEmail(userInfo.email_address))
+        .catch((err) => {
+          console.log("1st error", err);
+        });
+    }
   }, [getAccessTokenSilently, user?.sub]);
+
+  useEffect(() => {
+    const retrieveUserInfo = async () => {
+      await axios
+        .get(`${Backend_URL}/users/${userEmail}`)
+        .then((response) => {
+          setCurrentUser(response.data);
+        })
+        .catch((err) => {
+          console.log("2nd error", err);
+        });
+    };
+    retrieveUserInfo();
+  }, [userEmail]);
 
   return (
     <div className="navbar">
@@ -98,8 +113,8 @@ export default function Navbar() {
             <Link to="/profile" className="nav-link-text-wrapper">
               {isAuthenticated ? (
                 <img
-                  src={user.picture}
-                  alt={user.name}
+                  src={currentUser.profile_pic_url}
+                  alt={currentUser.profile_pic_url}
                   className="nav-link-profile-image"
                 />
               ) : (

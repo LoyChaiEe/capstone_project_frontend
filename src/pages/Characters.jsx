@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
+import { Howl } from "howler";
 
 export default function Characters() {
-  // const [words, setWords] = useState({});
   const [hiraganaBasic, setHiraganaBasic] = useState([]);
   const [hiraganaDakuon, setHiraganaDakuon] = useState([]);
   const [katakanaBasic, setKatakanaBasic] = useState([]);
@@ -36,21 +36,19 @@ export default function Characters() {
     getWords();
   }, []);
 
+  const soundPlay = (src) => {
+    const sound = new Howl({
+      src,
+      html5: true,
+      preload: true,
+    });
+    sound.play();
+  };
+
   const hiraganaBasicsData = hiraganaBasic.data;
   const hiraganaDakuonData = hiraganaDakuon.data;
   const katakanaBasicsData = katakanaBasic.data;
   const katakanaDakuonData = katakanaDakuon.data;
-
-  // useEffect(() => {
-  //   if (hiraganaBasicsData !== undefined && hiraganaDakuonData !== undefined) {
-  //     hiraganaBasicsData.map((i) => {
-  //       return console.log("hiragana basic", i);
-  //     });
-  //     hiraganaDakuonData.map((i) => {
-  //       return console.log("hiragana dakuon", i);
-  //     });
-  //   }
-  // });
 
   return (
     <div className="character-section">
@@ -59,7 +57,11 @@ export default function Characters() {
         <div className="hirgana-basic-grid">
           {hiraganaBasicsData &&
             hiraganaBasicsData.map((i) => (
-              <div className="character-wrapper" key={i.id}>
+              <div
+                className="character-wrapper"
+                key={i.id}
+                onClick={() => soundPlay(i.audio_url)}
+              >
                 <div className="character">{i.character}</div>
                 <div className="character-lower-wrapper">
                   <div className="pronounciation">{i.pronounciation}</div>

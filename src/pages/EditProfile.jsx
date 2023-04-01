@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./editprofile.css";
-// import { storage } from "../firebase";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Backend_URL } from "../BACKEND_URL";
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
 export default function EditProfile() {
   // const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState("")
   // const [updatedProfilePhotoURL, setUpdatedProfilePhotoURL] = useState(url)
+  const { user, isAuthenticated } = useAuth0();
+  const [currentUser, setCurrentUser] = useState([]);
   const [currentName, setCurrentName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
   const [currrentEmailAddress, setCurrentEmailAddress] = useState("");
   const [currentCountry, setCurrentCountry] = useState("");
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
+  const [updatedPhotoFile, setUpdatedPhotoFile] = useState("");
+  const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
 
   // const handleProfilePhotoChange = async (e) => {
   //   e.preventDefault()
@@ -27,6 +37,54 @@ export default function EditProfile() {
   //   );
   // }
 
+  useEffect(() => {
+    const retrieveUserInfo = async () => {
+      await axios
+        .get(`${Backend_URL}/users/${user?.email}`)
+        .then((response) => {
+          setCurrentUser(response.data);
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.log("2nd error", err);
+        });
+    };
+    retrieveUserInfo();
+  }, [user?.email]);
+
+  const handleUpdatedPhoto = (e) => {
+    setUpdatedPhotoFile(e.target.files[0]);
+    const urlDisplay = URL.createObjectURL(e.target.files[0]);
+    setUpdatedPhotoFileUrl(urlDisplay);
+  };
+
+  const handlePhotoSubmit = async (e) => {
+    e.preventDefault();
+    const profilePhotoRef = ref(
+      storage,
+      `${PROFILE_PHOTO_FOLDER}/${updatedPhotoFile.name}`
+    );
+    const photoUrl = await uploadBytes(profilePhotoRef, updatedPhotoFile).then(
+      () =>
+        getDownloadURL(profilePhotoRef).then((downloadUrl) => {
+          setProfilePhotoUrl(downloadUrl);
+          return downloadUrl;
+        })
+    );
+    await axios
+      .put(`${Backend_URL}/users/photoUrl`, {
+        photoUrl: `${photoUrl}`,
+        email: `${currentUser}`,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+    alert("Profile photo has been successfully uploaded!");
+  };
+
   return (
     <div className="edit-profile-section">
       <div className="edit-profile-container">
@@ -37,7 +95,15 @@ export default function EditProfile() {
             className="edit-profile-image"
             alt="edit-profile-png"
           />
-          <button>Change Profile Photo</button>
+          <div>
+            <p>Change Profile Photo</p>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleUpdatedPhoto}
+            />
+            <button onClick={handlePhotoSubmit}>press</button>
+          </div>
         </div>
         <div className="edit-profile-info-container">
           <div className="edit-profile-info-wrapper">
