@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="lesson" element={<Lesson />} />
+          <Route path="/vocabs/lesson" element={<Lesson />} />
           <Route path="characters" element={<Characters />} />
           <Route path="profile" element={<Profile />} />
           <Route path="edit-profile" element={<EditProfile />} />

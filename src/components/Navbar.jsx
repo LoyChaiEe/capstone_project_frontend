@@ -9,7 +9,6 @@ import { Backend_URL } from "../BACKEND_URL.js";
 
 export default function Navbar() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [userMetadata, setUserMetadata] = useState({});
   const [currentUser, setCurrentUser] = useState([]);
   const [userEmail, setUserEmail] = useState("");
 
@@ -19,40 +18,6 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    // const getUserMetaData = async () => {
-    //   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-    //   // const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
-    //   try {
-    //     const accessToken = await getAccessTokenSilently({
-    //       // authorizationParams: {
-    //       audience: `https://${domain}/api/v2/`,
-    //       scope: "read:users",
-    //       // },
-    //     });
-    //     const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
-    //     const metadataResponse = await fetch(userDetailsByIdUrl, {
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //       },
-    //     });
-    //     console.log("metadata response", metadataResponse);
-    //     const { user_metadata } = await metadataResponse.json();
-    //     console.log("user_metadata", user_metadata);
-    //     setUserMetadata(user_metadata);
-    //     console.log(
-    //       "authenticated",
-    //       isAuthenticated,
-    //       "user",
-    //       user,
-    //       "metadata",
-    //       userMetadata,
-    //       "user.sub",
-    //       user.sub
-    //     );
-    //   } catch (err) {
-    //     console.log("error", err.message);
-    //   }
-    // };
     if (isAuthenticated) {
       const userInfo = {
         username: user?.nickname,
@@ -68,7 +33,7 @@ export default function Navbar() {
           console.log("1st error", err);
         });
     }
-  }, [getAccessTokenSilently, user?.sub]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {
@@ -98,7 +63,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/lesson" className="nav-link-text-wrapper">
+            <Link to="/vocabs/lesson" className="nav-link-text-wrapper">
               <LessonSVG />
               <span className="nav-link-text">LESSON</span>
             </Link>
@@ -113,8 +78,8 @@ export default function Navbar() {
             <Link to="/profile" className="nav-link-text-wrapper">
               {isAuthenticated ? (
                 <img
-                  src={currentUser.profile_pic_url}
-                  alt={currentUser.profile_pic_url}
+                  src={currentUser?.profile_pic_url}
+                  alt={currentUser?.profile_pic_url}
                   className="nav-link-profile-image"
                 />
               ) : (
@@ -149,3 +114,40 @@ export default function Navbar() {
     </div>
   );
 }
+
+//<<<<<<<<<<<<<<SETTLE NEXT TIME(METADATA)>>>>>>>>>>>>>>>>>>>
+// const [userMetadata, setUserMetadata] = useState({});
+// const getUserMetaData = async () => {
+//   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+//   // const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+//   try {
+//     const accessToken = await getAccessTokenSilently({
+//       // authorizationParams: {
+//       audience: `https://${domain}/api/v2/`,
+//       scope: "read:users",
+//       // },
+//     });
+//     const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
+//     const metadataResponse = await fetch(userDetailsByIdUrl, {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     console.log("metadata response", metadataResponse);
+//     const { user_metadata } = await metadataResponse.json();
+//     console.log("user_metadata", user_metadata);
+//     setUserMetadata(user_metadata);
+//     console.log(
+//       "authenticated",
+//       isAuthenticated,
+//       "user",
+//       user,
+//       "metadata",
+//       userMetadata,
+//       "user.sub",
+//       user.sub
+//     );
+//   } catch (err) {
+//     console.log("error", err.message);
+//   }
+// };

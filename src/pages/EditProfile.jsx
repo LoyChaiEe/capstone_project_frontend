@@ -11,7 +11,7 @@ const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 export default function EditProfile() {
   // const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState("")
   // const [updatedProfilePhotoURL, setUpdatedProfilePhotoURL] = useState(url)
-  const { user, isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
   const [currentUser, setCurrentUser] = useState([]);
   const [currentName, setCurrentName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
@@ -73,16 +73,17 @@ export default function EditProfile() {
     );
     await axios
       .put(`${Backend_URL}/users/photoUrl`, {
-        photoUrl: `${photoUrl}`,
-        email: `${currentUser}`,
+        profile_pic_url: photoUrl,
+        email_address: currentUser.email_address,
       })
       .then((response) => {
-        console.log(response.data);
+        setUpdatedPhotoFileUrl(response.data.profile_pic_url);
       })
       .catch((err) => {
         console.log("error", err);
       });
     alert("Profile photo has been successfully uploaded!");
+    setProfilePhotoUrl("");
   };
 
   return (
@@ -97,11 +98,14 @@ export default function EditProfile() {
           />
           <div>
             <p>Change Profile Photo</p>
-            <input
-              type="file"
-              className="hidden"
-              onChange={handleUpdatedPhoto}
-            />
+            <label className="custom-file-upload">
+              Select Image
+              <input
+                className="file-input"
+                type="file"
+                onChange={handleUpdatedPhoto}
+              />
+            </label>
             <button onClick={handlePhotoSubmit}>press</button>
           </div>
         </div>

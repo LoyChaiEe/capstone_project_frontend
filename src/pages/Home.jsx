@@ -8,6 +8,9 @@ export default function Home() {
       <div className="home-container">
         <span>HOME</span>
         <UserInfo />
+        <button>lesson 1</button>
+        <button>lesson 2</button>
+        <button>lesson 3</button>
       </div>
     </div>
   );

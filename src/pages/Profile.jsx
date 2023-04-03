@@ -21,7 +21,7 @@ export default function Profile() {
         });
     };
     retrieveUserInfo();
-  }, [user.email]);
+  }, [user?.email]);
 
   const LogoutButton = () => {
     return (
@@ -34,8 +34,6 @@ export default function Profile() {
       </button>
     );
   };
-
-  console.log(isAuthenticated, currentUser);
   if (!currentUser.email_address) return null;
 
   return (
