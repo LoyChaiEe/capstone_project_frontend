@@ -55,9 +55,22 @@
 }
 
 .custom-file-upload {
+  margin-bottom: 20px;
   cursor: pointer;
 }
 
 .file-input {
   display: none;
+}
+
+.edit-profile-image {
+  height: 150px;
+  width: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-photo-submit {
+  display: flex;
+  flex-direction: column;
 }

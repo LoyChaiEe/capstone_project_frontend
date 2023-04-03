@@ -5,37 +5,20 @@ import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ProfileSVG } from "../components/SVG";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
 export default function EditProfile() {
-  // const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState("")
-  // const [updatedProfilePhotoURL, setUpdatedProfilePhotoURL] = useState(url)
   const { user } = useAuth0();
   const [currentUser, setCurrentUser] = useState([]);
-  const [currentName, setCurrentName] = useState("");
+  const [currentFirstName, setCurrentFirstName] = useState("");
+  const [currentLastName, setCurrentLastName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
-  const [currrentEmailAddress, setCurrentEmailAddress] = useState("");
-  const [currentCountry, setCurrentCountry] = useState("");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [updatedPhotoFile, setUpdatedPhotoFile] = useState("");
   const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
-
-  // const handleProfilePhotoChange = async (e) => {
-  //   e.preventDefault()
-  //   const profilePhotoRef = ref(storage, `${lastName} ${firstName}`);
-  //   const photoURL = await uploadBytes(
-  //     profilePhotoRef,
-  //     updatedProfilePhoto
-  //   ).then(() =>
-  //     getDownloadURL(profilePhotoRef).then((downloadURL) => {
-  //       // console.log(downloadURL);
-  //       setUpdatedProfilePhotoURL(downloadURL);
-  //       console.log(updatedProfilePhotoURL);
-  //       return downloadURL;
-  //     })
-  //   );
-  // }
+  const [isChangedPhoto, setIsChangedPhoto] = useState(false);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {
@@ -43,7 +26,6 @@ export default function EditProfile() {
         .get(`${Backend_URL}/users/${user?.email}`)
         .then((response) => {
           setCurrentUser(response.data);
-          console.log(response.data);
         })
         .catch((err) => {
           console.log("2nd error", err);
@@ -56,6 +38,7 @@ export default function EditProfile() {
     setUpdatedPhotoFile(e.target.files[0]);
     const urlDisplay = URL.createObjectURL(e.target.files[0]);
     setUpdatedPhotoFileUrl(urlDisplay);
+    setIsChangedPhoto(true);
   };
 
   const handlePhotoSubmit = async (e) => {
@@ -86,38 +69,73 @@ export default function EditProfile() {
     setProfilePhotoUrl("");
   };
 
+  const handleProfileChange = async (e) => {
+    e.preventDefault();
+    await axios
+      .put(`${Backend_URL}/users/profile`, {
+        first_name: currentFirstName,
+        last_name: currentLastName,
+        username: currentUsername,
+        email_address: currentUser.email_address,
+      })
+      .then((response) => {
+        console.log(response.data);
+        // setCurrentFirstName(response.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="edit-profile-section">
       <div className="edit-profile-container">
         <div className="edit-profile-image-wrapper">
           <h1 className="edit-profile-title">Edit Profile</h1>
-          <img
-            src={require("../assets/profile.png")}
-            className="edit-profile-image"
-            alt="edit-profile-png"
-          />
-          <div>
-            <p>Change Profile Photo</p>
+          <div className="profile-photo-submit">
             <label className="custom-file-upload">
-              Select Image
+              {isChangedPhoto === false ? (
+                <img
+                  src={currentUser?.profile_pic_url}
+                  alt={currentUser?.profile_pic_url}
+                  className="edit-profile-image"
+                />
+              ) : (
+                <img
+                  src={updatedPhotoFileUrl}
+                  alt={updatedPhotoFileUrl}
+                  className="edit-profile-image"
+                />
+              )}
               <input
                 className="file-input"
                 type="file"
                 onChange={handleUpdatedPhoto}
               />
             </label>
-            <button onClick={handlePhotoSubmit}>press</button>
+            <button onClick={handlePhotoSubmit}>Submit</button>
           </div>
         </div>
         <div className="edit-profile-info-container">
           <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">Name</h1>
+            <h1 className="edit-profile-title-info">First Name</h1>
             <input
               className="edit-profile-text-info"
-              value={currentName}
+              value={currentFirstName}
               placeholder="Enter name"
               onChange={(e) => {
-                setCurrentName(e.target.value);
+                setCurrentFirstName(e.target.value);
+              }}
+            />
+          </div>
+          <div className="edit-profile-info-wrapper">
+            <h1 className="edit-profile-title-info">Last Name</h1>
+            <input
+              className="edit-profile-text-info"
+              value={currentLastName}
+              placeholder="Enter last name"
+              onChange={(e) => {
+                setCurrentLastName(e.target.value);
               }}
             />
           </div>
@@ -132,29 +150,7 @@ export default function EditProfile() {
               }}
             />
           </div>
-          <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">Email Address</h1>
-            <input
-              className="edit-profile-text-info"
-              value={currrentEmailAddress}
-              placeholder="Enter email address"
-              onChange={(e) => {
-                setCurrentEmailAddress(e.target.value);
-              }}
-            />
-          </div>
-          <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">Country</h1>
-            <input
-              className="edit-profile-text-info"
-              value={currentCountry}
-              placeholder="Enter country"
-              onChange={(e) => {
-                setCurrentCountry(e.target.value);
-              }}
-            />
-          </div>
-          <button>Done</button>
+          <button onClick={handleProfileChange}>Done</button>
         </div>
       </div>
     </div>

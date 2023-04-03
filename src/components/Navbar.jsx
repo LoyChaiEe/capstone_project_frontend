@@ -33,7 +33,7 @@ export default function Navbar() {
           console.log("1st error", err);
         });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentUser?.profile_pic_url]);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {

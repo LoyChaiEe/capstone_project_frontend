@@ -12,7 +12,7 @@ export default function Profile() {
   useEffect(() => {
     const retrieveUserInfo = async () => {
       await axios
-        .get(`${Backend_URL}/users/${user.email}`)
+        .get(`${Backend_URL}/users/${user?.email}`)
         .then((response) => {
           setCurrentUser(response.data);
         })
@@ -34,7 +34,7 @@ export default function Profile() {
       </button>
     );
   };
-  if (!currentUser.email_address) return null;
+  if (!currentUser?.email_address) return null;
 
   return (
     <div className="profile-section">
@@ -42,8 +42,8 @@ export default function Profile() {
         <div className="profile-image-wrapper">
           {isAuthenticated ? (
             <img
-              src={currentUser.profile_pic_url}
-              alt={currentUser.profile_pic_url}
+              src={currentUser?.profile_pic_url}
+              alt={currentUser?.profile_pic_url}
               className="profile-image"
             />
           ) : (
@@ -60,7 +60,7 @@ export default function Profile() {
             className="profile-input-box"
             value={
               isAuthenticated
-                ? currentUser.first_name + currentUser.last_name
+                ? `${currentUser.first_name} ${currentUser.last_name}`
                 : ""
             }
             readOnly
@@ -79,14 +79,6 @@ export default function Profile() {
           <input
             className="profile-input-box"
             value={isAuthenticated ? currentUser.email_address : ""}
-            readOnly
-          />
-        </div>
-        <div className="profile-info-wrapper">
-          <h1 className="profile-info">Country:</h1>
-          <input
-            className="profile-input-box"
-            value={isAuthenticated ? currentUser.country : ""}
             readOnly
           />
         </div>
