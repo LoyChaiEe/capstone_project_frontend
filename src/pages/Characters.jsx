@@ -3,6 +3,7 @@ import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
 import { Howl } from "howler";
+import { MiniCharacter } from "../components/SVG";
 
 export default function Characters() {
   const [hiraganaBasic, setHiraganaBasic] = useState([]);
@@ -10,6 +11,8 @@ export default function Characters() {
   const [katakanaBasic, setKatakanaBasic] = useState([]);
   const [katakanaDakuon, setKatakanaDakuon] = useState([]);
   const [characterDisplay, setCharacterDisplay] = useState(null);
+  const [isHiraganaActive, setIsHiraganaActive] = useState(true);
+  const [isKatakanaActive, setIsKatakanaActive] = useState(false);
 
   useEffect(() => {
     const getWords = async () => {
@@ -52,10 +55,21 @@ export default function Characters() {
   const katakanaDakuonData = katakanaDakuon.data;
 
   const handleHiragana = async (e) => {
-    e.preventDefault();
+    setIsHiraganaActive(true);
+    setIsKatakanaActive(false);
     const hiraganaCharacters = (
       <>
-        <h1>Hiragana Basic</h1>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <h1 className="character-title-title">Hiragana</h1>
+            <p className="character-title-description">Basic Symbols</p>
+            <p className="character-instruction">
+              (click on the cards to listen to its pronounciation)
+            </p>
+            <button>Let's learn Hiragana!</button>
+          </div>
+        </div>
         <div className="hirgana-basic-grid">
           {hiraganaBasicsData &&
             hiraganaBasicsData.map((i) => (
@@ -71,11 +85,23 @@ export default function Characters() {
               </div>
             ))}
         </div>
-        <h1>Hiragana Dakuon</h1>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <h1 className="character-title-title">Dakuon</h1>
+            <p className="character-instruction">
+              Addition of a symbol changes the pronounciation
+            </p>
+          </div>
+        </div>
         <div className="hirgana-basic-grid">
           {hiraganaDakuonData &&
             hiraganaDakuonData.map((i) => (
-              <div className="character-wrapper" key={i.id}>
+              <div
+                className="character-wrapper"
+                key={i.id}
+                onClick={() => soundPlay(i.audio_url)}
+              >
                 <div className="character">{i.character}</div>
                 <div className="character-lower-wrapper">
                   <div className="pronounciation">{i.pronounciation}</div>
@@ -89,10 +115,21 @@ export default function Characters() {
   };
 
   const handleKatakana = async (e) => {
-    e.preventDefault();
+    setIsHiraganaActive(false);
+    setIsKatakanaActive(true);
     const katakanaCharacters = (
       <>
-        <h1>Katakana Basic</h1>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <h1 className="character-title-title">Katakana</h1>
+            <p className="character-title-description">Basic Symbols</p>
+            <p className="character-instruction">
+              (click on the cards to listen to its pronounciation)
+            </p>
+            <button>Let's learn Katakana!</button>
+          </div>
+        </div>
         <div className="hirgana-basic-grid">
           {katakanaBasicsData &&
             katakanaBasicsData.map((i) => (
@@ -108,11 +145,23 @@ export default function Characters() {
               </div>
             ))}
         </div>
-        <h1>Katakana Dakuon</h1>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <h1 className="character-title-title">Dakuon</h1>
+            <p className="character-instruction">
+              Addition of a symbol changes the pronounciation
+            </p>
+          </div>
+        </div>
         <div className="hirgana-basic-grid">
           {katakanaDakuonData &&
             katakanaDakuonData.map((i) => (
-              <div className="character-wrapper" key={i.id}>
+              <div
+                className="character-wrapper"
+                key={i.id}
+                onClick={() => soundPlay(i.audio_url)}
+              >
                 <div className="character">{i.character}</div>
                 <div className="character-lower-wrapper">
                   <div className="pronounciation">{i.pronounciation}</div>
@@ -122,7 +171,6 @@ export default function Characters() {
         </div>
       </>
     );
-
     return setCharacterDisplay(katakanaCharacters);
   };
 
@@ -130,10 +178,16 @@ export default function Characters() {
     <div className="character-section">
       <div className="character-container">
         <div className="character-selection-title">
-          <div className="character-selection" onClick={handleHiragana}>
-            <h1>Hiragana</h1>
+          <div
+            className={isHiraganaActive ? "active" : "inactive"}
+            onClick={handleHiragana}
+          >
+            <h1 className="selection-title">Hiragana</h1>
           </div>
-          <div className="character-selection" onClick={handleKatakana}>
+          <div
+            className={isKatakanaActive ? "active" : "inactive"}
+            onClick={handleKatakana}
+          >
             <h1>Katakana</h1>
           </div>
         </div>

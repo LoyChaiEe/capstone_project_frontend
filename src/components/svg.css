@@ -3,3 +3,9 @@
   height: 50px;
   object-fit: cover;
 }
+
+.mini-character {
+  width: auto;
+  height: 150px;
+  object-fit: cover;
+}

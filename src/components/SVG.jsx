@@ -49,3 +49,13 @@ export function AboutSVG() {
     />
   );
 }
+
+export function MiniCharacter() {
+  return (
+    <img
+      src={require("../assets/mini-character.png")}
+      className="mini-character"
+      alt="mini-character"
+    />
+  );
+}
