@@ -9,6 +9,7 @@ export default function Characters() {
   const [hiraganaDakuon, setHiraganaDakuon] = useState([]);
   const [katakanaBasic, setKatakanaBasic] = useState([]);
   const [katakanaDakuon, setKatakanaDakuon] = useState([]);
+  const [characterDisplay, setCharacterDisplay] = useState(null);
 
   useEffect(() => {
     const getWords = async () => {
@@ -50,9 +51,10 @@ export default function Characters() {
   const katakanaBasicsData = katakanaBasic.data;
   const katakanaDakuonData = katakanaDakuon.data;
 
-  return (
-    <div className="character-section">
-      <div className="character-container">
+  const handleHiragana = async (e) => {
+    e.preventDefault();
+    const hiraganaCharacters = (
+      <>
         <h1>Hiragana Basic</h1>
         <div className="hirgana-basic-grid">
           {hiraganaBasicsData &&
@@ -81,11 +83,24 @@ export default function Characters() {
               </div>
             ))}
         </div>
+      </>
+    );
+    return setCharacterDisplay(hiraganaCharacters);
+  };
+
+  const handleKatakana = async (e) => {
+    e.preventDefault();
+    const katakanaCharacters = (
+      <>
         <h1>Katakana Basic</h1>
         <div className="hirgana-basic-grid">
           {katakanaBasicsData &&
             katakanaBasicsData.map((i) => (
-              <div className="character-wrapper" key={i.id}>
+              <div
+                className="character-wrapper"
+                key={i.id}
+                onClick={() => soundPlay(i.audio_url)}
+              >
                 <div className="character">{i.character}</div>
                 <div className="character-lower-wrapper">
                   <div className="pronounciation">{i.pronounciation}</div>
@@ -105,6 +120,24 @@ export default function Characters() {
               </div>
             ))}
         </div>
+      </>
+    );
+
+    return setCharacterDisplay(katakanaCharacters);
+  };
+
+  return (
+    <div className="character-section">
+      <div className="character-container">
+        <div className="character-selection-title">
+          <div className="character-selection" onClick={handleHiragana}>
+            <h1>Hiragana</h1>
+          </div>
+          <div className="character-selection" onClick={handleKatakana}>
+            <h1>Katakana</h1>
+          </div>
+        </div>
+        {characterDisplay}
       </div>
     </div>
   );

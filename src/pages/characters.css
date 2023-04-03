@@ -5,6 +5,16 @@
   align-items: center;
 }
 
+.character-selection-title {
+  display: flex;
+  width: 100%;
+}
+
+.character-selection {
+  width: 100%;
+  cursor: pointer;
+}
+
 .hirgana-basic-grid {
   display: grid;
   grid-auto-columns: 1fr;
