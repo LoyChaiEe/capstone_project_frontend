@@ -22,9 +22,8 @@ function App() {
             <Route path="hiragana/lesson" />
             <Route path="katakana/lesson" />
           </Route>
-          <Route path="profile" element={<Profile />}>
-            <Route path="edit" element={<EditProfile />} />
-          </Route>
+          <Route path="profile" element={<Profile />} />
+          <Route path="profile/edit" element={<EditProfile />} />
           <Route path="about" element={<About />} />
         </Routes>
       </div>
