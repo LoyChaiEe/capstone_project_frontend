@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-const LessonTest = (props) => {
+const LessonTest = () => {
   let { state } = useLocation();
-  return <p>{state.msg}</p>;
+  return <p>{state?.msg}</p>;
 };
 
 export default LessonTest;
