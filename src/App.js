@@ -18,10 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="landing" element={<Landing />} />
           <Route path="vocabs/lesson" element={<Lesson />} />
-          <Route path="characters" element={<Characters />}>
-            <Route path="hiragana/lesson" />
-            <Route path="katakana/lesson" />
-          </Route>
+          <Route path="characters" element={<Characters />} />
           <Route path="profile" element={<Profile />} />
           <Route path="profile/edit" element={<EditProfile />} />
           <Route path="about" element={<About />} />

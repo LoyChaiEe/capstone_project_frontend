@@ -27,7 +27,7 @@
 }
 
 .chapter-lesson {
-  height: 70px;
+  height: 60px;
   width: 75px;
   border-radius: 50%;
   background-color: aquamarine;
@@ -35,5 +35,20 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-bottom: 10px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: rgb(104, 219, 180) 0px 8px 0px;
+}
+
+.chapter-lesson:hover {
+  background-color: rgb(120, 246, 204);
+  box-shadow: rgb(100, 212, 175) 0px 8px 0px;
+}
+
+#two {
+  margin-right: 50px;
+}
+
+#three {
+  margin-right: 100px;
 }

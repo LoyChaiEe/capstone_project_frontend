@@ -11,8 +11,14 @@ export default function Home() {
             <p>Learning vocabs</p>
           </div>
           <div className="chapter-lesson-wrapper">
-            <div className="chapter-lesson">
+            <div className="chapter-lesson" id="one">
               <span>Lesson 1</span>
+            </div>
+            <div className="chapter-lesson" id="two">
+              <span>Lesson 2</span>
+            </div>
+            <div className="chapter-lesson" id="three">
+              <span>Lesson 3</span>
             </div>
           </div>
         </div>

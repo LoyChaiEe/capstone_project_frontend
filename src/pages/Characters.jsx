@@ -4,6 +4,7 @@ import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
 import { Howl } from "howler";
 import { MiniCharacter } from "../components/SVG";
+import { Link } from "react-router-dom";
 
 export default function Characters() {
   const [hiraganaBasic, setHiraganaBasic] = useState([]);
@@ -146,7 +147,8 @@ export default function Characters() {
                 <p className="character-instruction">
                   (click on the cards to listen to its pronounciation)
                 </p>
-                <button>Let's learn Hiragana!</button>
+                <Link to="hiragana/lesson">Let's learn Hiragana!</Link>
+                {/* <button>Let's learn Hiragana!</button> */}
               </div>
             </div>
             <div className="hirgana-basic-grid">
