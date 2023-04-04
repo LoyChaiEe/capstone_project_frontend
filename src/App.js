@@ -4,6 +4,7 @@ import Lesson from "./pages/Lesson";
 import Profile from "./pages/Profile";
 import Characters from "./pages/Characters";
 import About from "./pages/About";
+import LessonTest from "./components/LessonTest";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="characters" element={<Characters />} />
           <Route path="profile" element={<Profile />} />
           <Route path="about" element={<About />} />
+          <Route path="test" element={<LessonTest />} />
         </Routes>
       </div>
     </div>
