@@ -5,7 +5,7 @@ import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { ProfileSVG } from "../components/SVG";
+import { Link } from "react-router-dom";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
@@ -15,10 +15,10 @@ export default function EditProfile() {
   const [currentFirstName, setCurrentFirstName] = useState("");
   const [currentLastName, setCurrentLastName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [updatedPhotoFile, setUpdatedPhotoFile] = useState("");
   const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {
@@ -50,7 +50,6 @@ export default function EditProfile() {
     const photoUrl = await uploadBytes(profilePhotoRef, updatedPhotoFile).then(
       () =>
         getDownloadURL(profilePhotoRef).then((downloadUrl) => {
-          setProfilePhotoUrl(downloadUrl);
           return downloadUrl;
         })
     );
@@ -66,7 +65,6 @@ export default function EditProfile() {
         console.log("error", err);
       });
     alert("Profile photo has been successfully uploaded!");
-    setProfilePhotoUrl("");
   };
 
   const handleProfileChange = async (e) => {
@@ -80,11 +78,19 @@ export default function EditProfile() {
       })
       .then((response) => {
         console.log(response.data);
-        // setCurrentFirstName(response.data)
+        setCurrentFirstName(response.data.first_name);
+        setCurrentLastName(response.data.last_name);
+        setCurrentUsername(response.data.username);
       })
       .catch((err) => {
         console.log(err);
+        setIsProfileUpdated(false);
       });
+    alert("Profile has been successfully updated!");
+    setIsProfileUpdated(true);
+    setCurrentFirstName("");
+    setCurrentLastName("");
+    setCurrentUsername("");
   };
 
   return (
@@ -151,6 +157,11 @@ export default function EditProfile() {
             />
           </div>
           <button onClick={handleProfileChange}>Done</button>
+          {isProfileUpdated === true ? (
+            <button>
+              <Link to="/">Back</Link>
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

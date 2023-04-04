@@ -19,8 +19,9 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/vocabs/lesson" element={<Lesson />} />
           <Route path="characters" element={<Characters />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="profile" element={<Profile />}>
+            <Route path="edit" element={<EditProfile />} />
+          </Route>
           <Route path="about" element={<About />} />
         </Routes>
       </div>
