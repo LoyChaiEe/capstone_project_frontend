@@ -87,7 +87,6 @@
 
 .character {
   font-size: 60px;
-  line-height: 60px;
 }
 
 .character-lower-wrapper {
@@ -96,5 +95,4 @@
 
 .pronounciation {
   font-size: 20px;
-  line-height: 20px;
 }

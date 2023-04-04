@@ -8,7 +8,7 @@ import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL.js";
 
 export default function Navbar() {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const [currentUser, setCurrentUser] = useState([]);
   const [userEmail, setUserEmail] = useState("");
 

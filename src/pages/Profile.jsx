@@ -93,7 +93,7 @@ export default function Profile() {
                   readOnly
                 />
               </div>
-              <div onClick={handleChange}>
+              <div onClick={handleChange} className="edit-profile-btn-wrapper">
                 <Link to="/profile/edit" className="edit-profile-btn">
                   Edit Profile
                 </Link>
