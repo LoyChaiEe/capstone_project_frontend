@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Characters from "./pages/Characters";
 import About from "./pages/About";
+import LessonTest from "./components/LessonTest";
 import Landing from "./pages/Landing";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -18,14 +19,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="landing" element={<Landing />} />
           <Route path="vocabs/lesson" element={<Lesson />} />
-          <Route path="characters" element={<Characters />}>
-            <Route path="hiragana/lesson" />
-            <Route path="katakana/lesson" />
-          </Route>
+          <Route path="characters" element={<Characters />} />
+          <Route path="characters/hiragana/lesson" element={<About/>} />
+            <Route path="characters/katakana/lesson" element={<LessonTest />} />
           <Route path="profile" element={<Profile />}>
             <Route path="edit" element={<EditProfile />} />
           </Route>
           <Route path="about" element={<About />} />
+          <Route path="test" element={<LessonTest />} />
         </Routes>
       </div>
     </div>
