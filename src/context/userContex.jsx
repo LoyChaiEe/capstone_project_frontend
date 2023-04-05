@@ -17,12 +17,13 @@ export const UserContextProvider = (props) => {
       setUserEmail(email);
     }
   }, [user, isAuthenticated]);
+  console.log(userEmail);
 
   useEffect(() => {
     if (userEmail) {
       axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
         setUserData(response.data);
-        console.log("HELLO", userData);
+        console.log("HELLO", userEmail);
       });
     }
   }, [userEmail]);

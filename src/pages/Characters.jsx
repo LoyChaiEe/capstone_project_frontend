@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
@@ -32,9 +32,6 @@ export default function Characters() {
     });
     sound.play();
   };
-
-  console.log(basic);
-  console.log(dakuon);
 
   return (
     <div className="character-section">
@@ -73,7 +70,6 @@ export default function Characters() {
           <div className="hirgana-basic-grid">
             {basic &&
               basic.map((i) => {
-                console.log(i.id);
                 return (
                   <div
                     className="character-wrapper"

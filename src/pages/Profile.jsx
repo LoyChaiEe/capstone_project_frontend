@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./profile.css";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
-import { Backend_URL } from "../BACKEND_URL";
+import { UserContext } from "../context/userContex";
 
-export default function Profile() {
-  const { user, isAuthenticated, logout } = useAuth0();
-  const [currentUser, setCurrentUser] = useState({});
+export default function ProfileComponent() {
+  const { isAuthenticated, logout } = useAuth0();
+  const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
-    const retrieveUserInfo = async () => {
-      await axios
-        .get(`${Backend_URL}/users/${user?.email}`)
-        .then((response) => {
-          setCurrentUser(response.data);
-        })
-        .catch((err) => {
-          console.log("2nd error", err);
-        });
-    };
-    retrieveUserInfo();
-  }, [user?.email]);
+    console.log("hi 1", userData);
+    setUserData(userData);
+    console.log("hi 2");
+  }, [userData]);
 
   const LogoutButton = () => {
     return (
@@ -34,7 +25,7 @@ export default function Profile() {
       </button>
     );
   };
-  if (!currentUser?.email_address) return null;
+  if (!userData.email_address) return null;
 
   return (
     <div className="profile-section">
@@ -42,8 +33,8 @@ export default function Profile() {
         <div className="profile-image-wrapper">
           {isAuthenticated ? (
             <img
-              src={currentUser?.profile_pic_url}
-              alt={currentUser?.profile_pic_url}
+              src={userData.profile_pic_url}
+              alt={userData.profile_pic_url}
               className="profile-image"
             />
           ) : (
@@ -60,7 +51,7 @@ export default function Profile() {
             className="profile-input-box"
             value={
               isAuthenticated
-                ? `${currentUser.first_name} ${currentUser.last_name}`
+                ? `${userData.first_name} ${userData.last_name}`
                 : ""
             }
             readOnly
@@ -70,7 +61,7 @@ export default function Profile() {
           <h1 className="profile-info">Username:</h1>
           <input
             className="profile-input-box"
-            value={isAuthenticated ? currentUser.username : ""}
+            value={isAuthenticated ? userData.username : ""}
             readOnly
           />
         </div>
@@ -78,12 +69,16 @@ export default function Profile() {
           <h1 className="profile-info">Email Address:</h1>
           <input
             className="profile-input-box"
-            value={isAuthenticated ? currentUser.email_address : ""}
+            value={isAuthenticated ? userData.email_address : ""}
             readOnly
           />
         </div>
         <div className="edit-profile-btn-wrapper">
-          <Link to="/profile/edit" className="edit-profile-btn">
+          <Link
+            to="/profile/edit"
+            className="edit-profile-btn"
+            lastName={userData.last_name}
+          >
             Edit Profile
           </Link>
         </div>

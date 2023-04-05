@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
 import NavLogo from "./NavLogo";
@@ -6,11 +6,16 @@ import { HomeSVG, LessonSVG, CharacterSVG, ProfileSVG, AboutSVG } from "./SVG";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL.js";
+import { UserContext } from "../context/userContex";
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth0();
   const [currentUser, setCurrentUser] = useState([]);
   const [userEmail, setUserEmail] = useState("");
+  const loggedInUser = useContext(UserContext);
+  const { email_address, first_name, last_name, username, profile_pic_url } =
+    loggedInUser.userData;
+  console.log(email_address, first_name, last_name, username, profile_pic_url);
 
   const LoginButton = () => {
     const { loginWithRedirect } = useAuth0();
@@ -33,7 +38,7 @@ export default function Navbar() {
           console.log("1st error", err);
         });
     }
-  }, [isAuthenticated, currentUser?.profile_pic_url]);
+  }, [isAuthenticated, profile_pic_url]);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {
@@ -75,7 +80,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/profile" className="nav-link-text-wrapper">
+            <Link to="/profile/test" className="nav-link-text-wrapper">
               {isAuthenticated ? (
                 <img
                   src={currentUser?.profile_pic_url}
@@ -90,13 +95,13 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/about" className="nav-link-text-wrapper">
+            <Link to="/about/about" className="nav-link-text-wrapper">
               <AboutSVG />
               <span className="nav-link-text">ABOUT</span>
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/landing" className="nav-link-text-wrapper">
+            <Link to="/about/landing" className="nav-link-text-wrapper">
               <AboutSVG />
               <span className="nav-link-text">LANDING</span>
             </Link>

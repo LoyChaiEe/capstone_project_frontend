@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./editprofile.css";
 import { Backend_URL } from "../BACKEND_URL";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import { UserContext } from "../context/userContex";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
-export default function EditProfile() {
-  const { user } = useAuth0();
-  const [currentUser, setCurrentUser] = useState([]);
+export default function EditProfile({ lastName }) {
+  const { userData } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState({});
   const [currentFirstName, setCurrentFirstName] = useState("");
   const [currentLastName, setCurrentLastName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
@@ -19,11 +19,15 @@ export default function EditProfile() {
   const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
+  const [profilePhotoURL, setProfilePhotoURL] = useState("");
+
+  console.log(userData);
+  console.log(lastName);
 
   useEffect(() => {
     const retrieveUserInfo = async () => {
       await axios
-        .get(`${Backend_URL}/users/${user?.email}`)
+        .get(`${Backend_URL}/users/${userData.email_address}`)
         .then((response) => {
           setCurrentUser(response.data);
         })
@@ -32,7 +36,7 @@ export default function EditProfile() {
         });
     };
     retrieveUserInfo();
-  }, [user?.email]);
+  }, [userData.email_address]);
 
   const handleUpdatedPhoto = (e) => {
     setUpdatedPhotoFile(e.target.files[0]);
@@ -42,7 +46,6 @@ export default function EditProfile() {
   };
 
   const handlePhotoSubmit = async (e) => {
-    e.preventDefault();
     const profilePhotoRef = ref(
       storage,
       `${PROFILE_PHOTO_FOLDER}/${updatedPhotoFile.name}`
@@ -50,13 +53,14 @@ export default function EditProfile() {
     const photoUrl = await uploadBytes(profilePhotoRef, updatedPhotoFile).then(
       () =>
         getDownloadURL(profilePhotoRef).then((downloadUrl) => {
+          setProfilePhotoURL(downloadUrl);
           return downloadUrl;
         })
     );
     await axios
       .put(`${Backend_URL}/users/photoUrl`, {
         profile_pic_url: photoUrl,
-        email_address: currentUser.email_address,
+        email_address: userData.email_address,
       })
       .then((response) => {
         setUpdatedPhotoFileUrl(response.data.profile_pic_url);
@@ -65,6 +69,7 @@ export default function EditProfile() {
         console.log("error", err);
       });
     alert("Profile photo has been successfully uploaded!");
+    setProfilePhotoURL("");
   };
 
   const handleProfileChange = async (e) => {
@@ -94,76 +99,81 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="edit-profile-section">
-      <div className="edit-profile-container">
-        <div className="edit-profile-image-wrapper">
-          <h1 className="edit-profile-title">Edit Profile</h1>
-          <div className="profile-photo-submit">
-            <label className="custom-file-upload">
-              {isChangedPhoto === false ? (
-                <img
-                  src={currentUser?.profile_pic_url}
-                  alt={currentUser?.profile_pic_url}
-                  className="edit-profile-image"
+    <>
+      <div className="edit-profile-section">
+        <div className="edit-profile-container">
+          <div className="edit-profile-image-wrapper">
+            <h1 className="edit-profile-title">Edit Profile</h1>
+            <div className="profile-photo-submit">
+              <label className="custom-file-upload">
+                {isChangedPhoto === false ? (
+                  <img
+                    src={currentUser?.profile_pic_url}
+                    alt={currentUser?.profile_pic_url}
+                    className="edit-profile-image"
+                  />
+                ) : (
+                  <img
+                    src={updatedPhotoFileUrl}
+                    alt={updatedPhotoFileUrl}
+                    className="edit-profile-image"
+                  />
+                )}
+                <input
+                  className="file-input"
+                  type="file"
+                  onChange={handleUpdatedPhoto}
                 />
-              ) : (
-                <img
-                  src={updatedPhotoFileUrl}
-                  alt={updatedPhotoFileUrl}
-                  className="edit-profile-image"
-                />
-              )}
+              </label>
+              <button onClick={handlePhotoSubmit}>Submit</button>
+            </div>
+          </div>
+          <div className="edit-profile-info-container">
+            <div className="edit-profile-info-wrapper">
+              <h1 className="edit-profile-title-info">First Name</h1>
               <input
-                className="file-input"
-                type="file"
-                onChange={handleUpdatedPhoto}
+                className="edit-profile-text-info"
+                value={currentFirstName}
+                placeholder="Enter name"
+                onChange={(e) => {
+                  setCurrentFirstName(e.target.value);
+                }}
               />
-            </label>
-            <button onClick={handlePhotoSubmit}>Submit</button>
+            </div>
+            <div className="edit-profile-info-wrapper">
+              <h1 className="edit-profile-title-info">Last Name</h1>
+              <input
+                className="edit-profile-text-info"
+                value={currentLastName}
+                placeholder="Enter last name"
+                onChange={(e) => {
+                  setCurrentLastName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="edit-profile-info-wrapper">
+              <h1 className="edit-profile-title-info">Username</h1>
+              <input
+                className="edit-profile-text-info"
+                value={currentUsername}
+                placeholder="Enter username"
+                onChange={(e) => {
+                  setCurrentUsername(e.target.value);
+                }}
+              />
+            </div>
+            <button onClick={handleProfileChange}>Done</button>
+            {isProfileUpdated === true ? (
+              <button>
+                <Link to="/">Back</Link>
+              </button>
+            ) : null}
           </div>
-        </div>
-        <div className="edit-profile-info-container">
-          <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">First Name</h1>
-            <input
-              className="edit-profile-text-info"
-              value={currentFirstName}
-              placeholder="Enter name"
-              onChange={(e) => {
-                setCurrentFirstName(e.target.value);
-              }}
-            />
-          </div>
-          <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">Last Name</h1>
-            <input
-              className="edit-profile-text-info"
-              value={currentLastName}
-              placeholder="Enter last name"
-              onChange={(e) => {
-                setCurrentLastName(e.target.value);
-              }}
-            />
-          </div>
-          <div className="edit-profile-info-wrapper">
-            <h1 className="edit-profile-title-info">Username</h1>
-            <input
-              className="edit-profile-text-info"
-              value={currentUsername}
-              placeholder="Enter username"
-              onChange={(e) => {
-                setCurrentUsername(e.target.value);
-              }}
-            />
-          </div>
-          <button onClick={handleProfileChange}>Done</button>
-          {isProfileUpdated === true ? (
-            <button>
-              <Link to="/">Back</Link>
-            </button>
-          ) : null}
         </div>
       </div>
-    </div>
+      <div>
+        <Outlet />
+      </div>
+    </>
   );
 }
