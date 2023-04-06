@@ -29,9 +29,6 @@ export default function Characters() {
     sound.play();
   };
 
-  console.log(basic)
-  console.log(dakuon);
-
   return (
     <div className="character-section">
       <div className="character-container">
@@ -60,7 +57,7 @@ export default function Characters() {
               </p>
               <Link
                 to={`${characterType}/lesson`}
-                state={{ msg: `Hello ${characterType}!` }}
+                state={{ type: `${characterType}` }}
               >
                 <button>Let's learn {characterType_cap}!</button>
               </Link>
@@ -69,7 +66,6 @@ export default function Characters() {
           <div className="hirgana-basic-grid">
             {basic &&
               basic.map((i) => {
-                console.log(i.id);
                 return (
                   <div
                     className="character-wrapper"
