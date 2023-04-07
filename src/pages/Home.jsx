@@ -1,5 +1,6 @@
 import React from "react";
 import "./home.css";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -11,15 +12,15 @@ export default function Home() {
             <p>Learning vocabs</p>
           </div>
           <div className="chapter-lesson-wrapper">
-            <div className="chapter-lesson" id="one">
-              <span>Lesson 1</span>
-            </div>
-            <div className="chapter-lesson" id="two">
-              <span>Lesson 2</span>
-            </div>
-            <div className="chapter-lesson" id="three">
-              <span>Lesson 3</span>
-            </div>
+            <Link className="chapter-lesson-btn" id="one">
+              <span className="chapter-lesson">START</span>
+            </Link>
+            <Link className="chapter-lesson-btn" id="two">
+              <span className="chapter-lesson">Lesson 2</span>
+            </Link>
+            <Link className="chapter-lesson-btn" id="three">
+              <span className="chapter-lesson">Lesson 3</span>
+            </Link>
           </div>
         </div>
       </div>

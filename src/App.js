@@ -23,7 +23,7 @@ const router = createBrowserRouter(
       <Route path="vocabs/lesson" element={<Lesson />} />
       <Route path="characters" element={<Characters />} />
       <Route path="profile">
-        <Route path="test" element={<Profile />} />
+        <Route path="user" element={<Profile />} />
         <Route path="edit" element={<EditProfile />} />
       </Route>
       <Route path="characters/hiragana/lesson" element={<LessonTest />} />

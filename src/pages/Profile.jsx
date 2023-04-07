@@ -1,18 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import "./profile.css";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { UserContext } from "../context/userContex";
 
 export default function ProfileComponent() {
   const { isAuthenticated, logout } = useAuth0();
-  const { userData, setUserData } = useContext(UserContext);
-
-  useEffect(() => {
-    console.log("hi 1", userData);
-    setUserData(userData);
-    console.log("hi 2");
-  }, [userData]);
+  const [userData] = useOutletContext();
 
   const LogoutButton = () => {
     return (
@@ -74,11 +67,7 @@ export default function ProfileComponent() {
           />
         </div>
         <div className="edit-profile-btn-wrapper">
-          <Link
-            to="/profile/edit"
-            className="edit-profile-btn"
-            lastName={userData.last_name}
-          >
+          <Link to="/profile/edit" className="edit-profile-btn">
             Edit Profile
           </Link>
         </div>

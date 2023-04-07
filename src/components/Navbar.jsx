@@ -80,7 +80,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/profile/test" className="nav-link-text-wrapper">
+            <Link to="/profile/user" className="nav-link-text-wrapper">
               {isAuthenticated ? (
                 <img
                   src={currentUser?.profile_pic_url}

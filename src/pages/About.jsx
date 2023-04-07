@@ -1,7 +1,9 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 
 export default function About() {
+  const [userData] = useOutletContext();
+  console.log("CHATROOM INDEX", userData);
   return (
     <div>
       <span>ABOUT</span>

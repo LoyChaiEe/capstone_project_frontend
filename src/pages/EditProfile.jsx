@@ -4,13 +4,12 @@ import { Backend_URL } from "../BACKEND_URL";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
-import { Link, Outlet } from "react-router-dom";
-import { UserContext } from "../context/userContex";
+import { Link, Outlet, useOutletContext } from "react-router-dom";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
-export default function EditProfile({ lastName }) {
-  const { userData } = useContext(UserContext);
+export default function EditProfile() {
+  const [userData, setUserData] = useOutletContext();
   const [currentUser, setCurrentUser] = useState({});
   const [currentFirstName, setCurrentFirstName] = useState("");
   const [currentLastName, setCurrentLastName] = useState("");
@@ -20,23 +19,6 @@ export default function EditProfile({ lastName }) {
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
   const [profilePhotoURL, setProfilePhotoURL] = useState("");
-
-  console.log(userData);
-  console.log(lastName);
-
-  useEffect(() => {
-    const retrieveUserInfo = async () => {
-      await axios
-        .get(`${Backend_URL}/users/${userData.email_address}`)
-        .then((response) => {
-          setCurrentUser(response.data);
-        })
-        .catch((err) => {
-          console.log("2nd error", err);
-        });
-    };
-    retrieveUserInfo();
-  }, [userData.email_address]);
 
   const handleUpdatedPhoto = (e) => {
     setUpdatedPhotoFile(e.target.files[0]);
@@ -63,7 +45,13 @@ export default function EditProfile({ lastName }) {
         email_address: userData.email_address,
       })
       .then((response) => {
+        console.log("1");
         setUpdatedPhotoFileUrl(response.data.profile_pic_url);
+        setUserData({
+          ...userData,
+          profile_pic_url: response.data.profile_pic_url,
+        });
+        console.log("2", response.data.profile_pic_url);
       })
       .catch((err) => {
         console.log("error", err);
@@ -79,13 +67,19 @@ export default function EditProfile({ lastName }) {
         first_name: currentFirstName,
         last_name: currentLastName,
         username: currentUsername,
-        email_address: currentUser.email_address,
+        email_address: userData.email_address,
       })
       .then((response) => {
         console.log(response.data);
         setCurrentFirstName(response.data.first_name);
         setCurrentLastName(response.data.last_name);
         setCurrentUsername(response.data.username);
+        setUserData({
+          ...userData,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          username: response.data.username,
+        });
       })
       .catch((err) => {
         console.log(err);
