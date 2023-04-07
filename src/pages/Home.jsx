@@ -1,6 +1,7 @@
 import React from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
+import GuideModalButton from "../components/GuideModalButton";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
           <div className="chapter-title-wrapper">
             <h1>Chapter 1</h1>
             <p>Learning vocabs</p>
+            <GuideModalButton />
           </div>
           <div className="chapter-lesson-wrapper">
             <Link className="chapter-lesson-btn" id="one">
