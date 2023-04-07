@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MiniCharacter } from "../SVG";
 import { Button } from "antd";
 import { Howl } from "howler";
@@ -15,6 +15,8 @@ const soundPlay = (src) => {
 
 export default function Recognition(props) {
   const [selected, setSelected] = useState(-1) // set as -ve int when initialised
+  const [input, setInput] = useState([])
+  const [inputDisplay, setInputDisplay] = useState([])
   const questionData = props.questionData
   const wordBank = props.wordBank
   let type = questionData[0].question.type.split("-");
@@ -26,10 +28,23 @@ export default function Recognition(props) {
           : questionData[0].character.pronounciation}
     </div>
   );
-  //Randomized inputs with the correct answer as  one of them
-  const input = randomizedInput(wordBank, type[1], questionData[0].character);
-  const inputDisplay = input.map(input => <Button onClick={()=> select(input.audio_url,  input.id)}>{type === "character"? input.pronounciation : input.character}</Button>)
-  
+  useEffect(() => {
+    setInput(randomizedInput(wordBank, type[1], questionData[0].character));
+  }, [wordBank, questionData]);
+
+  useEffect(() => {
+    setInputDisplay((
+      input.map((input) => (
+        <Button onClick={() => select(input.audio_url, input.id)}>
+          {type === "character" ? input.pronounciation : input.character}
+        </Button>
+      ))
+    ))
+  }, [input])
+  // //Randomized inputs with the correct answer as  one of them
+  // const input = randomizedInput(wordBank, type[1], questionData[0].character);
+  // const inputDisplay = input.map(input => <Button onClick={()=> select(input.audio_url,  input.id)}>{type === "character"? input.pronounciation : input.character}</Button>)
+  console.log()
   const select = (src, id) => {
     soundPlay(src)
     setSelected(id)
@@ -66,18 +81,9 @@ function randomizedInput(wordBank, type, answer){
       input.push(wrongInput[random].character);
     }
   }
-  input.push(answer)
+  const rand = Math.floor(Math.random()*3)
+  input.splice(rand, 0, answer);
   return input
 }
 
-function shuffleArray(array) {
-  // Iterate over the array
-  for (let i = array.length - 1; i > 0; i--) {
-    // Generate a random index between 0 and i
-    let j = Math.floor(Math.random() * (i + 1));
-    // Swap the current element with the random element
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
 
