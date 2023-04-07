@@ -85,10 +85,9 @@ const LessonTest = () => {
       (object) => object.question_id === questionNumberArr[i]
     );
     let type = question[0].question.type.split("-");
-    console.log(question[0].question.question);
     let content = {
       title: `Question`,
-      content: questionSelect(type[0], LQA, userWordBank, setCanSubmit),
+      content: questionSelect(type[0], question, userWordBank, setCanSubmit),
     };
     steps.push(content);
   }
@@ -171,16 +170,6 @@ const LessonTest = () => {
 };
 export default LessonTest;
 
-const getQuestion = (num, data, wordBank, sumbit) => {
-  const question = data.filter((object) => object.question_id === num);
-  let type = question[0].question.type.split("-")
-  console.log(question[0].question.question)
-  let ele = {
-    title: `Question`,
-    content: questionSelect(type[0], data, wordBank, sumbit),
-  };
-  return ele
-};
 // questionID number
 function generateRandomNumbers(count, max, data) {
   const numbers = [];
@@ -196,13 +185,13 @@ function generateRandomNumbers(count, max, data) {
 function questionSelect(type, questionData, wordBank, submitFunction){
   switch (type) {
     case "recognition":
-      return <Recognition qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>
+      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>
     case "meaning":
-      return <Meaning qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
     case "matching":
-      return <Matching qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
     case "translation":
-      return <Translation qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
     default:
       return 0
   }

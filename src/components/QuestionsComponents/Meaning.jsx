@@ -10,6 +10,7 @@ export default function Meaning(props) {
       </div>
       <div>Questions</div>
       <div>Possible inputs</div>
+      <button onClick={() => props.canSubmit(true)}>disable/enable</button>
     </>
   );
 }

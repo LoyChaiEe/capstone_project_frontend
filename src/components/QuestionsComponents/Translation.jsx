@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MiniCharacter } from "../SVG";
 
 export default function Translation(props) {
+  console.log(props.questionData)
+  console.log(props.wordBank);
+  const [input, setInput] = useState([])
+  const [answer, setAnswer] = useState([]);
   return (
     <>
       <div>
@@ -11,6 +15,7 @@ export default function Translation(props) {
       <div>Questions</div>
       <div>Answer display</div>
       <div>Possible inputs</div>
+      <button onClick={() => props.canSubmit(true)}>disable/enable</button>
     </>
   );
 }

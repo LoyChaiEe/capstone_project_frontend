@@ -11,6 +11,7 @@ export default function Writing(props) {
       <div>Questions</div>
       <div>Answer display</div>
       <div>Possible inputs</div>
+      <button onClick={() => props.canSubmit(true)}>disable/enable</button>
     </>
   );
 }
