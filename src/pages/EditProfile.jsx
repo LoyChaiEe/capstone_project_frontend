@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import "./editprofile.css";
 import { Backend_URL } from "../BACKEND_URL";
 import { storage } from "../firebase";

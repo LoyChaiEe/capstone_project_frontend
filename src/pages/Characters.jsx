@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
@@ -25,7 +25,7 @@ export default function Characters() {
   const displayBasic = characters?.basic.map((row) => {
     return row.map((ele, i) => {
       if (ele === null) {
-        return <div className="character-wrapper" key={i}></div>;
+        return <div className="character-wrapper-empty" key={i}></div>;
       } else {
         return (
           <div
@@ -105,7 +105,7 @@ export default function Characters() {
               </Link>
             </div>
           </div>
-          <div className="hirgana-basic-grid">{displayBasic}</div>
+          <div className="character-grid">{displayBasic}</div>
           <div className="character-title">
             <MiniCharacter />
             <div className="character-title-text">
@@ -115,7 +115,7 @@ export default function Characters() {
               </p>
             </div>
           </div>
-          <div className="hirgana-basic-grid">{displayDakuon}</div>
+          <div className="character-grid">{displayDakuon}</div>
         </>
       </div>
     </div>
