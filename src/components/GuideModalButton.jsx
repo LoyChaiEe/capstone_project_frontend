@@ -23,9 +23,21 @@ export default function GuideModalButton() {
   };
   return (
     <div>
-      <button onClick={() => showGuide()}>View guide</button>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <button className="modal-close-button" onClick={() => showGuide()}>
+        View guide
+      </button>
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
         <GuideModalBody />
+        <div className="modal-footer">
+          <button onClick={handleOk} className="modal-close-button">
+            Exit
+          </button>
+        </div>
       </Modal>
     </div>
   );
