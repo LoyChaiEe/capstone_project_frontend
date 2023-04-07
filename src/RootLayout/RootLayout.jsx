@@ -4,12 +4,14 @@ import { Outlet } from "react-router-dom";
 import { UserContext } from "../context/userContex";
 
 export default function RootLayout() {
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setUserData, setIsUserDataUpdated } =
+    useContext(UserContext);
+  console.log("hey", setIsUserDataUpdated);
   return (
     <div className="app">
-      <Navbar />
+      <Navbar userData={userData} />
       <div className="app-body">
-        <Outlet context={[userData, setUserData]} />
+        <Outlet context={[userData, setUserData, setIsUserDataUpdated]} />
       </div>
     </div>
   );

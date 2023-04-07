@@ -10,6 +10,7 @@ export const UserContextProvider = (props) => {
   const [userData, setUserData] = useState([]);
   const [userEmail, setUserEmail] = useState("");
   const [allUserData, setAllUserData] = useState([]);
+  const [isUserDataUpdated, setIsUserDataUpdated] = useState(false);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -25,6 +26,14 @@ export const UserContextProvider = (props) => {
         setUserData(response.data);
         console.log("HELLO", userEmail);
       });
+    }
+    if (isUserDataUpdated === true) {
+      axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
+        setUserData(response.data);
+        console.log("HELLO", userEmail);
+      });
+    } else {
+      setIsUserDataUpdated(false);
     }
   }, [userEmail]);
 
@@ -42,7 +51,9 @@ export const UserContextProvider = (props) => {
   }, [isAuthenticated]);
 
   return (
-    <UserContext.Provider value={{ userData, allUserData, setUserData }}>
+    <UserContext.Provider
+      value={{ userData, allUserData, setUserData, setIsUserDataUpdated }}
+    >
       {props.children}
     </UserContext.Provider>
   );

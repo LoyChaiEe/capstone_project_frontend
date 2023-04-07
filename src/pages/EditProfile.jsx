@@ -9,8 +9,7 @@ import { Link, Outlet, useOutletContext } from "react-router-dom";
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
 export default function EditProfile() {
-  const [userData, setUserData] = useOutletContext();
-  const [currentUser, setCurrentUser] = useState({});
+  const [userData, setUserData, setIsUserDataUpdated] = useOutletContext();
   const [currentFirstName, setCurrentFirstName] = useState("");
   const [currentLastName, setCurrentLastName] = useState("");
   const [currentUsername, setCurrentUsername] = useState("");
@@ -52,12 +51,14 @@ export default function EditProfile() {
           profile_pic_url: response.data.profile_pic_url,
         });
         console.log("2", response.data.profile_pic_url);
+        setIsUserDataUpdated(true);
       })
       .catch((err) => {
         console.log("error", err);
       });
     alert("Profile photo has been successfully uploaded!");
     setProfilePhotoURL("");
+    setIsUserDataUpdated(false);
   };
 
   const handleProfileChange = async (e) => {
@@ -80,6 +81,7 @@ export default function EditProfile() {
           last_name: response.data.last_name,
           username: response.data.username,
         });
+        setIsUserDataUpdated(true);
       })
       .catch((err) => {
         console.log(err);
@@ -90,6 +92,7 @@ export default function EditProfile() {
     setCurrentFirstName("");
     setCurrentLastName("");
     setCurrentUsername("");
+    setIsUserDataUpdated(false);
   };
 
   return (
@@ -102,8 +105,8 @@ export default function EditProfile() {
               <label className="custom-file-upload">
                 {isChangedPhoto === false ? (
                   <img
-                    src={currentUser?.profile_pic_url}
-                    alt={currentUser?.profile_pic_url}
+                    src={userData?.profile_pic_url}
+                    alt={userData?.profile_pic_url}
                     className="edit-profile-image"
                   />
                 ) : (
