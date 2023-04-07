@@ -98,7 +98,6 @@ const LessonForms = () => {
       <Progress percent={((current) / 3) * 100} />
       <div style={contentStyle}>
         {steps[current].content}
-        {steps[current].display}
         {answerElement}
         {inputElement}
       </div>
@@ -142,3 +141,4 @@ const LessonForms = () => {
   );
 };
 export default LessonForms;
+

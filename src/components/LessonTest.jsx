@@ -13,7 +13,15 @@ import { Progress } from "antd";
 import Start from "./Start"
 import useSWR from "swr"
 import { Backend_URL } from "../BACKEND_URL";
+import { css } from "@emotion/react";
+import { BeatLoader } from "react-spinners";
 const getter = (url) => axios.get(url).then((res) => res.data);
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const LessonTest = () => {
   const { state } = useLocation();
@@ -23,19 +31,44 @@ const LessonTest = () => {
   const [answer, setAnswer] = useState([]);
   const [input, setInput] = useState([]);
   const [submittedAnswer, setSubmittedAnswer] = useState("");
-  // the 1 at the end is userID, waiting for userContext, may need to refer to project3
-  const { data: userLessonInfo, mutate: refetchULinfo } = useSWR(`${Backend_URL}/userLesson/${state.type}/1`,getter);
-  const { data: userWordBank, mutate: refetchUWinfo } = useSWR(`${Backend_URL}/userWordBank/${state.type}/1`,getter);
+  //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
+  // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
+  const {
+    data: userLessonInfo,
+    mutate: refetchULinfo,
+    isLoading: userLessonDataLoaded,
+  } = useSWR(`${Backend_URL}/userLesson/${state.type}/1`, getter);
+  const {
+    data: userWordBank,
+    mutate: refetchUWinfo,
+    isLoading: userWordbankDataLoaded,
+  } = useSWR(`${Backend_URL}/userWordBank/${state.type}/1`, getter);
   //Potential bug since the way our data structured only handle 1 chapter per lesson type
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
-  const { data: lessonQuestion, mutate: refetchLQinfo } = useSWR(`${Backend_URL}/lessonQuestion/${userLessonInfo?.slice(-1)[0].lesson?.id+1}`,getter);
-  console.log(userLessonInfo)
-  console.log(userWordBank)
+  const {
+    data: LQA,
+    mutate: refetchLQinfo,
+    isLoading: LQADataLoaded,
+    error
+  } = useSWR(
+    `${Backend_URL}/LQA/${userLessonInfo?.slice(-1)[0].lesson?.id + 1}`,
+    getter
+  );
 
-
-  //Steps contain the data needed for the question
+  //Loader for loading data
+  if (userLessonDataLoaded || userWordbankDataLoaded || LQADataLoaded || !userWordBank || !userLessonInfo || !LQA)
+    return <BeatLoader css={override} size={20} color={"#123abc"} />;
+  const questionNumberList = new Set();
+  LQA?.map((ele) => ele.question_id).forEach((id) =>
+    questionNumberList.add(id)
+  );
+  const questionList = Array.from(questionNumberList)
+  //Error handling of undefined values, check with Rob how to improve this
+  let arr = generateRandomNumbers(15, questionList.length, questionList)
+  console.log(arr);
+  //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
     {
       title: "Start",
@@ -44,6 +77,7 @@ const LessonTest = () => {
   ];
 
   //Functions that facilitate the interactivity of the component
+  //Functionality of Next, a reset of all input etc and enabling/disabling buttons
   const next = () => {
     //reset every question
     setCurrent(current + 1);
@@ -52,26 +86,11 @@ const LessonTest = () => {
     setAnswer([]);
     setSubmittedAnswer("");
   };
+  //Functionality of sumbit
   const submit = () => {
     const ans = answer.join("");
     setHasSubmit(false);
     setSubmittedAnswer(ans);
-  };
-  const add = (text) => {
-    const ans = [...answer, text];
-    const userInput = [...input];
-    const index = input.indexOf(text);
-    userInput.splice(index, 1);
-    setAnswer(ans);
-    setInput(userInput);
-  };
-  const remove = (text) => {
-    const ans = [...answer];
-    const userInput = [...input, text];
-    const index = answer.indexOf(text);
-    ans.splice(index, 1);
-    setAnswer(ans);
-    setInput(userInput);
   };
 
   const items = steps.map((item) => ({
@@ -87,22 +106,6 @@ const LessonTest = () => {
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
   };
-  const inputElement = input.map((x) => (
-    <Button
-      style={{ color: "green" }}
-      onClick={(e) => add(e.target.textContent)}
-    >
-      {x}
-    </Button>
-  ));
-  const answerElement = answer.map((x) => (
-    <Button
-      style={{ color: "red" }}
-      onClick={(e) => remove(e.target.textContent)}
-    >
-      {x}
-    </Button>
-  ));
   return (
     <>
       {/* <Steps current={current} items={items} /> */}
@@ -110,8 +113,6 @@ const LessonTest = () => {
       <div style={contentStyle}>
         {steps[current].content}
         {steps[current].display}
-        {answerElement}
-        {inputElement}
       </div>
       <div
         style={{
@@ -154,4 +155,18 @@ const LessonTest = () => {
   );
 };
 export default LessonTest;
+
+const questionSelect = (num) => {};
+
+function generateRandomNumbers(count, max, data) {
+  const numbers = [];
+  while (numbers.length < count) {
+    const random = Math.floor(Math.random() * max) + 1;
+    if (!numbers.includes(data[random])) {
+      numbers.push(data[random]);
+    }
+  }
+
+  return numbers;
+}
 
