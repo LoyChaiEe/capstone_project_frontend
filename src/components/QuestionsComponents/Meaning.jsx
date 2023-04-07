@@ -1,10 +1,11 @@
 import React from "react";
-import { MiniCharacter } from "./SVG";
+import { MiniCharacter } from "../SVG";
 
 export default function Meaning(props) {
   return (
     <>
       <div>
+        Welcome to Meaning
         <MiniCharacter />
       </div>
       <div>Questions</div>

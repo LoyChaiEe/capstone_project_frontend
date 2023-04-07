@@ -15,6 +15,10 @@ import useSWR from "swr"
 import { Backend_URL } from "../BACKEND_URL";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
+import Matching from "./QuestionsComponents/Matching";
+import Meaning from "./QuestionsComponents/Meaning";
+import Translation from "./QuestionsComponents/Translation";
+import Recognition from "./QuestionsComponents/Recognition";
 const getter = (url) => axios.get(url).then((res) => res.data);
 
 const override = css`
@@ -28,8 +32,8 @@ const LessonTest = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [hasSubmit, setHasSubmit] = useState(true);
+  const [canSubmit, setCanSubmit]  = useState(false)
   const [answer, setAnswer] = useState([]);
-  const [input, setInput] = useState([]);
   const [submittedAnswer, setSubmittedAnswer] = useState("");
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
@@ -60,14 +64,15 @@ const LessonTest = () => {
   //Loader for loading data
   if (userLessonDataLoaded || userWordbankDataLoaded || LQADataLoaded || !userWordBank || !userLessonInfo || !LQA)
     return <BeatLoader css={override} size={20} color={"#123abc"} />;
+  
+  //Generate ranndom questions
   const questionNumberList = new Set();
   LQA?.map((ele) => ele.question_id).forEach((id) =>
     questionNumberList.add(id)
   );
   const questionList = Array.from(questionNumberList)
-  //Error handling of undefined values, check with Rob how to improve this
-  let arr = generateRandomNumbers(15, questionList.length, questionList)
-  console.log(arr);
+  const questionNumberArr = generateRandomNumbers(15, questionList.length, questionList)
+
   //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
     {
@@ -75,14 +80,16 @@ const LessonTest = () => {
       content: <Start type={state.type}/>,
     },
   ];
-
+  for(let i = 0; i < 15; i++){
+    let content = getQuestion(questionNumberArr[i], LQA, userWordBank, setCanSubmit)
+    steps.push(content)
+  }
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
   const next = () => {
     //reset every question
     setCurrent(current + 1);
     setHasSubmit(true);
-    setInput(steps[current + 1].input);
     setAnswer([]);
     setSubmittedAnswer("");
   };
@@ -109,7 +116,7 @@ const LessonTest = () => {
   return (
     <>
       {/* <Steps current={current} items={items} /> */}
-      <Progress percent={(current / 3) * 100} />
+      <Progress percent={(current / 15) * 100} />
       <div style={contentStyle}>
         {steps[current].content}
         {steps[current].display}
@@ -137,7 +144,7 @@ const LessonTest = () => {
           <Button
             type="primary"
             onClick={() => submit()}
-            disabled={!hasSubmit || answer.length === 0}
+            disabled={canSubmit}
           >
             Submit
           </Button>
@@ -156,17 +163,42 @@ const LessonTest = () => {
 };
 export default LessonTest;
 
-const questionSelect = (num) => {};
+const getQuestion = (num, data, wordBank, sumbit) => {
+  const question = data.filter((object) => object.question_id === num);
+  let type = question[0].question.type.split("-")
+  console.log(question[0].question.question)
+  let ele = {
+    title: `Question`,
+    content: questionSelect(type[0], data, wordBank, sumbit),
+    input: ["はじめ", "たまご", "はち", "とり"],
+    answer: "はち",
+  };
+  return ele
+};
 
 function generateRandomNumbers(count, max, data) {
   const numbers = [];
   while (numbers.length < count) {
-    const random = Math.floor(Math.random() * max) + 1;
+    const random = Math.floor(Math.random() * max);
     if (!numbers.includes(data[random])) {
       numbers.push(data[random]);
     }
   }
-
   return numbers;
+}
+// this function act as to display the type of question and also pass some impt question data and function into the question
+function questionSelect(type, questionData, wordBank, submitFunction){
+  switch (type) {
+    case "recognition":
+      return <Recognition qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>
+    case "meaning":
+      return <Meaning qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+    case "matching":
+      return <Matching qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+    case "translation":
+      return <Translation qustionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+    default:
+      return 0
+  }
 }
 

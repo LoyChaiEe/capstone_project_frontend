@@ -1,10 +1,11 @@
 import React from "react";
-import { MiniCharacter } from "./SVG";
+import { MiniCharacter } from "../SVG";
 
 export default function Matching(props) {
   return (
     <>
       <div>
+        Welcome to Matching
         <MiniCharacter />
       </div>
       <div>Questions</div>
