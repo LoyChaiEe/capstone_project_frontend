@@ -81,8 +81,16 @@ const LessonTest = () => {
     },
   ];
   for(let i = 0; i < 15; i++){
-    let content = getQuestion(questionNumberArr[i], LQA, userWordBank, setCanSubmit)
-    steps.push(content)
+    const question = LQA.filter(
+      (object) => object.question_id === questionNumberArr[i]
+    );
+    let type = question[0].question.type.split("-");
+    console.log(question[0].question.question);
+    let content = {
+      title: `Question`,
+      content: questionSelect(type[0], LQA, userWordBank, setCanSubmit),
+    };
+    steps.push(content);
   }
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
@@ -170,12 +178,10 @@ const getQuestion = (num, data, wordBank, sumbit) => {
   let ele = {
     title: `Question`,
     content: questionSelect(type[0], data, wordBank, sumbit),
-    input: ["はじめ", "たまご", "はち", "とり"],
-    answer: "はち",
   };
   return ele
 };
-
+// questionID number
 function generateRandomNumbers(count, max, data) {
   const numbers = [];
   while (numbers.length < count) {
