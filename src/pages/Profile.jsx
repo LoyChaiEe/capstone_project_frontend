@@ -18,7 +18,7 @@ export default function ProfileComponent() {
       </button>
     );
   };
-  if (!userData.email_address) return null;
+  if (!userData?.email_address) return null;
 
   return (
     <div className="profile-section">

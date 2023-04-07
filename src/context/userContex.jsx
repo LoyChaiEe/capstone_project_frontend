@@ -18,19 +18,16 @@ export const UserContextProvider = (props) => {
       setUserEmail(email);
     }
   }, [user, isAuthenticated]);
-  console.log(userEmail);
 
   useEffect(() => {
     if (userEmail) {
       axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
         setUserData(response.data);
-        console.log("HELLO", userEmail);
       });
     }
     if (isUserDataUpdated === true) {
       axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
         setUserData(response.data);
-        console.log("HELLO", userEmail);
       });
     } else {
       setIsUserDataUpdated(false);
@@ -39,13 +36,12 @@ export const UserContextProvider = (props) => {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      console.log("THIS IS REQUEST");
       try {
         axios.get(`${Backend_URL}/users`).then((response) => {
           setAllUserData(response.data);
         });
       } catch (error) {
-        console.log("ERROR HERE", error);
+        console.log("Axios get all users error", error);
       }
     }
   }, [isAuthenticated]);

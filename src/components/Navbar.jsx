@@ -24,7 +24,7 @@ export default function Navbar(userData) {
         profile_pic_url: user?.picture,
       };
       axios.post(`${Backend_URL}/users/newUser`, userInfo).catch((err) => {
-        console.log("1st error", err);
+        console.log("Axios post to BE error", err);
       });
     }
   }, [isAuthenticated]);

@@ -6,7 +6,6 @@ import { UserContext } from "../context/userContex";
 export default function RootLayout() {
   const { userData, setUserData, setIsUserDataUpdated } =
     useContext(UserContext);
-  console.log("hey", setIsUserDataUpdated);
   return (
     <div className="app">
       <Navbar userData={userData} />

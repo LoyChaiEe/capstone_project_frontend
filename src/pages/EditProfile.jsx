@@ -44,17 +44,15 @@ export default function EditProfile() {
         email_address: userData.email_address,
       })
       .then((response) => {
-        console.log("1");
         setUpdatedPhotoFileUrl(response.data.profile_pic_url);
         setUserData({
           ...userData,
           profile_pic_url: response.data.profile_pic_url,
         });
-        console.log("2", response.data.profile_pic_url);
         setIsUserDataUpdated(true);
       })
       .catch((err) => {
-        console.log("error", err);
+        console.log("Axios profile photo update error", err);
       });
     alert("Profile photo has been successfully uploaded!");
     setProfilePhotoURL("");
@@ -63,6 +61,10 @@ export default function EditProfile() {
 
   const handleProfileChange = async (e) => {
     e.preventDefault();
+    // input validation
+    if (!currentFirstName || !currentLastName || !currentUsername)
+      return alert("All fields have to be filled");
+
     await axios
       .put(`${Backend_URL}/users/profile`, {
         first_name: currentFirstName,
@@ -84,7 +86,7 @@ export default function EditProfile() {
         setIsUserDataUpdated(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Axios profile update error", err);
         setIsProfileUpdated(false);
       });
     alert("Profile has been successfully updated!");
@@ -159,12 +161,10 @@ export default function EditProfile() {
                 }}
               />
             </div>
-            <button onClick={handleProfileChange}>Done</button>
-            {isProfileUpdated === true ? (
-              <button>
-                <Link to="/">Back</Link>
-              </button>
-            ) : null}
+            {/* <button onClick={handleProfileChange}>Done</button> */}
+            <Link to="/" onClick={handleProfileChange}>
+              DONE
+            </Link>
           </div>
         </div>
       </div>

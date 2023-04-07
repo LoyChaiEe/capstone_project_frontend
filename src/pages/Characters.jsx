@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
@@ -20,9 +20,47 @@ export default function Characters() {
   };
   const characterType_cap = characterType.replace(/^\w/, (c) =>
     c.toUpperCase()
-  ); //Regex expression to capitalise characters
-  const basic = characters?.filter((obj) => obj.type.includes("basic"));
-  const dakuon = characters?.filter((obj) => obj.type.includes("dakuon"));
+  );
+
+  const displayBasic = characters?.basic.map((row) => {
+    return row.map((ele, i) => {
+      if (ele === null) {
+        return <div className="character-wrapper" key={i}></div>;
+      } else {
+        return (
+          <div
+            className="character-wrapper"
+            onClick={() => soundPlay(ele.audio_url)}
+          >
+            <div className="character">{ele.character}</div>
+            <div className="character-lower-wrapper">
+              <div className="pronounciation">{ele.pronounciation}</div>
+            </div>
+          </div>
+        );
+      }
+    });
+  });
+  const displayDakuon = characters?.dakuon.map((row) => {
+    return row.map((ele) => {
+      if (ele === null) {
+        return <div className="character-wrapper"></div>;
+      } else {
+        return (
+          <div
+            className="character-wrapper"
+            key={ele.id}
+            onClick={() => soundPlay(ele.audio_url)}
+          >
+            <div className="character">{ele.character}</div>
+            <div className="character-lower-wrapper">
+              <div className="pronounciation">{ele.pronounciation}</div>
+            </div>
+          </div>
+        );
+      }
+    });
+  });
 
   const soundPlay = (src) => {
     const sound = new Howl({
@@ -67,23 +105,7 @@ export default function Characters() {
               </Link>
             </div>
           </div>
-          <div className="hirgana-basic-grid">
-            {basic &&
-              basic.map((i) => {
-                return (
-                  <div
-                    className="character-wrapper"
-                    key={i.id}
-                    onClick={() => soundPlay(i.audio_url)}
-                  >
-                    <div className="character">{i.character}</div>
-                    <div className="character-lower-wrapper">
-                      <div className="pronounciation">{i.pronounciation}</div>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+          <div className="hirgana-basic-grid">{displayBasic}</div>
           <div className="character-title">
             <MiniCharacter />
             <div className="character-title-text">
@@ -93,21 +115,7 @@ export default function Characters() {
               </p>
             </div>
           </div>
-          <div className="hirgana-basic-grid">
-            {dakuon &&
-              dakuon.map((i) => (
-                <div
-                  className="character-wrapper"
-                  key={i.id}
-                  onClick={() => soundPlay(i.audio_url)}
-                >
-                  <div className="character">{i.character}</div>
-                  <div className="character-lower-wrapper">
-                    <div className="pronounciation">{i.pronounciation}</div>
-                  </div>
-                </div>
-              ))}
-          </div>
+          <div className="hirgana-basic-grid">{displayDakuon}</div>
         </>
       </div>
     </div>
