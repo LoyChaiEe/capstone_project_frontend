@@ -65,7 +65,7 @@ const LessonTest = () => {
   if (userLessonDataLoaded || userWordbankDataLoaded || LQADataLoaded || !userWordBank || !userLessonInfo || !LQA)
     return <BeatLoader css={override} size={20} color={"#123abc"} />;
   
-  //Generate ranndom questions
+  //Generate random questions
   const questionNumberList = new Set();
   LQA?.map((ele) => ele.question_id).forEach((id) =>
     questionNumberList.add(id)
@@ -82,7 +82,7 @@ const LessonTest = () => {
   ];
   for(let i = 0; i < 15; i++){
     const question = LQA.filter(
-      (object) => object.question_id === questionNumberArr[i]
+      (object) => object.question_id === questionNumberArr[i] 
     );
     let type = question[0].question.type.split("-");
     let content = {
