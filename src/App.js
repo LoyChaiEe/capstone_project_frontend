@@ -18,7 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="landing" element={<Landing />} />
-          <Route path="vocabs/lesson" element={<Lesson />} />
+          <Route path="vocab" element={<Lesson />} />
+          <Route path="vocab/vocab/lesson" element={<LessonTest />} />
           <Route path="characters" element={<Characters />} />
           <Route path="characters/hiragana/lesson" element={<LessonTest />} />
           <Route path="characters/katakana/lesson" element={<LessonTest />} />

@@ -1,23 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MiniCharacter } from "../SVG";
+import axios from "axios";
+import useSWR from "swr"
+import { Backend_URL } from "../../BACKEND_URL";
+const postData = async (url, data) => {
+  const response = await axios.post(url, data);
+  return response.data;
+};
 
 export default function Translation(props) {
-  console.log(props.questionData)
-  console.log(props.wordBank);
+  const questionData = props.questionData
+  const wordBank = props.wordBank
   const [input, setInput] = useState([])
-  const [answer, setAnswer] = useState([]);
-  return (
-    <>
-      <div>
-        Welcome to Translation
-        <MiniCharacter />
-      </div>
-      <div>Questions</div>
-      <div>Answer display</div>
-      <div>Possible inputs</div>
-      <button onClick={() => props.canSubmit(true)}>disable/enable</button>
-    </>
+  const[display, setDisplay] = useState([])
+  const [answer, setAnswer] = useState(
+    questionData.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.character.character;
+    }, "")
   );
+  console.log(answer)
+  console.log(questionData);
+  useEffect(() => {
+    axios.post(`${Backend_URL}/questions/random/input`, {
+      wordBank: wordBank,
+      answer: questionData,
+      num: 4
+    }).then((res) => {
+      setInput(res.data.data)
+    })
+  },[questionData])
+  console.log(input);
+  console.log("-------Re-render--------")
+   return (
+     <>
+       <div>
+         <MiniCharacter />
+       </div>
+       <div></div>
+       <button onClick={() => props.canSubmit(true)}>disable/enable</button>
+     </>
+   );
 }
 
 // //Functionality of question component,  will move it later

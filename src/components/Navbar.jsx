@@ -63,7 +63,7 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/vocabs/lesson" className="nav-link-text-wrapper">
+            <Link to="/vocab" className="nav-link-text-wrapper">
               <LessonSVG />
               <span className="nav-link-text">LESSON</span>
             </Link>
