@@ -34,7 +34,7 @@ function AudioPlayer() {
     return data;
   };
 
-  const soundPlay = (src) => {
+  const soundPlay = async (src) => {
     const sound = new Howl({
       src,
       html5: true,
@@ -51,7 +51,7 @@ function AudioPlayer() {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button onClick={soundPlay}>Send</button>
+      <button onClick={handleSendClick}>Send</button>
       <audio className="audio" src={audioSrc} controls />
     </div>
   );
