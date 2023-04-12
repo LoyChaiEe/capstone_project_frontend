@@ -6,6 +6,7 @@ import EditProfile from "./pages/EditProfile";
 import Characters from "./pages/Characters";
 import About from "./pages/About";
 import LessonTest from "./components/LessonTest";
+import AudioPlayer from "./components/Test";
 import Landing from "./pages/Landing";
 import {
   createBrowserRouter,
@@ -30,7 +31,7 @@ const router = createBrowserRouter(
       <Route path="characters/katakana/lesson" element={<LessonTest />} />
       <Route path="about">
         <Route path="about" element={<About />} />
-        <Route path="landing" element={<Landing />} />
+        <Route path="landing" element={<AudioPlayer />} />
       </Route>
     </Route>
   )
