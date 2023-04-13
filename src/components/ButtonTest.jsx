@@ -12,7 +12,7 @@ export default function AudioButton(){
     console.log(audioSRC)
     const sound = new Howl({
       src: [audioSRC],
-      autoplay: true,
+      autoplay: false,
       loop: false,
       volume: 1,
       format: "wav"
@@ -21,8 +21,9 @@ export default function AudioButton(){
   }
 
   const createQuery = async (text) => {
+    //change speaker query to the id of the waifu
     const response = await axios.post(
-      `http://localhost:50021/audio_query?speaker=1&text=${text}`
+      `http://localhost:50021/audio_query?speaker=53&text=${text}`
     );
     return response.data;
   };
@@ -30,7 +31,7 @@ export default function AudioButton(){
   const createVoice = async(text) =>{
     const query = await createQuery(text);
     const response = await axios.post(
-      "http://localhost:50021/synthesis?speaker=1",
+      "http://localhost:50021/synthesis?speaker=53",
       query,
       { responseType: "blob" }
     );
@@ -43,7 +44,7 @@ export default function AudioButton(){
   }
   return (
     <Button onClick={play}>
-      他方、成績評価の甘い授業が高く評価されたり、人気取りに走る教師が出たりし、成績の安売りや大学教師のレベルダウンという弊害をもたらす恐れがある、などの反省意見もある.
+      おいしいです
     </Button>
   );
 }

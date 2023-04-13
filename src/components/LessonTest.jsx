@@ -19,6 +19,7 @@ import Matching from "./QuestionsComponents/Matching";
 import Meaning from "./QuestionsComponents/Meaning";
 import Translation from "./QuestionsComponents/Translation";
 import Recognition from "./QuestionsComponents/Recognition";
+import Finish from "./Finish";
 const getter = (url) => axios.get(url).then((res) => res.data);
 
 const override = css`
@@ -32,19 +33,24 @@ const LessonTest = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [hasSubmit, setHasSubmit] = useState(true);
-  const [canSubmit, setCanSubmit]  = useState(false)
+  const [canSubmit, setCanSubmit] = useState(false);
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
+  //{ revalidateOnFocus: false } to prevent alt-tab from re-rendering
   const {
     data: userLessonInfo,
     mutate: refetchULinfo,
     isLoading: userLessonDataLoaded,
-  } = useSWR(`${Backend_URL}/userLesson/${state.type}/1`, getter);
+  } = useSWR(`${Backend_URL}/userLesson/${state.type}/1`, getter, {
+    revalidateOnFocus: false,
+  });
   const {
     data: userWordBank,
     mutate: refetchUWinfo,
     isLoading: userWordbankDataLoaded,
-  } = useSWR(`${Backend_URL}/userWordBank/${state.type}/1`, getter);
+  } = useSWR(`${Backend_URL}/userWordBank/${state.type}/1`, getter, {
+    revalidateOnFocus: false,
+  });
   //Potential bug since the way our data structured only handle 1 chapter per lesson type
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
@@ -55,8 +61,11 @@ const LessonTest = () => {
     isLoading: LQADataLoaded,
     error,
   } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${userLessonInfo?.slice(-1)[0].lesson?.id + 1}`,
-    getter
+    `${Backend_URL}/LQA/questions/get/${
+      userLessonInfo?.slice(-1)[0].lesson?.id + 1
+    }`,
+    getter,
+    { revalidateOnFocus: false }
   );
 
   //Loader for loading data
@@ -69,23 +78,33 @@ const LessonTest = () => {
     !questionsDatas
   )
     return <BeatLoader css={override} size={20} color={"#123abc"} />;
-  
+
   //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
     {
       title: "Start",
-      content: <Start type={state.type}/>,
+      content: <Start type={state.type} />,
     },
   ];
-  for(let i = 0; i < 15; i++){
-    const questionData = questionsDatas[0]
+  for (let i = 0; i < 15; i++) {
+    const questionData = questionsDatas[i];
     let type = questionData.question_type.split("-");
     let content = {
-      title: `Question ${i+1}`,
-      content: questionSelect(type[0], questionData, userWordBank, setCanSubmit, hasSubmit),
+      title: `Question ${i + 1}`,
+      content: questionSelect(
+        type[0],
+        questionData,
+        userWordBank,
+        setCanSubmit,
+        hasSubmit
+      ),
     };
     steps.push(content);
   }
+  steps.push({
+    title: "Finsih",
+    content: <Finish lesson_id={0} user_id={0}/>,
+  });
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
   const next = (e) => {
@@ -97,11 +116,10 @@ const LessonTest = () => {
   };
   //Functionality of sumbit
   const submit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setHasSubmit(true);
-    setCanSubmit(false)
+    setCanSubmit(false);
   };
-
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,
@@ -141,7 +159,7 @@ const LessonTest = () => {
           <Button
             type="primary"
             onClick={submit}
-            disabled={!canSubmit} 
+            disabled={!canSubmit || hasSubmit}
           >
             Submit
           </Button>
@@ -160,31 +178,17 @@ const LessonTest = () => {
 };
 
 export default LessonTest
-
-
-
-// questionID number
-function generateRandomNumbers(count, max, data) {
-  const numbers = [];
-  while (numbers.length < count) {
-    const random = Math.floor(Math.random() * max);
-    if (!numbers.includes(data[random])) {
-      numbers.push(data[random]);
-    }
-  }
-  return numbers;
-}
 // this function act as to display the type of question and also pass some impt question data and function into the question
-function questionSelect(type, questionData, wordBank, submitFunction, submitted){
+function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit){
   switch (type) {
     case "recognition":
-      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>
+      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>
     case "meaning":
-      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
+      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "matching":
-      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
+      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "translation":
-      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
+      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     default:
       return 0
   }
