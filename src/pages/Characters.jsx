@@ -6,6 +6,8 @@ import { Howl } from "howler";
 import { MiniCharacter } from "../components/SVG";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
+import Button from "../components/Button";
+
 const getter = (url) => axios.get(url).then((res) => res.data);
 
 export default function Characters() {
@@ -101,7 +103,9 @@ export default function Characters() {
                 to={`${characterType}/lesson`}
                 state={{ msg: `Hello ${characterType}!` }}
               >
-                <button>Let's learn {characterType_cap}!</button>
+                <Button id="character-button">
+                  Let's learn {characterType_cap}!
+                </Button>
               </Link>
             </div>
           </div>

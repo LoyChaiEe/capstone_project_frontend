@@ -15,6 +15,7 @@ export default function ProfileComponent() {
     <div className="profile-section">
       <div className="profile-container">
         <div className="profile-image-wrapper">
+          <h1 className="profile-title">Profile</h1>
           {isAuthenticated ? (
             <img
               src={userData.profile_pic_url}
@@ -29,33 +30,27 @@ export default function ProfileComponent() {
             />
           )}
         </div>
-        <div className="profile-info-wrapper">
-          <h1 className="profile-info">Name:</h1>
-          <input
-            className="profile-input-box"
-            value={
-              isAuthenticated
+        <div className="profile-info-container">
+          <div className="profile-info-wrapper">
+            <h1 className="profile-info">Name:</h1>
+            <p className="profile-input-box">
+              {isAuthenticated
                 ? `${userData.first_name} ${userData.last_name}`
-                : ""
-            }
-            readOnly
-          />
-        </div>
-        <div className="profile-info-wrapper">
-          <h1 className="profile-info">Username:</h1>
-          <input
-            className="profile-input-box"
-            value={isAuthenticated ? userData.username : ""}
-            readOnly
-          />
-        </div>
-        <div className="profile-info-wrapper">
-          <h1 className="profile-info">Email Address:</h1>
-          <input
-            className="profile-input-box"
-            value={isAuthenticated ? userData.email_address : ""}
-            readOnly
-          />
+                : ""}
+            </p>
+          </div>
+          <div className="profile-info-wrapper">
+            <h1 className="profile-info">Username:</h1>
+            <p className="profile-input-box">
+              {isAuthenticated ? userData.username : ""}
+            </p>
+          </div>
+          <div className="profile-info-wrapper">
+            <h1 className="profile-info">Email Address:</h1>
+            <p className="profile-input-box">
+              {isAuthenticated ? userData.email_address : ""}
+            </p>
+          </div>
         </div>
         <div className="profile-settings-wrapper">
           <SettingsButton />

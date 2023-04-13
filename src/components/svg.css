@@ -35,3 +35,9 @@
   height: 40px;
   object-fit: cover;
 }
+
+.edit-button {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}

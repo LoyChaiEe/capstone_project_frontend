@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  /* background-color: antiquewhite; */
   width: 70%;
   margin-left: auto;
   margin-right: auto;
@@ -27,6 +26,9 @@
   cursor: pointer;
   color: rgb(204, 204, 204);
   border-bottom: 4px solid rgb(204, 204, 204);
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
 }
 
 .inactive:hover {
@@ -38,7 +40,6 @@
   display: flex;
   margin-bottom: 30px;
   align-items: center;
-  color: #9f7b71;
   font-weight: 500;
 }
 
@@ -91,7 +92,7 @@
   transition-timing-function: ease;
   width: 70px;
   height: 70px;
-  color: #9f7b71;
+  background-color: white;
 }
 
 .character-wrapper:hover {

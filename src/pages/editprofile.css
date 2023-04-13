@@ -11,11 +11,11 @@
   padding-bottom: 15px;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid rgba(159, 123, 113, 0.5);
 }
 
 .edit-profile-title {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   font-size: 50px;
   line-height: 50px;
   font-weight: bold;
@@ -25,7 +25,9 @@
   width: 150px;
   height: 150px;
   object-fit: cover;
+  border-radius: 50%;
   margin-bottom: 15px;
+  border: 8px solid;
 }
 
 .edit-profile-info-container {
@@ -33,12 +35,14 @@
   width: 50%;
   flex-direction: column;
   align-items: stretch;
-  gap: 15px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .edit-profile-info-wrapper {
   display: flex;
   margin-bottom: 15px;
+  align-items: center;
 }
 
 .edit-profile-title-info {
@@ -50,13 +54,36 @@
 .edit-profile-text-info {
   width: 75%;
   border: none;
-  border-bottom: 1px solid rgb(128, 128, 128);
+  border-bottom: 2px solid rgba(159, 123, 113, 0.5);
   font-size: 20px;
+  text-align: left;
+  padding-bottom: 10px;
+  color: inherit;
+}
+
+.edit-profile-text-info:focus {
+  outline: none;
 }
 
 .custom-file-upload {
   margin-bottom: 20px;
   cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.custom-file-edit {
+  margin-right: 8px;
+  margin-top: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: #9f7b71;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .file-input {
@@ -68,6 +95,7 @@
   width: 150px;
   object-fit: cover;
   border-radius: 50%;
+  background-color: white;
 }
 
 .profile-photo-submit {

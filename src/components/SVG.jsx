@@ -99,3 +99,13 @@ export function LogOutBtn() {
     />
   );
 }
+
+export function EditBtn() {
+  return (
+    <img
+      src={require("../assets/edit-button.png")}
+      className="edit-button"
+      alt="edit-button"
+    />
+  );
+}
