@@ -1,3 +1,10 @@
+.nav-logo {
+  object-fit: cover;
+  width: 150px;
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
 .nav-link-logo {
   width: 50px;
   height: 50px;
@@ -7,5 +14,24 @@
 .mini-character {
   width: auto;
   height: 150px;
+  object-fit: cover;
+}
+
+.setting-button {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+.setting-button:hover {
+  transform: rotate(45deg);
+}
+
+.log-button {
+  width: 40px;
+  height: 40px;
   object-fit: cover;
 }

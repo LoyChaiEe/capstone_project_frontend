@@ -1,5 +1,15 @@
 import "./svg.css";
 
+export function NavLogo() {
+  return (
+    <img
+      src={require("../assets/home-logo-500-02.png")}
+      className="nav-logo"
+      alt="nav-logo"
+    />
+  );
+}
+
 export function HomeSVG() {
   return (
     <img
@@ -56,6 +66,36 @@ export function MiniCharacter() {
       src={require("../assets/mini-character.png")}
       className="mini-character"
       alt="mini-character"
+    />
+  );
+}
+
+export function SettingBtn() {
+  return (
+    <img
+      src={require("../assets/setting.png")}
+      className="setting-button"
+      alt="setting-button"
+    />
+  );
+}
+
+export function LogInBtn() {
+  return (
+    <img
+      src={require("../assets/log-in.png")}
+      className="log-button"
+      alt="log-in-button"
+    />
+  );
+}
+
+export function LogOutBtn() {
+  return (
+    <img
+      src={require("../assets/log-out.png")}
+      className="log-button"
+      alt="log-out-button"
     />
   );
 }

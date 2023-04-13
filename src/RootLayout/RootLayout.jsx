@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import { UserContext } from "../context/userContex";
+import "./rootLayout.css";
 
 export default function RootLayout() {
   const { userData, setUserData, setIsUserDataUpdated } =

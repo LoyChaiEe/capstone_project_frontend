@@ -92,7 +92,7 @@ export default function Characters() {
           <div className="character-title">
             <MiniCharacter />
             <div className="character-title-text">
-              <h1 className="character-title-title">{characterType_cap}</h1>
+              <span className="character-title-title">{characterType_cap}</span>
               <p className="character-title-description">Basic Symbols</p>
               <p className="character-instruction">
                 (click on the cards to listen to its pronounciation)

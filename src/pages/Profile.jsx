@@ -2,22 +2,13 @@ import React from "react";
 import "./profile.css";
 import { Link, useOutletContext } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import LogOutButton from "../components/LogOutButton";
+import SettingsButton from "../components/SettingsButton";
 
 export default function ProfileComponent() {
-  const { isAuthenticated, logout } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const [userData] = useOutletContext();
 
-  const LogoutButton = () => {
-    return (
-      <button
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
-      >
-        Log Out
-      </button>
-    );
-  };
   if (!userData?.email_address) return null;
 
   return (
@@ -66,12 +57,10 @@ export default function ProfileComponent() {
             readOnly
           />
         </div>
-        <div className="edit-profile-btn-wrapper">
-          <Link to="/profile/edit" className="edit-profile-btn">
-            Edit Profile
-          </Link>
+        <div className="profile-settings-wrapper">
+          <SettingsButton />
+          <LogOutButton />
         </div>
-        {LogoutButton()}
       </div>
     </div>
   );
