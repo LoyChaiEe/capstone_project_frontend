@@ -50,26 +50,26 @@ const LessonTest = () => {
   //Need some way to restructure our backend seeder file for this
   //this just temp
   const {
-    data: LQA,
+    data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
-    error
+    error,
   } = useSWR(
-    `${Backend_URL}/LQA/${userLessonInfo?.slice(-1)[0].lesson?.id + 1}`,
+    `${Backend_URL}/LQA/questions/get/${userLessonInfo?.slice(-1)[0].lesson?.id + 1}`,
     getter
   );
 
   //Loader for loading data
-  if (userLessonDataLoaded || userWordbankDataLoaded || LQADataLoaded || !userWordBank || !userLessonInfo || !LQA)
+  if (
+    userLessonDataLoaded ||
+    userWordbankDataLoaded ||
+    LQADataLoaded ||
+    !userWordBank ||
+    !userLessonInfo ||
+    !questionsDatas
+  )
     return <BeatLoader css={override} size={20} color={"#123abc"} />;
   
-  //Generate random questions
-  const questionNumberList = new Set();
-  LQA?.map((ele) => ele.question_id).forEach((id) =>
-    questionNumberList.add(id)
-  );
-  const questionList = Array.from(questionNumberList)
-  const questionNumberArr = generateRandomNumbers(15, questionList.length, questionList)
   //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
     {
@@ -77,16 +77,12 @@ const LessonTest = () => {
       content: <Start type={state.type}/>,
     },
   ];
-  console.log(LQA[0]);
   for(let i = 0; i < 15; i++){
-    const question = LQA.filter(
-      (object) => object.question_id === questionNumberArr[i] 
-    );
-  
-    let type = question[0].question.type.split("-");
+    const questionData = questionsDatas[0]
+    let type = questionData.question_type.split("-");
     let content = {
-      title: `Question`,
-      content: questionSelect(type[0], question, userWordBank, setCanSubmit, hasSubmit),
+      title: `Question ${i+1}`,
+      content: questionSelect(type[0], questionData, userWordBank, setCanSubmit, hasSubmit),
     };
     steps.push(content);
   }

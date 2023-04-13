@@ -14,7 +14,12 @@ export default function Home() {
             <GuideModalButton />
           </div>
           <div className="chapter-lesson-wrapper">
-            <Link to="/vocabs/lesson" className="chapter-lesson-btn" id="one">
+            <Link
+              to="/vocabs/lesson"
+              className="chapter-lesson-btn"
+              id="one"
+              state={{ type: `vocabs` }}
+            >
               <span className="chapter-lesson">START</span>
             </Link>
             <Link className="chapter-lesson-btn" id="two">

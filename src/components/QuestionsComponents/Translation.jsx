@@ -10,16 +10,12 @@ export default function Translation(props) {
   const wordBank = props.wordBank
   const [input, setInput] = useState([])
   const [userInput, setUserInput] = useState([]) //display the user input answer
-  const [answer, setAnswer] = useState(
-    questionData.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.character.character;
-    }, "")
-  )
   useEffect(() => {
-    axios.post(`${Backend_URL}/questions/random/input`, {
+    axios.post(`${Backend_URL}/questions/translation/input`, {
       wordBank: wordBank,
+      type: questionData.type.split("-"),
       answer: questionData,
-      num: 4
+      difficulty: questionData.difficulty
     }).then((res) => {
       setInput(res.data.data)
     })
@@ -65,7 +61,7 @@ export default function Translation(props) {
      <>
        <div style={{ backgroundColor: "orange" }}>
          <MiniCharacter />
-         <span>{questionData[0].question.question}</span>
+         <span>{questionData.question}</span>
        </div>
        {displayAnswer}
        <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
