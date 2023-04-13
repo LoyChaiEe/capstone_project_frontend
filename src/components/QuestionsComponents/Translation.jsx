@@ -5,6 +5,8 @@ import useSWR from "swr"
 import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
 
+
+
 export default function Translation(props) {
   const questionData = props.questionData
   const wordBank = props.wordBank
@@ -14,11 +16,16 @@ export default function Translation(props) {
   const type = questionData?.question_type.split("-")
 
   const verify = async() => {
-    const correct = await axios.post(`${Backend_URL}/questions/translation/verify`, {
+    console.log(userInput);
+    const correct = await axios.post(
+      `${Backend_URL}/questions/translation/verify`,
+      {
         userInput: userInput,
-        answer: questionData.answer,
-      })
-    console.log(correct)
+        questionID: questionData.question_id,
+        lessonID: questionData.lesson_id,
+      }
+    );
+    setIsCorrect(correct.data.isCorrect)
   }
 
   //Verify answer logic
@@ -39,6 +46,7 @@ export default function Translation(props) {
     })
     //reset every question
     setUserInput([])
+    setIsCorrect()
   },[questionData])
 
   const add = (e) => {
@@ -63,10 +71,12 @@ export default function Translation(props) {
     setInput(userChoice);
   };
   const choiceDisplay = input?.map((input) => (
-    <Button onClick={add}>{type[1] === "English" ? input.character : input.meaning}</Button>
+    <Button onClick={add} disabled={props.hasSubmit}>
+      {type[1] === "English" ? input.character : input.meaning}
+    </Button>
   ));
   const displayAnswer = userInput?.map((input) => (
-    <Button style={{ backgroundColor: "green" }} onClick={remove}>
+    <Button style={{ backgroundColor: "green" }} onClick={remove} disabled={props.hasSubmit}>
       {type[1] === "English" ? input.character : input.meaning}
     </Button>
   ));
@@ -85,6 +95,7 @@ export default function Translation(props) {
        </div>
        {displayAnswer}
        <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
+       <div hidden={!props.hasSubmit}>You are {isCorrect ? "correct": "wrong"}</div>
      </>
    );
 }
