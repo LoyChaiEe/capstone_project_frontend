@@ -100,7 +100,7 @@ export default function Characters() {
                 (click on the cards to listen to its pronounciation)
               </p>
               <Link
-                to={`${characterType}/lesson`}
+                to={`/characters/${characterType}/lesson`}
                 state={{ type: `${characterType}` }}
               >
                 <Button id="character-button">

@@ -6,6 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { EditBtn } from "../components/SVG";
+import Button from "../components/Button";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
@@ -128,7 +129,7 @@ export default function EditProfile() {
                   onChange={handleUpdatedPhoto}
                 />
               </label>
-              <button onClick={handlePhotoSubmit}>Submit</button>
+              <Button onClick={handlePhotoSubmit}>Submit</Button>
             </div>
           </div>
           <div className="edit-profile-info-container">
@@ -166,7 +167,7 @@ export default function EditProfile() {
               />
             </div>
             <Link to="/" onClick={handleProfileChange}>
-              DONE
+              <Button>Done</Button>
             </Link>
           </div>
         </div>

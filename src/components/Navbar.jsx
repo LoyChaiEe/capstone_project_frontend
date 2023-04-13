@@ -49,13 +49,17 @@ export default function Navbar(userData) {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/vocabs" className="nav-link-text-wrapper">
+            <Link
+              to="/vocabs/lesson"
+              className="nav-link-text-wrapper"
+              state={{ type: `vocabs` }}
+            >
               <LessonSVG />
               <span className="nav-link-text">LESSON</span>
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/characters" className="nav-link-text-wrapper">
+            <Link to="/characters/display" className="nav-link-text-wrapper">
               <CharacterSVG />
               <span className="nav-link-text">CHARACTERS</span>
             </Link>
