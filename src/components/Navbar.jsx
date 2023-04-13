@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
 import NavLogo from "./NavLogo";
@@ -7,16 +7,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL.js";
 
-export default function Navbar() {
+export default function Navbar(userData) {
   const { user, isAuthenticated } = useAuth0();
-  const [currentUser, setCurrentUser] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
 
   const LoginButton = () => {
     const { loginWithRedirect } = useAuth0();
     return <button onClick={() => loginWithRedirect()}>Log In</button>;
   };
-
   useEffect(() => {
     if (isAuthenticated) {
       const userInfo = {
@@ -26,28 +23,11 @@ export default function Navbar() {
         email_address: user?.email,
         profile_pic_url: user?.picture,
       };
-      axios
-        .post(`${Backend_URL}/users/newUser`, userInfo)
-        .then(setUserEmail(userInfo.email_address))
-        .catch((err) => {
-          console.log("1st error", err);
-        });
+      axios.post(`${Backend_URL}/users/newUser`, userInfo).catch((err) => {
+        console.log("Axios post to BE error", err);
+      });
     }
-  }, [isAuthenticated, currentUser?.profile_pic_url]);
-
-  useEffect(() => {
-    const retrieveUserInfo = async () => {
-      await axios
-        .get(`${Backend_URL}/users/${userEmail}`)
-        .then((response) => {
-          setCurrentUser(response.data);
-        })
-        .catch((err) => {
-          console.log("2nd error", err);
-        });
-    };
-    retrieveUserInfo();
-  }, [userEmail]);
+  }, [isAuthenticated]);
 
   return (
     <div className="navbar">
@@ -75,11 +55,11 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/profile" className="nav-link-text-wrapper">
+            <Link to="/profile/user" className="nav-link-text-wrapper">
               {isAuthenticated ? (
                 <img
-                  src={currentUser?.profile_pic_url}
-                  alt={currentUser?.profile_pic_url}
+                  src={userData?.userData?.profile_pic_url}
+                  alt={userData?.userData?.profile_pic_url}
                   className="nav-link-profile-image"
                 />
               ) : (
@@ -90,13 +70,13 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/about" className="nav-link-text-wrapper">
+            <Link to="/about/about" className="nav-link-text-wrapper">
               <AboutSVG />
               <span className="nav-link-text">ABOUT</span>
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/landing" className="nav-link-text-wrapper">
+            <Link to="/about/landing" className="nav-link-text-wrapper">
               <AboutSVG />
               <span className="nav-link-text">LANDING</span>
             </Link>

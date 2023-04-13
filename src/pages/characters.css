@@ -57,12 +57,11 @@
   margin-bottom: 5px;
 }
 
-.hirgana-basic-grid {
+.character-grid {
   display: grid;
   grid-auto-columns: 1fr;
   gap: 16px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   margin-bottom: 30px;
 }
 
@@ -70,23 +69,35 @@
   display: flex;
   padding: 5px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   border-style: solid;
   border-width: 2px 2px 6px;
   border-color: rgba(0, 0, 0, 0.298);
-  border-radius: 10px;
+  border-radius: 20px;
   cursor: pointer;
   transition-property: all;
   transition-duration: 200ms;
   transition-timing-function: ease;
+  width: 70px;
+  height: 70px;
 }
 
 .character-wrapper:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.character-wrapper-empty {
+  border-style: solid;
+  border-width: 2px 2px 6px;
+  border-color: rgba(0, 0, 0, 0.298);
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 .character {
-  font-size: 60px;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .character-lower-wrapper {
@@ -94,5 +105,5 @@
 }
 
 .pronounciation {
-  font-size: 20px;
+  font-size: 15px;
 }
