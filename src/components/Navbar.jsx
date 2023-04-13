@@ -49,7 +49,7 @@ export default function Navbar(userData) {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/vocabs/lesson" className="nav-link-text-wrapper">
+            <Link to="/vocabs" className="nav-link-text-wrapper">
               <LessonSVG />
               <span className="nav-link-text">LESSON</span>
             </Link>
