@@ -9,6 +9,8 @@ import LessonTest from "./components/LessonTest";
 import Landing from "./pages/Landing";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import JapaneseSpeech from "./components/Hello";
+import AudioPlayer from "./components/Hello";
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
       <Navbar />
       <div className="app-body">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<JapaneseSpeech />} />
           <Route path="landing" element={<Landing />} />
           <Route path="vocab" element={<Lesson />} />
           <Route path="vocab/vocab/lesson" element={<LessonTest />} />
@@ -26,7 +28,7 @@ function App() {
           <Route path="profile" element={<Profile />}>
             <Route path="edit" element={<EditProfile />} />
           </Route>
-          <Route path="about" element={<About />} />
+          <Route path="about" element={<AudioPlayer />} />
           <Route path="test" element={<LessonTest />} />
         </Routes>
       </div>

@@ -33,8 +33,6 @@ const LessonTest = () => {
   const [current, setCurrent] = useState(0);
   const [hasSubmit, setHasSubmit] = useState(true);
   const [canSubmit, setCanSubmit]  = useState(false)
-  const [answer, setAnswer] = useState([]);
-  const [submittedAnswer, setSubmittedAnswer] = useState("");
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
   const {
@@ -72,7 +70,6 @@ const LessonTest = () => {
   );
   const questionList = Array.from(questionNumberList)
   const questionNumberArr = generateRandomNumbers(15, questionList.length, questionList)
-
   //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
     {
@@ -80,31 +77,33 @@ const LessonTest = () => {
       content: <Start type={state.type}/>,
     },
   ];
+  console.log(LQA[0]);
   for(let i = 0; i < 15; i++){
     const question = LQA.filter(
       (object) => object.question_id === questionNumberArr[i] 
     );
+  
     let type = question[0].question.type.split("-");
     let content = {
       title: `Question`,
-      content: questionSelect(type[0], question, userWordBank, setCanSubmit),
+      content: questionSelect(type[0], question, userWordBank, setCanSubmit, hasSubmit),
     };
     steps.push(content);
   }
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
-  const next = () => {
+  const next = (e) => {
+    e.preventDefault();
     //reset every question
     setCurrent(current + 1);
-    setHasSubmit(true);
-    setAnswer([]);
-    setSubmittedAnswer("");
+    setHasSubmit(false);
+    setCanSubmit(false);
   };
   //Functionality of sumbit
-  const submit = () => {
-    const ans = answer.join("");
-    setHasSubmit(false);
-    setSubmittedAnswer(ans);
+  const submit = (e) => {
+    e.preventDefault()
+    setHasSubmit(true);
+    setCanSubmit(false)
   };
 
   const items = steps.map((item) => ({
@@ -135,14 +134,9 @@ const LessonTest = () => {
       >
         {current < steps.length && (
           <Button
-            style={{
-              backgroundColor:
-                submittedAnswer === steps[current].answer ? "green" : "red",
-              color: "white",
-            }}
             type="primary"
-            onClick={() => next()}
-            disabled={hasSubmit && current !== 0}
+            onClick={next}
+            disabled={!hasSubmit && current !== 0}
           >
             Next
           </Button>
@@ -150,8 +144,8 @@ const LessonTest = () => {
         {current < steps.length && (
           <Button
             type="primary"
-            onClick={() => submit()}
-            disabled={canSubmit}
+            onClick={submit}
+            disabled={!canSubmit} 
           >
             Submit
           </Button>
@@ -168,7 +162,10 @@ const LessonTest = () => {
     </>
   );
 };
-export default LessonTest;
+
+export default LessonTest
+
+
 
 // questionID number
 function generateRandomNumbers(count, max, data) {
@@ -182,16 +179,16 @@ function generateRandomNumbers(count, max, data) {
   return numbers;
 }
 // this function act as to display the type of question and also pass some impt question data and function into the question
-function questionSelect(type, questionData, wordBank, submitFunction){
+function questionSelect(type, questionData, wordBank, submitFunction, submitted){
   switch (type) {
     case "recognition":
-      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>
+      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>
     case "meaning":
-      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
     case "matching":
-      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
     case "translation":
-      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction}/>;
+      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} submitted={submitted}/>;
     default:
       return 0
   }

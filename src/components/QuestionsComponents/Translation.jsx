@@ -2,24 +2,19 @@ import React, { useEffect, useState } from "react";
 import { MiniCharacter } from "../SVG";
 import axios from "axios";
 import useSWR from "swr"
+import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
-const postData = async (url, data) => {
-  const response = await axios.post(url, data);
-  return response.data;
-};
 
 export default function Translation(props) {
   const questionData = props.questionData
   const wordBank = props.wordBank
   const [input, setInput] = useState([])
-  const[display, setDisplay] = useState([])
+  const [userInput, setUserInput] = useState([]) //display the user input answer
   const [answer, setAnswer] = useState(
     questionData.reduce((accumulator, currentValue) => {
       return accumulator + currentValue.character.character;
     }, "")
-  );
-  console.log(answer)
-  console.log(questionData);
+  )
   useEffect(() => {
     axios.post(`${Backend_URL}/questions/random/input`, {
       wordBank: wordBank,
@@ -28,51 +23,52 @@ export default function Translation(props) {
     }).then((res) => {
       setInput(res.data.data)
     })
-  },[questionData])
-  console.log(input);
-  console.log("-------Re-render--------")
+  },[])
+  
+
+  const add = (e) => {
+    e.preventDefault()
+    const text = e.target.textContent;
+    const userChoice = [...input];
+    const index = userChoice.findIndex((obj) => obj.character === text);
+    const word = userChoice.splice(index, 1);
+    const userAns = [...userInput, ...word];
+    setUserInput(userAns);
+    setInput(userChoice);
+  };
+
+  const remove = (e) => {
+    e.preventDefault();
+    const text = e.target.textContent;
+    const userAns = [...userInput];
+    const index = userAns.findIndex((obj) => obj.character === text);
+    const word = userAns.splice(index, 1);
+    const userChoice = [...input, ...word];
+    setUserInput(userAns);
+    setInput(userChoice);
+  };
+  const choiceDisplay = input?.map((input) => (
+    <Button onClick={add}>{input.character}</Button>
+  ));
+  const displayAnswer = userInput?.map((input) => (
+    <Button style={{backgroundColor: "green"}}onClick={remove}>{input.character}</Button>
+  ));
+
+  if(displayAnswer.length !== 0){
+    props.canSubmit(true);
+  }
+  else{
+    props.canSubmit(false)
+  }
+  console.log(questionData);
    return (
      <>
-       <div>
+       <div style={{ backgroundColor: "orange" }}>
          <MiniCharacter />
+         <span>{questionData[0].question.question}</span>
        </div>
-       <div></div>
-       <button onClick={() => props.canSubmit(true)}>disable/enable</button>
+       {displayAnswer}
+       <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
      </>
    );
 }
-
-// //Functionality of question component,  will move it later
-//   const add = (text) => {
-//     const ans = [...answer, text];
-//     const userInput = [...input];
-//     const index = input.indexOf(text);
-//     userInput.splice(index, 1);
-//     setAnswer(ans);
-//     setInput(userInput);
-//   };
-//   const remove = (text) => {
-//     const ans = [...answer];
-//     const userInput = [...input, text];
-//     const index = answer.indexOf(text);
-//     ans.splice(index, 1);
-//     setAnswer(ans);
-//     setInput(userInput);
-//   };
-
-//   const inputElement = input.map((x) => (
-//     <Button
-//       style={{ color: "green" }}
-//       onClick={(e) => add(e.target.textContent)}
-//     >
-//       {x}
-//     </Button>
-//   ));
-//   const answerElement = answer.map((x) => (
-//     <Button
-//       style={{ color: "red" }}
-//       onClick={(e) => remove(e.target.textContent)}
-//     >
-//       {x}
-//     </Button>
-//   ));
