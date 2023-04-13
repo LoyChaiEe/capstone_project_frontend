@@ -5,6 +5,9 @@ export default function Landing() {
   return (
     <div>
       <span>Landing</span>
+      <span>Landing</span>
+      <span>Landing</span>
+      <span>Landing</span>
     </div>
   );
 }

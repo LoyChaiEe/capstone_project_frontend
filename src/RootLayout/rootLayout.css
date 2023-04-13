@@ -1,0 +1,10 @@
+.app {
+  text-align: center;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.app-body {
+  margin-left: 300px;
+  padding-top: 35px;
+}

@@ -26,14 +26,45 @@
   padding-bottom: 30px;
 }
 
-.chapter-lesson {
-  height: 70px;
-  width: 75px;
-  border-radius: 50%;
-  background-color: aquamarine;
+.chapter-lesson-btn {
+  height: 65px;
+  width: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  border-bottom: 10px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 0;
+}
+
+.chapter-lesson-btn::before {
+  content: "";
+  background-color: rgb(104, 219, 180);
+  height: 10px;
+  width: 100%;
+  z-index: -1;
+  top: 32px;
+  position: absolute;
+}
+
+.chapter-lesson-btn::after {
+  content: "";
+  background-color: aquamarine;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  box-shadow: rgb(104, 219, 180) 0px 7px 0px;
+  height: 65px;
+  border-radius: 50%/50%;
+}
+
+.chapter-lesson-btn::after:hover {
+  background-color: black;
+  box-shadow: rgb(100, 212, 175) 0px 8px 0px;
+}
+
+.chapter-lesson {
+  position: absolute;
+  color: black;
 }

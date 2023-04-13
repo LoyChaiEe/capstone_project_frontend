@@ -1,24 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
 import { Howl } from "howler";
 import { MiniCharacter } from "../components/SVG";
-import { Link } from "react-router-dom"
-import useSWR from "swr"
+import { Link } from "react-router-dom";
+import useSWR from "swr";
 const getter = (url) => axios.get(url).then((res) => res.data);
-
 
 export default function Characters() {
   const [characterType, setCharacterType] = useState("hiragana");
-  const { data: characters, mutate: refetch } = useSWR(`${Backend_URL}/characters/${characterType}`,getter);
+  const { data: characters, mutate: refetch } = useSWR(
+    `${Backend_URL}/characters/${characterType}`,
+    getter
+  );
   const changeCharacterType = (type) => {
     setCharacterType(type);
     refetch();
   };
-  const characterType_cap = characterType.replace(/^\w/, (c) => c.toUpperCase()) //Regex expression to capitalise characters
-  const basic = characters?.filter((obj) => obj.type.includes("basic"));
-  const dakuon = characters?.filter((obj) => obj.type.includes("dakuon"));
+  const characterType_cap = characterType.replace(/^\w/, (c) =>
+    c.toUpperCase()
+  );
+
+  const displayBasic = characters?.basic.map((row) => {
+    return row.map((ele, i) => {
+      if (ele === null) {
+        return <div className="character-wrapper-empty" key={i}></div>;
+      } else {
+        return (
+          <div
+            className="character-wrapper"
+            onClick={() => soundPlay(ele.audio_url)}
+          >
+            <div className="character">{ele.character}</div>
+            <div className="character-lower-wrapper">
+              <div className="pronounciation">{ele.pronounciation}</div>
+            </div>
+          </div>
+        );
+      }
+    });
+  });
+  const displayDakuon = characters?.dakuon.map((row) => {
+    return row.map((ele) => {
+      if (ele === null) {
+        return <div className="character-wrapper"></div>;
+      } else {
+        return (
+          <div
+            className="character-wrapper"
+            key={ele.id}
+            onClick={() => soundPlay(ele.audio_url)}
+          >
+            <div className="character">{ele.character}</div>
+            <div className="character-lower-wrapper">
+              <div className="pronounciation">{ele.pronounciation}</div>
+            </div>
+          </div>
+        );
+      }
+    });
+  });
 
   const soundPlay = (src) => {
     const sound = new Howl({
@@ -63,23 +105,7 @@ export default function Characters() {
               </Link>
             </div>
           </div>
-          <div className="hirgana-basic-grid">
-            {basic &&
-              basic.map((i) => {
-                return (
-                  <div
-                    className="character-wrapper"
-                    key={i.id}
-                    onClick={() => soundPlay(i.audio_url)}
-                  >
-                    <div className="character">{i.character}</div>
-                    <div className="character-lower-wrapper">
-                      <div className="pronounciation">{i.pronounciation}</div>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+          <div className="character-grid">{displayBasic}</div>
           <div className="character-title">
             <MiniCharacter />
             <div className="character-title-text">
@@ -89,24 +115,9 @@ export default function Characters() {
               </p>
             </div>
           </div>
-          <div className="hirgana-basic-grid">
-            {dakuon &&
-              dakuon.map((i) => (
-                <div
-                  className="character-wrapper"
-                  key={i.id}
-                  onClick={() => soundPlay(i.audio_url)}
-                >
-                  <div className="character">{i.character}</div>
-                  <div className="character-lower-wrapper">
-                    <div className="pronounciation">{i.pronounciation}</div>
-                  </div>
-                </div>
-              ))}
-          </div>
+          <div className="character-grid">{displayDakuon}</div>
         </>
       </div>
     </div>
   );
 }
-
