@@ -99,7 +99,7 @@ export default function Characters() {
               </p>
               <Link
                 to={`${characterType}/lesson`}
-                state={{ msg: `Hello ${characterType}!` }}
+                state={{ type: `${characterType}` }}
               >
                 <button>Let's learn {characterType_cap}!</button>
               </Link>
