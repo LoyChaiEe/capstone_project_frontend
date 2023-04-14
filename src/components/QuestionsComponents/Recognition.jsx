@@ -41,13 +41,50 @@ export default function Recognition(props) {
   }, [questionData]);
 
   //Play sounds
-  const soundPlay = (e) => {
+  const soundPlay = async(e) => {
     //retrieve the id of the button
     const text = e.target.textContent
     const choiceData = inputData?.find(obj => obj.character === text || obj.pronounciation === text);
     const wordtoplay = choiceData.character
-    
+    console.log(wordtoplay)
+    const data = await createAudio(wordtoplay);
+    const audioSRC = URL.createObjectURL(data);
+    console.log(audioSRC)
+    const sound = new Howl({
+      src: [audioSRC],
+      autoplay: false,
+      loop: false,
+      volume: 1,
+      format: "wav"
+    });
+    sound.play();
   }
+
+  const createQuery = async (text) => {
+    //change speaker query to the id of the waifu
+    const response = await axios.post(
+      `http://localhost:50021/audio_query?speaker=3&text=${text}`
+    );
+    return response.data;
+  };
+
+  const createVoice = async (text) => {
+    const query = await createQuery(text);
+    const response = await axios.post(
+      "http://localhost:50021/synthesis?speaker=3",
+      query,
+      { responseType: "blob" }
+    );
+    return response.data;
+  };
+
+  const createAudio = async (text) => {
+    const data = await createVoice(text);
+    return data;
+  };
+
+
+
 
   const inputDisplay = inputData.map((ele, i) => {
     const word = ele.character
