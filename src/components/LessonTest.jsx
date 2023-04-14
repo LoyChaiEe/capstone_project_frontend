@@ -55,14 +55,30 @@ const LessonTest = () => {
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
+
+  //Question Data will be changed for testing
+  // const {
+  //   data: questionsDatas,
+  //   mutate: refetchLQinfo,
+  //   isLoading: LQADataLoaded,
+  //   error,
+  // } = useSWR(
+  //   `${Backend_URL}/LQA/questions/get/${
+  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
+  //   }`,
+  //   getter,
+  //   { revalidateOnFocus: false }
+  // );
+
+  //Testing for matching
   const {
     data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
   } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${
-      userLessonInfo?.slice(-1)[0].lesson?.id + 1
+    `${Backend_URL}/tests/questions/get/${
+      14
     }`,
     getter,
     { revalidateOnFocus: false }
@@ -186,7 +202,7 @@ function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit)
     case "meaning":
       return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "matching":
-      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
+      return <Matching questionData={questionData} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "translation":
       return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     default:
