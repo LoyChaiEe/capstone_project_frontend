@@ -38,7 +38,6 @@ export default function Meaning(props) {
   // user selects word
   const select = (e) => {
     e.preventDefault();
-    console.log(e);
     if (prevSelectedButton) {
       prevSelectedButton.classList.remove("selected");
     }
@@ -60,10 +59,8 @@ export default function Meaning(props) {
     setIsCorrect(answer.data.isCorrect);
   };
 
-  console.log(wordSelected);
-
   const wordArrayDisplay = wordArray.map((wordArray, index) => (
-    <Button onClick={select}>
+    <Button onClick={select} disabled={props.hasSubmit}>
       {type[1] === "English" ? wordArray.character : wordArray.meaning}
     </Button>
   ));
