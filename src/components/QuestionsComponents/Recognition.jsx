@@ -33,6 +33,7 @@ export default function Recognition(props) {
         wordBank: wordBank
       })
       .then((res) => {
+        console.log(res.data);
         setInputData(res.data)
       });
       setUserAnswer("")
@@ -48,7 +49,6 @@ export default function Recognition(props) {
           userAnswer: userAnswer,
         })
         .then((res) => {
-          console.log(res.data)
           setCorrect(res.data.isCorrect);
         });
     }
