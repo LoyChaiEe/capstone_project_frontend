@@ -5,6 +5,8 @@ import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { EditBtn } from "../components/SVG";
+import Button from "../components/Button";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
@@ -105,6 +107,9 @@ export default function EditProfile() {
             <h1 className="edit-profile-title">Edit Profile</h1>
             <div className="profile-photo-submit">
               <label className="custom-file-upload">
+                <div className="custom-file-edit">
+                  <EditBtn />
+                </div>
                 {isChangedPhoto === false ? (
                   <img
                     src={userData?.profile_pic_url}
@@ -124,12 +129,12 @@ export default function EditProfile() {
                   onChange={handleUpdatedPhoto}
                 />
               </label>
-              <button onClick={handlePhotoSubmit}>Submit</button>
+              <Button onClick={handlePhotoSubmit}>Submit</Button>
             </div>
           </div>
           <div className="edit-profile-info-container">
             <div className="edit-profile-info-wrapper">
-              <h1 className="edit-profile-title-info">First Name</h1>
+              <h1 className="edit-profile-title-info">First Name:</h1>
               <input
                 className="edit-profile-text-info"
                 value={currentFirstName}
@@ -140,7 +145,7 @@ export default function EditProfile() {
               />
             </div>
             <div className="edit-profile-info-wrapper">
-              <h1 className="edit-profile-title-info">Last Name</h1>
+              <h1 className="edit-profile-title-info">Last Name:</h1>
               <input
                 className="edit-profile-text-info"
                 value={currentLastName}
@@ -151,7 +156,7 @@ export default function EditProfile() {
               />
             </div>
             <div className="edit-profile-info-wrapper">
-              <h1 className="edit-profile-title-info">Username</h1>
+              <h1 className="edit-profile-title-info">Username:</h1>
               <input
                 className="edit-profile-text-info"
                 value={currentUsername}
@@ -161,9 +166,8 @@ export default function EditProfile() {
                 }}
               />
             </div>
-            {/* <button onClick={handleProfileChange}>Done</button> */}
             <Link to="/" onClick={handleProfileChange}>
-              DONE
+              <Button>Done</Button>
             </Link>
           </div>
         </div>

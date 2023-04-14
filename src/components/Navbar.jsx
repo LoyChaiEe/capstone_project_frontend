@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
-import NavLogo from "./NavLogo";
-import { HomeSVG, LessonSVG, CharacterSVG, ProfileSVG, AboutSVG } from "./SVG";
+import {
+  NavLogo,
+  HomeSVG,
+  LessonSVG,
+  CharacterSVG,
+  ProfileSVG,
+  AboutSVG,
+} from "./SVG";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL.js";
@@ -39,17 +45,21 @@ export default function Navbar(userData) {
           <li className="nav-link-wrapper">
             <Link to="/" className="nav-link-text-wrapper">
               <HomeSVG />
-              <span className="nav-link-text">HOME</span>
+              <p className="nav-link-text">HOME</p>
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/vocabs" className="nav-link-text-wrapper">
+            <Link
+              to="/vocabs/lesson"
+              className="nav-link-text-wrapper"
+              state={{ type: `vocabs` }}
+            >
               <LessonSVG />
               <span className="nav-link-text">LESSON</span>
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/characters" className="nav-link-text-wrapper">
+            <Link to="/characters/display" className="nav-link-text-wrapper">
               <CharacterSVG />
               <span className="nav-link-text">CHARACTERS</span>
             </Link>

@@ -1,4 +1,5 @@
 .navbar {
+  font-family: "rubik";
   position: absolute;
   inset: 0% auto 0% 0%;
   height: 100vh;
@@ -6,8 +7,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  border-right: 1px solid black;
-  background-color: #ddd;
+  border-right: 2px solid rgba(159, 123, 113, 0.5);
+  background-color: #ffe7e6;
 }
 
 .nav-link-container {
@@ -26,21 +27,26 @@
   margin-bottom: 5px;
   padding: 10px 20px;
   border-radius: 10px;
-  color: inherit;
   text-decoration: none;
   align-items: center;
   justify-content: center;
+  color: #ee9f90;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 }
 
 .nav-link-text-wrapper:hover {
-  background-color: #c2c2c2;
+  background-color: #eba090;
+  color: white;
 }
 
 .nav-link-text {
   width: 50%;
   padding-left: 20px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 900;
+  font-style: normal;
   text-decoration: none;
   text-align: left;
 }
