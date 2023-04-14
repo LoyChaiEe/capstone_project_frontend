@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MiniCharacter } from "../SVG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
-// import Button from "../Button";
-import { Button } from "antd";
+import Button from "../Button";
+// import { Button } from "antd";
 import "./meaning.css";
 
 export default function Meaning(props) {
@@ -11,6 +11,9 @@ export default function Meaning(props) {
   const wordBank = props.wordBank;
   const [wordArray, setWordArray] = useState([]);
   const [wordSelected, setWordSelected] = useState("");
+  const [isWordSelected, setIsWordSelected] = useState(false);
+  const [isCorrect, setIsCorrect] = useState();
+  const [userWordSelect, setUserWordSelect] = useState("");
   const type = questionData?.question_type.split("-");
 
   // to display 4 words in an array
@@ -24,32 +27,56 @@ export default function Meaning(props) {
       .then((res) => {
         setWordArray(res.data);
       });
-    // resets array after every question
+    // resets array after every question, refreshes according to questionData
     setWordArray([]);
-  }, []);
+    setWordSelected("");
+    setIsWordSelected(false);
+    setIsCorrect();
+  }, [questionData]);
 
   // user selects word
   const select = (e) => {
     e.preventDefault();
     const selected = e.target.textContent;
     setWordSelected(selected);
+
+    setIsWordSelected(true);
+  };
+
+  const verifyAnswer = async () => {
+    const answer = await axios.post(`${Backend_URL}/questions/meaning/verify`, {
+      userInput: wordSelected,
+      questionID: questionData.question_id,
+      lessonID: questionData.lesson_id,
+    });
+    setIsCorrect(answer.data.isCorrect);
   };
 
   const wordArrayDisplay = wordArray.map((wordArray) => (
-    <Button onClick={select}>{wordArray.character}</Button>
+    <Button onClick={select}>
+      {type[1] === "English" ? wordArray.character : wordArray.meaning}
+    </Button>
   ));
 
-  if (wordArray.length !== 0) {
+  // enable or disable submit button
+  if (isWordSelected === true) {
     props.canSubmit(true);
   } else {
     props.canSubmit(false);
   }
 
+  // call verifyAnswer function upon submit
+  if (props.hasSubmit) {
+    verifyAnswer();
+  }
+
   return (
     <>
       <span>{questionData.question}</span>
-      <div>{wordSelected}</div>
       <div>{wordArrayDisplay}</div>
+      <div hidden={!props.hasSubmit}>
+        You are {isCorrect ? "correct" : "wrong"}
+      </div>
     </>
   );
 }
