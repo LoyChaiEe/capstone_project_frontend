@@ -13,7 +13,7 @@ export default function Meaning(props) {
   const [wordSelected, setWordSelected] = useState("");
   const [isWordSelected, setIsWordSelected] = useState(false);
   const [isCorrect, setIsCorrect] = useState();
-  const [userWordSelect, setUserWordSelect] = useState("");
+  const [prevSelectedButton, setPrevSelectedButton] = useState(null);
   const type = questionData?.question_type.split("-");
 
   // to display 4 words in an array
@@ -32,15 +32,23 @@ export default function Meaning(props) {
     setWordSelected("");
     setIsWordSelected(false);
     setIsCorrect();
+    setPrevSelectedButton(null);
   }, [questionData]);
 
   // user selects word
   const select = (e) => {
     e.preventDefault();
-    const selected = e.target.textContent;
-    setWordSelected(selected);
+    console.log(e);
+    if (prevSelectedButton) {
+      prevSelectedButton.classList.remove("selected");
+    }
 
+    const selectedButton = e.target;
+    selectedButton.classList.add("selected");
+    const selected = selectedButton.textContent;
+    setWordSelected(selected);
     setIsWordSelected(true);
+    setPrevSelectedButton(selectedButton);
   };
 
   const verifyAnswer = async () => {
@@ -52,7 +60,9 @@ export default function Meaning(props) {
     setIsCorrect(answer.data.isCorrect);
   };
 
-  const wordArrayDisplay = wordArray.map((wordArray) => (
+  console.log(wordSelected);
+
+  const wordArrayDisplay = wordArray.map((wordArray, index) => (
     <Button onClick={select}>
       {type[1] === "English" ? wordArray.character : wordArray.meaning}
     </Button>
