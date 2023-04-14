@@ -23,7 +23,7 @@ export default function AudioButton(){
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
     const response = await axios.post(
-      `http://localhost:50021/audio_query?speaker=53&text=${text}`
+      `http://localhost:50021/audio_query?speaker=3&text=${text}`
     );
     return response.data;
   };
@@ -31,7 +31,7 @@ export default function AudioButton(){
   const createVoice = async(text) =>{
     const query = await createQuery(text);
     const response = await axios.post(
-      "http://localhost:50021/synthesis?speaker=53",
+      "http://localhost:50021/synthesis?speaker=3",
       query,
       { responseType: "blob" }
     );
@@ -44,7 +44,7 @@ export default function AudioButton(){
   }
   return (
     <Button onClick={play}>
-      おいしいです
+      かえるぴょ
     </Button>
   );
 }

@@ -55,14 +55,30 @@ const LessonTest = () => {
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
+
+  //Question Data will be changed for testing
+  // const {
+  //   data: questionsDatas,
+  //   mutate: refetchLQinfo,
+  //   isLoading: LQADataLoaded,
+  //   error,
+  // } = useSWR(
+  //   `${Backend_URL}/LQA/questions/get/${
+  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
+  //   }`,
+  //   getter,
+  //   { revalidateOnFocus: false }
+  // );
+
+  //Testing for matching
   const {
     data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
   } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${
-      userLessonInfo?.slice(-1)[0].lesson?.id + 1
+    `${Backend_URL}/tests/questions/get/${
+      14
     }`,
     getter,
     { revalidateOnFocus: false }
@@ -96,7 +112,8 @@ const LessonTest = () => {
         questionData,
         userWordBank,
         setCanSubmit,
-        hasSubmit
+        hasSubmit,
+        setHasSubmit
       ),
     };
     steps.push(content);
@@ -179,14 +196,14 @@ const LessonTest = () => {
 
 export default LessonTest
 // this function act as to display the type of question and also pass some impt question data and function into the question
-function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit){
+function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit, hasSubmitFunction){
   switch (type) {
     case "recognition":
       return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>
     case "meaning":
       return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "matching":
-      return <Matching questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
+      return <Matching questionData={questionData} setHasSubmit={hasSubmitFunction}/>;
     case "translation":
       return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     default:
