@@ -18,8 +18,6 @@ export default function Recognition(props) {
   // const [input, setInput] = useState([]);
   // const [inputDisplay, setInputDisplay] = useState([]);
   // const questionData = props.questionData;
-  // const combinedData = Object.assign({}, ...questionData)
-  // console.log(combinedData)
   // console.log(questionData);
   // const wordBank = props.wordBank;
   // let type = questionData[0].question.type.split("-");

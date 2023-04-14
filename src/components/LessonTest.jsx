@@ -55,6 +55,8 @@ const LessonTest = () => {
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
+
+  //Question Data will be changed for testing
   // const {
   //   data: questionsDatas,
   //   mutate: refetchLQinfo,
@@ -67,12 +69,14 @@ const LessonTest = () => {
   //   getter,
   //   { revalidateOnFocus: false }
   // );
+
+  //Testing for matching
   const {
     data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/1`, getter, {
+  } = useSWR(`${Backend_URL}/tests/questions/get/${1}`, getter, {
     revalidateOnFocus: false,
   });
 
@@ -104,7 +108,8 @@ const LessonTest = () => {
         questionData,
         userWordBank,
         setCanSubmit,
-        hasSubmit
+        hasSubmit,
+        setHasSubmit
       ),
     };
     steps.push(content);
@@ -192,7 +197,8 @@ function questionSelect(
   questionData,
   wordBank,
   submitFunction,
-  hasSubmit
+  hasSubmit,
+  hasSubmitFunction
 ) {
   switch (type) {
     case "recognition":
@@ -217,9 +223,7 @@ function questionSelect(
       return (
         <Matching
           questionData={questionData}
-          wordBank={wordBank}
-          canSubmit={submitFunction}
-          hasSubmit={hasSubmit}
+          setHasSubmit={hasSubmitFunction}
         />
       );
     case "translation":
