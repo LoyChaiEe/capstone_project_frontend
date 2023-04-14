@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MiniCharacter } from "../SVG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
-import { Button } from "antd";
+import Button from "../Button";
+import "./meaning.css";
 
 export default function Meaning(props) {
   const questionData = props.questionData;
@@ -11,6 +12,7 @@ export default function Meaning(props) {
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const [wordSelected, setWordSelected] = useState([]);
   const type = questionData?.question_type.split("-");
 
   const verify = async () => {
@@ -47,6 +49,7 @@ export default function Meaning(props) {
     setUserInput([]);
     setIsCorrect();
     setIsAnswerSelected(false);
+    setWordSelected([]);
   }, [questionData]);
 
   const select = (e) => {
@@ -60,10 +63,14 @@ export default function Meaning(props) {
     const userAns = [...word];
     setUserInput(userAns);
     setIsAnswerSelected(true);
+    setWordSelected(userAns);
   };
 
   const choiceDisplay = input?.map((input) => (
-    <Button onClick={select} disabled={props.hasSubmit}>
+    <Button
+      onClick={select}
+      id={wordSelected === userInput ? "active" : "inactive"}
+    >
       {type[1] === "English" ? input.character : input.meaning}
     </Button>
   ));
