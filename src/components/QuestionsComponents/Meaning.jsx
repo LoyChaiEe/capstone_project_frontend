@@ -8,88 +8,33 @@ import "./meaning.css";
 export default function Meaning(props) {
   const questionData = props.questionData;
   const wordBank = props.wordBank;
-  const [isCorrect, setIsCorrect] = useState();
-  const [input, setInput] = useState([]);
-  const [userInput, setUserInput] = useState([]); //display the user input answer
-  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
-  const [wordSelected, setWordSelected] = useState([]);
+  const [wordArray, setWordArray] = useState([]);
   const type = questionData?.question_type.split("-");
 
-  const verify = async () => {
-    console.log(userInput);
-    const correct = await axios.post(
-      `${Backend_URL}/questions/meaning/verify`,
-      {
-        userInput: userInput,
-        questionID: questionData.question_id,
-        lessonID: questionData.lesson_id,
-      }
-    );
-    setIsCorrect(correct.data.isCorrect);
-  };
-
-  //Verify answer logic
-  if (props.hasSubmit) {
-    verify();
-  }
-
-  //get input
+  // to display 4 words in an array
   useEffect(() => {
     axios
-      .post(`${Backend_URL}/questions/meaning/input`, {
+      .post(`${Backend_URL}/questions/meaning/words`, {
         wordBank: wordBank,
         type: type,
         answer: questionData.answer,
-        difficulty: questionData.difficulty,
       })
       .then((res) => {
-        setInput(res.data);
+        setWordArray(res.data);
       });
-    //reset every question
-    setUserInput([]);
-    setIsCorrect();
-    setIsAnswerSelected(false);
-    setWordSelected([]);
-  }, [questionData]);
+    // resets array after every question
+    setWordArray([]);
+  }, []);
+  console.log(wordArray);
 
-  const select = (e) => {
-    e.preventDefault();
-    const text = e.target.textContent;
-    const userChoice = [...input];
-    const index = userChoice.findIndex(
-      (obj) => obj.character === text || obj.meaning === text
-    );
-    const word = userChoice.splice(index, 1);
-    const userAns = [...word];
-    setUserInput(userAns);
-    setIsAnswerSelected(true);
-    setWordSelected(userAns);
-  };
-
-  const choiceDisplay = input?.map((input) => (
-    <Button
-      onClick={select}
-      id={wordSelected === userInput ? "active" : "inactive"}
-    >
-      {type[1] === "English" ? input.character : input.meaning}
-    </Button>
+  const wordArrayDisplay = wordArray.map((wordArray) => (
+    <button>{wordArray.character}</button>
   ));
-
-  console.log("word selected", userInput);
-
-  if (isAnswerSelected === true) {
-    props.canSubmit(true);
-  } else {
-    props.canSubmit(false);
-  }
 
   return (
     <>
       <span>{questionData.question}</span>
-      <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
+      <div>{wordArrayDisplay}</div>
     </>
   );
 }
