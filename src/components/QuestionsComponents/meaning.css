@@ -1,3 +1,12 @@
 .selected {
-  background-color: black;
+  background-color: rgba(235, 160, 144, 0.5);
+}
+
+.wordArray-grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  width: 320px;
 }

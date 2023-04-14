@@ -6,7 +6,7 @@ import { Howl } from "howler";
 import { MiniCharacter } from "../components/SVG";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
-import Button from "../components/Button";
+import { Button } from "../components/Buttons";
 
 const getter = (url) => axios.get(url).then((res) => res.data);
 

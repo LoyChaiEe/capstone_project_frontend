@@ -2,8 +2,7 @@ import React from "react";
 import "./profile.css";
 import { Link, useOutletContext } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import LogOutButton from "../components/LogOutButton";
-import SettingsButton from "../components/SettingsButton";
+import { SettingsButton, LogoutButton } from "../components/Buttons";
 
 export default function ProfileComponent() {
   const { isAuthenticated } = useAuth0();
@@ -54,7 +53,7 @@ export default function ProfileComponent() {
         </div>
         <div className="profile-settings-wrapper">
           <SettingsButton />
-          <LogOutButton />
+          <LogoutButton />
         </div>
       </div>
     </div>

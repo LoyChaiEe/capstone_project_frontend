@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MiniCharacter } from "../SVG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
-import Button from "../Button";
+import { QuestionButton } from "../Buttons";
 // import { Button } from "antd";
 import "./meaning.css";
 
@@ -60,9 +60,9 @@ export default function Meaning(props) {
   };
 
   const wordArrayDisplay = wordArray.map((wordArray) => (
-    <Button onClick={select} disabled={props.hasSubmit}>
+    <QuestionButton onClick={select} disabled={props.hasSubmit}>
       {type[1] === "English" ? wordArray.character : wordArray.meaning}
-    </Button>
+    </QuestionButton>
   ));
 
   // enable or disable submit button
@@ -80,7 +80,7 @@ export default function Meaning(props) {
   return (
     <>
       <span>{questionData.question}</span>
-      <div>{wordArrayDisplay}</div>
+      <div className="wordArray-grid">{wordArrayDisplay}</div>
       <div hidden={!props.hasSubmit}>
         You are {isCorrect ? "correct" : "wrong"}
       </div>

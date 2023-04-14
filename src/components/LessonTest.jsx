@@ -1,12 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import {
-  LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import { Button, message, Steps, theme } from "antd";
 import { useState } from "react";
 import { Progress } from "antd";
@@ -20,6 +14,8 @@ import Meaning from "./QuestionsComponents/Meaning";
 import Translation from "./QuestionsComponents/Translation";
 import Recognition from "./QuestionsComponents/Recognition";
 import Finish from "./Finish";
+import "./lessonTest.css";
+
 const getter = (url) => axios.get(url).then((res) => res.data);
 
 const override = css`
@@ -141,50 +137,54 @@ const LessonTest = () => {
     lineHeight: "260px",
     textAlign: "center",
     color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
+    // backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
-    border: `1px dashed ${token.colorBorder}`,
+    // border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
   };
   return (
     <>
-      {/* <Steps current={current} items={items} /> */}
-      <Progress percent={(current / 15) * 100} />
-      <div style={contentStyle}>
-        {steps[current].content}
-        {steps[current].display}
-      </div>
-      <div
-        style={{
-          marginTop: 24,
-        }}
-      >
-        {current < steps.length && (
-          <Button
-            type="primary"
-            onClick={next}
-            disabled={!hasSubmit && current !== 0}
+      <div className="lesson-container">
+        <div className="lesson-wrapper">
+          {/* <Steps current={current} items={items} /> */}
+          <Progress percent={(current / 15) * 100} />
+          <div style={contentStyle}>
+            {steps[current].content}
+            {steps[current].display}
+          </div>
+          <div
+            style={{
+              marginTop: 24,
+            }}
           >
-            Next
-          </Button>
-        )}
-        {current < steps.length && (
-          <Button
-            type="primary"
-            onClick={submit}
-            disabled={!canSubmit || hasSubmit}
-          >
-            Submit
-          </Button>
-        )}
-        {current === steps.length - 1 && (
-          <Button
-            type="primary"
-            onClick={() => message.success("Processing complete!")}
-          >
-            Done
-          </Button>
-        )}
+            {current < steps.length && (
+              <Button
+                type="primary"
+                onClick={next}
+                disabled={!hasSubmit && current !== 0}
+              >
+                Next
+              </Button>
+            )}
+            {current < steps.length && (
+              <Button
+                type="primary"
+                onClick={submit}
+                disabled={!canSubmit || hasSubmit}
+              >
+                Submit
+              </Button>
+            )}
+            {current === steps.length - 1 && (
+              <Button
+                type="primary"
+                onClick={() => message.success("Processing complete!")}
+              >
+                Done
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

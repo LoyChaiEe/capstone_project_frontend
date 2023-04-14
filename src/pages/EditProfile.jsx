@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { EditBtn } from "../components/SVG";
-import Button from "../components/Button";
+import { Button } from "../components/Buttons";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 
