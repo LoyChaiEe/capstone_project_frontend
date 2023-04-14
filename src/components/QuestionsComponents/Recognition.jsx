@@ -24,6 +24,7 @@ export default function Recognition(props) {
   const wordBank = props.wordBank
   const [inputData, setInputData] = useState([])
   const [userAnswer, setUserAnswer] = useState("")
+  const [isCorrect, setCorrect] = useState(null)
   //Retrieve random input
   useEffect(() => {
     axios
@@ -32,11 +33,26 @@ export default function Recognition(props) {
         wordBank: wordBank
       })
       .then((res) => {
-        console.log(res.data);
         setInputData(res.data)
       });
       setUserAnswer("")
+      setCorrect(null)
   }, [questionData]);
+
+  //Verify answer
+  useEffect(() =>{
+    if(userAnswer !== ""){
+      axios
+        .post(`${Backend_URL}/questions/recognition/verify`, {
+          answer: questionData,
+          userAnswer: userAnswer,
+        })
+        .then((res) => {
+          console.log(res.data)
+          setCorrect(res.data.isCorrect);
+        });
+    }
+  }, [props.hasSubmit])
 
   //Play sounds
   const select = async(e) => {
@@ -46,10 +62,8 @@ export default function Recognition(props) {
     setUserAnswer(text)
     const choiceData = inputData?.find(obj => obj.character === text || obj.pronounciation === text);
     const wordtoplay = choiceData.character
-    console.log(wordtoplay)
     const data = await createAudio(wordtoplay);
     const audioSRC = URL.createObjectURL(data);
-    console.log(audioSRC)
     //Audio play portion
     const sound = new Howl({
       src: [audioSRC],
@@ -100,6 +114,7 @@ export default function Recognition(props) {
         <Button
           style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
           onClick={select}
+          disabled={props.hasSubmit}
         >
           {display}
         </Button>
@@ -118,8 +133,10 @@ export default function Recognition(props) {
         <MiniCharacter />
         <span>{questionData.question}</span>
       </div>
+      <div hidden={!props.hasSubmit}>
+        You are {isCorrect ? "correct" : "wrong"}
+      </div>
       <div>{inputDisplay}</div>
-      <button onClick={() => props.canSubmit(true)}>disable/enable</button>
     </>
   );
 }
