@@ -112,7 +112,8 @@ const LessonTest = () => {
         questionData,
         userWordBank,
         setCanSubmit,
-        hasSubmit
+        hasSubmit,
+        setHasSubmit
       ),
     };
     steps.push(content);
@@ -195,14 +196,14 @@ const LessonTest = () => {
 
 export default LessonTest
 // this function act as to display the type of question and also pass some impt question data and function into the question
-function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit){
+function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit, hasSubmitFunction){
   switch (type) {
     case "recognition":
       return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>
     case "meaning":
       return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     case "matching":
-      return <Matching questionData={questionData} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
+      return <Matching questionData={questionData} setHasSubmit={hasSubmitFunction}/>;
     case "translation":
       return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
     default:
