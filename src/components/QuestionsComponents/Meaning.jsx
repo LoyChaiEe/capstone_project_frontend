@@ -59,7 +59,7 @@ export default function Meaning(props) {
     setIsCorrect(answer.data.isCorrect);
   };
 
-  const wordArrayDisplay = wordArray.map((wordArray, index) => (
+  const wordArrayDisplay = wordArray.map((wordArray) => (
     <Button onClick={select} disabled={props.hasSubmit}>
       {type[1] === "English" ? wordArray.character : wordArray.meaning}
     </Button>
