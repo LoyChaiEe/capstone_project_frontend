@@ -55,18 +55,26 @@ const LessonTest = () => {
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
+  // const {
+  //   data: questionsDatas,
+  //   mutate: refetchLQinfo,
+  //   isLoading: LQADataLoaded,
+  //   error,
+  // } = useSWR(
+  //   `${Backend_URL}/LQA/questions/get/${
+  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
+  //   }`,
+  //   getter,
+  //   { revalidateOnFocus: false }
+  // );
   const {
     data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${
-      userLessonInfo?.slice(-1)[0].lesson?.id + 1
-    }`,
-    getter,
-    { revalidateOnFocus: false }
-  );
+  } = useSWR(`${Backend_URL}/tests/questions/get/1`, getter, {
+    revalidateOnFocus: false,
+  });
 
   //Loader for loading data
   if (
@@ -86,7 +94,7 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 3; i++) {
     const questionData = questionsDatas[i];
     let type = questionData.question_type.split("-");
     let content = {
