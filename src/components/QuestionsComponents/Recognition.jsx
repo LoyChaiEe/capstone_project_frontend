@@ -35,6 +35,7 @@ export default function Recognition(props) {
         console.log(res.data);
         setInputData(res.data)
       });
+      setUserAnswer("")
   }, [questionData]);
 
   //Play sounds
@@ -104,6 +105,12 @@ export default function Recognition(props) {
         </Button>
       );
   })
+
+  if (userAnswer !== "") {
+    props.canSubmit(true);
+  } else {
+    props.canSubmit(false);
+  }
 
   return (
     <>
