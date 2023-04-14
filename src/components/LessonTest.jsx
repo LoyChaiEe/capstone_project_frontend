@@ -10,8 +10,8 @@ import {
 import { Button, message, Steps, theme } from "antd";
 import { useState } from "react";
 import { Progress } from "antd";
-import Start from "./Start"
-import useSWR from "swr"
+import Start from "./Start";
+import useSWR from "swr";
 import { Backend_URL } from "../BACKEND_URL";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
@@ -41,14 +41,14 @@ const LessonTest = () => {
     data: userLessonInfo,
     mutate: refetchULinfo,
     isLoading: userLessonDataLoaded,
-  } = useSWR(`${Backend_URL}/userLesson/${state.type}/1`, getter, {
+  } = useSWR(`${Backend_URL}/userLesson/${state?.type}/1`, getter, {
     revalidateOnFocus: false,
   });
   const {
     data: userWordBank,
     mutate: refetchUWinfo,
     isLoading: userWordbankDataLoaded,
-  } = useSWR(`${Backend_URL}/userWordBank/${state.type}/1`, getter, {
+  } = useSWR(`${Backend_URL}/userWordBank/${state?.type}/1`, getter, {
     revalidateOnFocus: false,
   });
   //Potential bug since the way our data structured only handle 1 chapter per lesson type
@@ -76,13 +76,9 @@ const LessonTest = () => {
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(
-    `${Backend_URL}/tests/questions/get/${
-      14
-    }`,
-    getter,
-    { revalidateOnFocus: false }
-  );
+  } = useSWR(`${Backend_URL}/tests/questions/get/${1}`, getter, {
+    revalidateOnFocus: false,
+  });
 
   //Loader for loading data
   if (
@@ -102,7 +98,7 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 3; i++) {
     const questionData = questionsDatas[i];
     let type = questionData.question_type.split("-");
     let content = {
@@ -120,7 +116,7 @@ const LessonTest = () => {
   }
   steps.push({
     title: "Finsih",
-    content: <Finish lesson_id={0} user_id={0}/>,
+    content: <Finish lesson_id={0} user_id={0} />,
   });
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
@@ -194,20 +190,52 @@ const LessonTest = () => {
   );
 };
 
-export default LessonTest
+export default LessonTest;
 // this function act as to display the type of question and also pass some impt question data and function into the question
-function questionSelect(type, questionData, wordBank, submitFunction, hasSubmit, hasSubmitFunction){
+function questionSelect(
+  type,
+  questionData,
+  wordBank,
+  submitFunction,
+  hasSubmit,
+  hasSubmitFunction
+) {
   switch (type) {
     case "recognition":
-      return <Recognition questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>
+      return (
+        <Recognition
+          questionData={questionData}
+          wordBank={wordBank}
+          canSubmit={submitFunction}
+          hasSubmit={hasSubmit}
+        />
+      );
     case "meaning":
-      return <Meaning questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
+      return (
+        <Meaning
+          questionData={questionData}
+          wordBank={wordBank}
+          canSubmit={submitFunction}
+          hasSubmit={hasSubmit}
+        />
+      );
     case "matching":
-      return <Matching questionData={questionData} setHasSubmit={hasSubmitFunction}/>;
+      return (
+        <Matching
+          questionData={questionData}
+          setHasSubmit={hasSubmitFunction}
+        />
+      );
     case "translation":
-      return <Translation questionData={questionData} wordBank={wordBank} canSubmit={submitFunction} hasSubmit={hasSubmit}/>;
+      return (
+        <Translation
+          questionData={questionData}
+          wordBank={wordBank}
+          canSubmit={submitFunction}
+          hasSubmit={hasSubmit}
+        />
+      );
     default:
-      return 0
+      return 0;
   }
 }
-

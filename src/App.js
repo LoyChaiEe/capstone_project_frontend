@@ -21,15 +21,19 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="vocabs" element={<Home/>}/>
-      <Route path="vocabs/lesson" element={<LessonTest />} />
-      <Route path="characters" element={<Characters />} />
+      <Route path="vocabs">
+        <Route path="lesson" element={<LessonTest />} />
+      </Route>
+      <Route path="characters">
+        <Route path="display" element={<Characters />} />
+        <Route path="hiragana/lesson" element={<LessonTest />} />
+        <Route path="katakana/lesson" element={<LessonTest />} />
+      </Route>
       <Route path="profile">
         <Route path="user" element={<Profile />} />
         <Route path="edit" element={<EditProfile />} />
       </Route>
-      <Route path="characters/hiragana/lesson" element={<LessonTest />} />
-      <Route path="characters/katakana/lesson" element={<LessonTest />} />
+
       <Route path="about">
         <Route path="about" element={<About />} />
         <Route path="landing" element={<AudioButton />} />
