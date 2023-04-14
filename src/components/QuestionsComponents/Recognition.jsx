@@ -16,10 +16,6 @@ const soundPlay = (src) => {
 
 export default function Recognition(props) {
   /* Things need to do in this component:
-     1. data retreival
-     2. Display question and input -> post to backend for randomGeneration
-     3. State to keep track of input
-     4. Audio play
      5. verify correct input
   */
 
@@ -27,6 +23,7 @@ export default function Recognition(props) {
   const questionData = props.questionData;
   const wordBank = props.wordBank
   const [inputData, setInputData] = useState([])
+  const [userAnswer, setUserAnswer] = useState("")
   //Retrieve random input
   useEffect(() => {
     axios
@@ -41,15 +38,18 @@ export default function Recognition(props) {
   }, [questionData]);
 
   //Play sounds
-  const soundPlay = async(e) => {
+  const select = async(e) => {
     //retrieve the id of the button
     const text = e.target.textContent
+    //setState to keep track the choice user select
+    setUserAnswer(text)
     const choiceData = inputData?.find(obj => obj.character === text || obj.pronounciation === text);
     const wordtoplay = choiceData.character
     console.log(wordtoplay)
     const data = await createAudio(wordtoplay);
     const audioSRC = URL.createObjectURL(data);
     console.log(audioSRC)
+    //Audio play portion
     const sound = new Howl({
       src: [audioSRC],
       autoplay: false,
@@ -58,6 +58,7 @@ export default function Recognition(props) {
       format: "wav"
     });
     sound.play();
+
   }
 
   const createQuery = async (text) => {
@@ -83,17 +84,26 @@ export default function Recognition(props) {
     return data;
   };
 
-
-
-
   const inputDisplay = inputData.map((ele, i) => {
     const word = ele.character
     const pronounciation = ele.pronounciation
     const type = questionData.question_type.split("-")
-    return <Button value={i} onClick={soundPlay}>{type[1] === "character" ? pronounciation : word}</Button>
+    let display
+    if (type[1] === "character"){
+      display = pronounciation
+    }
+    else{
+      display = word
+    }
+      return (
+        <Button
+          style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
+          onClick={select}
+        >
+          {display}
+        </Button>
+      );
   })
-
-  console.log(questionData);
 
   return (
     <>
