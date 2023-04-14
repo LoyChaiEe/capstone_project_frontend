@@ -24,14 +24,20 @@ export default function Characters() {
     c.toUpperCase()
   );
 
-  const displayBasic = characters?.basic.map((row) => {
-    return row.map((ele, i) => {
+  const displayBasic = characters?.basic.map((row, index) => {
+    return row.map((ele, rowIndex) => {
       if (ele === null) {
-        return <div className="character-wrapper-empty" key={i}></div>;
+        return (
+          <div
+            className="character-wrapper-empty"
+            key={`${index}-${rowIndex}`}
+          ></div>
+        );
       } else {
         return (
           <div
             className="character-wrapper"
+            key={`${index}-${rowIndex}`}
             onClick={() => soundPlay(ele.audio_url)}
           >
             <div className="character">{ele.character}</div>
@@ -43,15 +49,17 @@ export default function Characters() {
       }
     });
   });
-  const displayDakuon = characters?.dakuon.map((row) => {
-    return row.map((ele) => {
+  const displayDakuon = characters?.dakuon.map((row, index) => {
+    return row.map((ele, rowIndex) => {
       if (ele === null) {
-        return <div className="character-wrapper"></div>;
+        return (
+          <div className="character-wrapper" key={`${index}-${rowIndex}`}></div>
+        );
       } else {
         return (
           <div
             className="character-wrapper"
-            key={ele.id}
+            key={`${index}-${rowIndex}`}
             onClick={() => soundPlay(ele.audio_url)}
           >
             <div className="character">{ele.character}</div>
