@@ -28,8 +28,10 @@ export default function Navbar(userData) {
         last_name: user?.family_name || "",
         email_address: user?.email,
         profile_pic_url: user?.picture,
+        voicevox_id: 1,
       };
       axios.post(`${Backend_URL}/users/newUser`, userInfo).catch((err) => {
+        console.log(userInfo);
         console.log("Axios post to BE error", err);
       });
     }
