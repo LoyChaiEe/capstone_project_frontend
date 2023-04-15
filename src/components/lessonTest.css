@@ -10,3 +10,9 @@
   align-items: center;
   width: 60%;
 }
+
+.question-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}

@@ -134,7 +134,7 @@ const LessonTest = () => {
     title: item.title,
   }));
   const contentStyle = {
-    lineHeight: "260px",
+    // lineHeight: "260px",
     textAlign: "center",
     color: token.colorTextTertiary,
     // backgroundColor: token.colorFillAlter,
@@ -148,7 +148,7 @@ const LessonTest = () => {
         <div className="lesson-wrapper">
           {/* <Steps current={current} items={items} /> */}
           <Progress percent={(current / 15) * 100} />
-          <div style={contentStyle}>
+          <div>
             {steps[current].content}
             {steps[current].display}
           </div>
