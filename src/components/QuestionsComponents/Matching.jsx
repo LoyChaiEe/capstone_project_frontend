@@ -29,7 +29,6 @@ export default function Matching(props) {
     disabledTrackerLeft={}
     disabledTrackerRight={}
   }, [questionData]);
-  console.log(questionData.question_type.split("-"));
   //verify
   useEffect(() => {
     if(leftSelect !== "" && rightSelect !== ""){

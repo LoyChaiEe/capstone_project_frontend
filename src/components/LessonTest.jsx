@@ -57,28 +57,32 @@ const LessonTest = () => {
   //this just temp
 
   //Question Data will be changed for testing
+  const {
+    data: questionsDatas,
+    mutate: refetchLQinfo,
+    isLoading: LQADataLoaded,
+    error,
+  } = useSWR(
+    `${Backend_URL}/LQA/questions/get/${
+      userLessonInfo?.slice(-1)[0].lesson?.id + 1
+    }`,
+    getter,
+    { revalidateOnFocus: false }
+  );
+
+  //Testing for matching
   // const {
   //   data: questionsDatas,
   //   mutate: refetchLQinfo,
   //   isLoading: LQADataLoaded,
   //   error,
   // } = useSWR(
-  //   `${Backend_URL}/LQA/questions/get/${
-  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
+  //   `${Backend_URL}/tests/questions/get/${
+  //     13
   //   }`,
   //   getter,
   //   { revalidateOnFocus: false }
   // );
-
-  //Testing for matching
-  const {
-    data: questionsDatas,
-    mutate: refetchLQinfo,
-    isLoading: LQADataLoaded,
-    error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/${1}`, getter, {
-    revalidateOnFocus: false,
-  });
 
   //Loader for loading data
   if (
@@ -100,7 +104,8 @@ const LessonTest = () => {
   ];
   for (let i = 0; i < 3; i++) {
     const questionData = questionsDatas[i];
-    let type = questionData.question_type.split("-");
+    console.log(questionData)
+    const type = questionData.question_type.split("-");
     let content = {
       title: `Question ${i + 1}`,
       content: questionSelect(
