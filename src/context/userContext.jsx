@@ -33,7 +33,7 @@ export const UserContextProvider = (props) => {
     } else {
       setIsUserDataUpdated(false);
     }
-  }, [userEmail]);
+  }, [userEmail, isUserDataUpdated]);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {

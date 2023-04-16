@@ -17,9 +17,7 @@ export default function ProfileComponent() {
       .then((response) => {
         setVoicevoxImage(response.data.face_image_url);
       });
-  }, []);
-
-  console.log(voicevoxImage);
+  }, [userData.voicevox_id]);
 
   if (!userData?.email_address) return null;
 
@@ -53,9 +51,7 @@ export default function ProfileComponent() {
           </div>
           <div className="profile-info-wrapper">
             <h1 className="profile-info">Username:</h1>
-            <p className="profile-input-box">
-              {isAuthenticated ? userData.username : ""}
-            </p>
+            <p className="profile-input-box">{userData.username}</p>
           </div>
           <div className="profile-info-wrapper">
             <h1 className="profile-info">Email Address:</h1>
