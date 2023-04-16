@@ -7,10 +7,12 @@ import { MiniCharacter } from "../components/SVG";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "../components/Buttons";
+import { useOutletContext } from "react-router-dom";
 
 const getter = (url) => axios.get(url).then((res) => res.data);
 
 export default function Characters() {
+  const [userData] = useOutletContext();
   const [characterType, setCharacterType] = useState("hiragana");
   const { data: characters, mutate: refetch } = useSWR(
     `${Backend_URL}/characters/${characterType}`,
@@ -23,6 +25,24 @@ export default function Characters() {
   const characterType_cap = characterType.replace(/^\w/, (c) =>
     c.toUpperCase()
   );
+
+  const speaker = userData.voicevox_id;
+  const play = async (e) => {
+    console.log(e.target);
+    const text = e.target.textContent;
+    // console.log(text);
+    const data = await createAudio(text);
+    const audioSRC = URL.createObjectURL(data);
+    // console.log(audioSRC);
+    const sound = new Howl({
+      src: [audioSRC],
+      autoplay: false,
+      loop: false,
+      volume: 1,
+      format: "wav",
+    });
+    sound.play();
+  };
 
   const displayBasic = characters?.basic.map((row, index) => {
     return row.map((ele, rowIndex) => {
@@ -38,11 +58,11 @@ export default function Characters() {
           <div
             className="character-wrapper"
             key={`${index}-${rowIndex}`}
-            onClick={() => soundPlay(ele.audio_url)}
+            onClick={play}
           >
-            <div className="character">{ele.character}</div>
+            <span className="character">{ele.character}</span>
             <div className="character-lower-wrapper">
-              <div className="pronounciation">{ele.pronounciation}</div>
+              <span className="pronounciation">{ele.pronounciation}</span>
             </div>
           </div>
         );
@@ -79,6 +99,29 @@ export default function Characters() {
       preload: true,
     });
     sound.play();
+  };
+
+  const createQuery = async (text) => {
+    //change speaker query to the id of the waifu
+    const response = await axios.post(
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
+    );
+    return response.data;
+  };
+
+  const createVoice = async (text) => {
+    const query = await createQuery(text);
+    const response = await axios.post(
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
+      query,
+      { responseType: "blob" }
+    );
+    return response.data;
+  };
+
+  const createAudio = async (text) => {
+    const data = await createVoice(text);
+    return data;
   };
 
   return (

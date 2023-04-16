@@ -91,10 +91,10 @@ export default function EditProfile() {
       .then((response) => {
         setUserData({
           ...userData,
-          first_name: textInput.first_name,
-          last_name: textInput.last_name,
-          username: textInput.username,
-          voicevox_id: textInput.voicevox_id,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          username: response.data.username,
+          voicevox_id: response.data.voicevox_id,
         });
         setIsUserDataUpdated(true);
       })
