@@ -28,20 +28,20 @@ export default function Characters() {
 
   const speaker = userData.voicevox_id;
   const play = async (e) => {
-    console.log(e.target);
-    const text = e.target.textContent;
-    // console.log(text);
-    const data = await createAudio(text);
-    const audioSRC = URL.createObjectURL(data);
-    // console.log(audioSRC);
-    const sound = new Howl({
-      src: [audioSRC],
-      autoplay: false,
-      loop: false,
-      volume: 1,
-      format: "wav",
-    });
-    sound.play();
+    const button = e.target.closest("button");
+    if (button) {
+      const text = button.getAttribute("data-value");
+      const data = await createAudio(text);
+      const audioSRC = URL.createObjectURL(data);
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 1,
+        format: "wav",
+      });
+      sound.play();
+    }
   };
 
   const displayBasic = characters?.basic.map((row, index) => {
@@ -55,16 +55,15 @@ export default function Characters() {
         );
       } else {
         return (
-          <div
+          <button
             className="character-wrapper"
             key={`${index}-${rowIndex}`}
             onClick={play}
+            data-value={ele.character}
           >
             <span className="character">{ele.character}</span>
-            <div className="character-lower-wrapper">
-              <span className="pronounciation">{ele.pronounciation}</span>
-            </div>
-          </div>
+            <span className="pronounciation">{ele.pronounciation}</span>
+          </button>
         );
       }
     });
@@ -77,29 +76,19 @@ export default function Characters() {
         );
       } else {
         return (
-          <div
+          <button
             className="character-wrapper"
             key={`${index}-${rowIndex}`}
-            onClick={() => soundPlay(ele.audio_url)}
+            onClick={play}
+            data-value={ele.character}
           >
-            <div className="character">{ele.character}</div>
-            <div className="character-lower-wrapper">
-              <div className="pronounciation">{ele.pronounciation}</div>
-            </div>
-          </div>
+            <span className="character">{ele.character}</span>
+            <span className="pronounciation">{ele.pronounciation}</span>
+          </button>
         );
       }
     });
   });
-
-  const soundPlay = (src) => {
-    const sound = new Howl({
-      src,
-      html5: true,
-      preload: true,
-    });
-    sound.play();
-  };
 
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
