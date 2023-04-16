@@ -7,13 +7,20 @@ export default function About() {
   useEffect(() => {
     axios.get(`${Backend_URL}/voicevoxes/`).then((response) => {
       setVoices(response.data);
-      console.log(voices);
-      console.log(response);
     });
   }, []);
+
   return (
     <div>
       <span>ABOUT</span>
+      <select>
+        {voices &&
+          voices.map((voice, index) => (
+            <option value={voice.id} key={index}>
+              {voice.id}
+            </option>
+          ))}
+      </select>
     </div>
   );
 }

@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./profile.css";
-import { Link, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { SettingsButton, LogoutButton } from "../components/Buttons";
+import axios from "axios";
+import { Backend_URL } from "../BACKEND_URL";
 
 export default function ProfileComponent() {
   const { isAuthenticated } = useAuth0();
   const [userData] = useOutletContext();
+  const [voicevoxImage, setVoicevoxImage] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${Backend_URL}/voicevoxes/speaker/${userData.voicevox_id}`)
+      .then((response) => {
+        setVoicevoxImage(response.data.face_image_url);
+      });
+  }, []);
+
+  console.log(voicevoxImage);
 
   if (!userData?.email_address) return null;
 
@@ -49,6 +62,14 @@ export default function ProfileComponent() {
             <p className="profile-input-box">
               {isAuthenticated ? userData.email_address : ""}
             </p>
+          </div>
+          <div className="profile-info-wrapper">
+            <h1 className="profile-info">Waifu voice:</h1>
+            <img
+              src={voicevoxImage}
+              alt={voicevoxImage}
+              className="profile-waifu-voice"
+            />
           </div>
         </div>
         <div className="profile-settings-wrapper">

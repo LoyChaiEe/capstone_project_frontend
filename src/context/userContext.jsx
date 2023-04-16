@@ -11,6 +11,7 @@ export const UserContextProvider = (props) => {
   const [userEmail, setUserEmail] = useState("");
   const [allUserData, setAllUserData] = useState([]);
   const [isUserDataUpdated, setIsUserDataUpdated] = useState(false);
+  const [voicevoxImage, setVoicevoxImage] = useState("");
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -48,7 +49,12 @@ export const UserContextProvider = (props) => {
 
   return (
     <UserContext.Provider
-      value={{ userData, allUserData, setUserData, setIsUserDataUpdated }}
+      value={{
+        userData,
+        allUserData,
+        setUserData,
+        setIsUserDataUpdated,
+      }}
     >
       {props.children}
     </UserContext.Provider>

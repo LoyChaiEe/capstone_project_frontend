@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./editprofile.css";
 import { Backend_URL } from "../BACKEND_URL";
 import { storage } from "../firebase";
@@ -20,6 +20,13 @@ export default function EditProfile() {
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
   const [profilePhotoURL, setProfilePhotoURL] = useState("");
+  const [voices, setVoices] = useState("");
+
+  useEffect(() => {
+    axios.get(`${Backend_URL}/voicevoxes/`).then((response) => {
+      setVoices(response.data);
+    });
+  }, []);
 
   const handleUpdatedPhoto = (e) => {
     setUpdatedPhotoFile(e.target.files[0]);
@@ -165,6 +172,17 @@ export default function EditProfile() {
                   setCurrentUsername(e.target.value);
                 }}
               />
+            </div>
+            <div className="edit-profile-info-wrapper">
+              <h1 className="edit-profile-title-info">Waifu Voice:</h1>
+              <select className="profile-input-box">
+                {voices &&
+                  voices.map((voice, index) => (
+                    <option value={voice.id} key={index}>
+                      {voice.id}
+                    </option>
+                  ))}
+              </select>
             </div>
             <Link to="/" onClick={handleProfileChange}>
               <Button>Done</Button>

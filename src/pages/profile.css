@@ -60,6 +60,12 @@
   border-bottom: 2px solid rgba(159, 123, 113, 0.5);
 }
 
+.profile-waifu-voice {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
 .profile-settings-wrapper {
   display: flex;
   flex-direction: row;
