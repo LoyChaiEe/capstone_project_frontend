@@ -3,7 +3,7 @@ import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
 import { Howl } from "howler";
-import { MiniCharacter } from "../components/SVG";
+import { MiniCharacter } from "../components/PNG";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "../components/Buttons";

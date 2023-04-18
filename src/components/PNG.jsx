@@ -1,4 +1,4 @@
-import "./svg.css";
+import "./png.css";
 
 export function NavLogo() {
   return (
@@ -10,7 +10,7 @@ export function NavLogo() {
   );
 }
 
-export function HomeSVG() {
+export function AboutPNG() {
   return (
     <img
       src={require("../assets/home.png")}
@@ -20,7 +20,7 @@ export function HomeSVG() {
   );
 }
 
-export function LessonSVG() {
+export function LessonPNG() {
   return (
     <img
       src={require("../assets/lesson.png")}
@@ -30,7 +30,7 @@ export function LessonSVG() {
   );
 }
 
-export function CharacterSVG() {
+export function CharacterPNG() {
   return (
     <img
       src={require("../assets/character.png")}
@@ -40,22 +40,12 @@ export function CharacterSVG() {
   );
 }
 
-export function ProfileSVG() {
+export function ProfilePNG() {
   return (
     <img
       src={require("../assets/profile.png")}
       className="nav-link-logo"
       alt="profile-png"
-    />
-  );
-}
-
-export function AboutSVG() {
-  return (
-    <img
-      src={require("../assets/about.png")}
-      className="nav-link-logo"
-      alt="about-png"
     />
   );
 }

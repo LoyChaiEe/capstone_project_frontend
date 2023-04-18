@@ -4,7 +4,6 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Characters from "./pages/Characters";
 import About from "./pages/About";
-import LessonTest from "./components/LessonTest";
 import AudioButton from "./components/ButtonTest";
 import Landing from "./pages/Landing";
 import {
@@ -20,14 +19,14 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Landing />} />
-      <Route path="home" element={<Home />} />
+      <Route path="lesson" element={<Home />} />
       <Route path="vocabs">
-        <Route path="lesson" element={<LessonTest />} />
+        <Route path="lesson" element={<Lesson />} />
       </Route>
       <Route path="characters">
         <Route path="display" element={<Characters />} />
-        <Route path="hiragana/lesson" element={<LessonTest />} />
-        <Route path="katakana/lesson" element={<LessonTest />} />
+        <Route path="hiragana/lesson" element={<Lesson />} />
+        <Route path="katakana/lesson" element={<Lesson />} />
       </Route>
       <Route path="profile">
         <Route path="user" element={<Profile />} />

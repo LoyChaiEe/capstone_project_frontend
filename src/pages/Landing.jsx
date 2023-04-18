@@ -8,7 +8,7 @@ export default function Landing() {
   const { isAuthenticated } = useAuth0();
   const LoginButton = () => {
     const { loginWithRedirect } = useAuth0();
-    return <Button onClick={() => loginWithRedirect()}>Start Learning</Button>;
+    return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
   };
   return (
     <div className="landing-container">
@@ -25,8 +25,8 @@ export default function Landing() {
         {!isAuthenticated ? (
           <LoginButton />
         ) : (
-          <Link to="/home">
-            <Button>hi</Button>
+          <Link to="/lesson">
+            <Button>Start Learning</Button>
           </Link>
         )}
       </div>

@@ -1,9 +1,9 @@
 import React from "react";
 import "./buttons.css";
 import { Link } from "react-router-dom";
-import { SettingBtn } from "./SVG";
+import { SettingBtn } from "./PNG";
 import { useAuth0 } from "@auth0/auth0-react";
-import { LogOutBtn } from "./SVG";
+import { LogOutBtn } from "./PNG";
 
 export function Button(props) {
   return (

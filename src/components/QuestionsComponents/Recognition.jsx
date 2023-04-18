@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
+import { MiniCharacter } from "../PNG";
 import "./matching.css";
 import { Button } from "antd";
 import axios from "axios";
@@ -21,28 +21,28 @@ export default function Recognition(props) {
 
   //Data Retreival
   const questionData = props.questionData;
-  const wordBank = props.wordBank
-  const [inputData, setInputData] = useState([])
-  const [userAnswer, setUserAnswer] = useState("")
-  const [isCorrect, setCorrect] = useState(null)
+  const wordBank = props.wordBank;
+  const [inputData, setInputData] = useState([]);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [isCorrect, setCorrect] = useState(null);
   //Retrieve random input
   useEffect(() => {
     axios
       .post(`${Backend_URL}/questions/recognition/input`, {
         questionData: questionData,
-        wordBank: wordBank
+        wordBank: wordBank,
       })
       .then((res) => {
         console.log(res.data);
-        setInputData(res.data)
+        setInputData(res.data);
       });
-      setUserAnswer("")
-      setCorrect(null)
+    setUserAnswer("");
+    setCorrect(null);
   }, [questionData]);
 
   //Verify answer
-  useEffect(() =>{
-    if(userAnswer !== ""){
+  useEffect(() => {
+    if (userAnswer !== "") {
       axios
         .post(`${Backend_URL}/questions/recognition/verify`, {
           answer: questionData,
@@ -52,16 +52,18 @@ export default function Recognition(props) {
           setCorrect(res.data.isCorrect);
         });
     }
-  }, [props.hasSubmit])
+  }, [props.hasSubmit]);
 
   //Play sounds
-  const select = async(e) => {
+  const select = async (e) => {
     //retrieve the id of the button
-    const text = e.target.textContent
+    const text = e.target.textContent;
     //setState to keep track the choice user select
-    setUserAnswer(text)
-    const choiceData = inputData?.find(obj => obj.character === text || obj.pronounciation === text);
-    const wordtoplay = choiceData.character
+    setUserAnswer(text);
+    const choiceData = inputData?.find(
+      (obj) => obj.character === text || obj.pronounciation === text
+    );
+    const wordtoplay = choiceData.character;
     const data = await createAudio(wordtoplay);
     const audioSRC = URL.createObjectURL(data);
     //Audio play portion
@@ -70,11 +72,10 @@ export default function Recognition(props) {
       autoplay: false,
       loop: false,
       volume: 1,
-      format: "wav"
+      format: "wav",
     });
     sound.play();
-
-  }
+  };
 
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
@@ -100,26 +101,25 @@ export default function Recognition(props) {
   };
 
   const inputDisplay = inputData.map((ele, i) => {
-    const word = ele.character
-    const pronounciation = ele.pronounciation
-    const type = questionData.question_type.split("-")
-    let display
-    if (type[1] === "character"){
-      display = pronounciation
+    const word = ele.character;
+    const pronounciation = ele.pronounciation;
+    const type = questionData.question_type.split("-");
+    let display;
+    if (type[1] === "character") {
+      display = pronounciation;
+    } else {
+      display = word;
     }
-    else{
-      display = word
-    }
-      return (
-        <Button
-          style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
-          onClick={select}
-          disabled={props.hasSubmit}
-        >
-          {display}
-        </Button>
-      );
-  })
+    return (
+      <Button
+        style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
+        onClick={select}
+        disabled={props.hasSubmit}
+      >
+        {display}
+      </Button>
+    );
+  });
 
   if (userAnswer !== "") {
     props.canSubmit(true);

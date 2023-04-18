@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
 import axios from "axios";
 import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
+import { Modal } from "antd";
+import QuestionModalBody from "../QuestionModalBody";
+import "./translation.css";
 
 export default function Translation(props) {
   const questionData = props.questionData;
@@ -13,6 +15,7 @@ export default function Translation(props) {
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const type = questionData?.question_type.split("-");
 
   const speaker = userData.voicevox_id;
@@ -135,10 +138,45 @@ export default function Translation(props) {
   } else {
     props.canSubmit(false);
   }
+
+  const showTranslation = async () => {
+    try {
+      console.log("Open Guide");
+    } catch (err) {
+      console.log("ERROR", err);
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <div style={{ backgroundColor: "orange" }}>
-        <span>{questionData.question}</span>
+        <button
+          className="modal-close-button"
+          onClick={() => showTranslation()}
+        >
+          {questionData.question}
+        </button>
+        <Modal
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <QuestionModalBody />
+          <div className="modal-footer">
+            <button onClick={handleOk} className="modal-close-button">
+              Exit
+            </button>
+          </div>
+        </Modal>
         <button onClick={play}>Hi</button>
       </div>
       {displayAnswer}

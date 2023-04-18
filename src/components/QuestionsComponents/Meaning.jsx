@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MiniCharacter } from "../SVG";
+import { MiniCharacter } from "../PNG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
 import { QuestionButton } from "../Buttons";
