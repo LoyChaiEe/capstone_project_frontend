@@ -16,10 +16,6 @@ import { Backend_URL } from "../BACKEND_URL.js";
 export default function Navbar(userData) {
   const { user, isAuthenticated } = useAuth0();
 
-  const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
-    return <button onClick={() => loginWithRedirect()}>Log In</button>;
-  };
   useEffect(() => {
     if (isAuthenticated) {
       const userInfo = {
@@ -94,9 +90,7 @@ export default function Navbar(userData) {
             </Link>
           </li>
         </ul>
-      ) : (
-        LoginButton()
-      )}
+      ) : null}
     </div>
   );
 }

@@ -152,7 +152,7 @@ const LessonTest = () => {
         <div className="lesson-wrapper">
           {/* <Steps current={current} items={items} /> */}
           <Progress percent={(current / 15) * 100} />
-          <div>
+          <div className="question">
             {steps[current].content}
             {steps[current].display}
           </div>

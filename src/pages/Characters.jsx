@@ -114,54 +114,52 @@ export default function Characters() {
   };
 
   return (
-    <div className="character-section">
-      <div className="character-container">
-        <div className="character-selection-title">
-          <div
-            className={characterType === "hiragana" ? "active" : "inactive"}
-            onClick={() => changeCharacterType("hiragana")}
-          >
-            <h1 className="selection-title">Hiragana</h1>
-          </div>
-          <div
-            className={characterType === "katakana" ? "active" : "inactive"}
-            onClick={() => changeCharacterType("katakana")}
-          >
-            <h1>Katakana</h1>
+    <div className="character-container">
+      <div className="character-selection-title">
+        <div
+          className={characterType === "hiragana" ? "active" : "inactive"}
+          onClick={() => changeCharacterType("hiragana")}
+        >
+          <h1 className="selection-title">Hiragana</h1>
+        </div>
+        <div
+          className={characterType === "katakana" ? "active" : "inactive"}
+          onClick={() => changeCharacterType("katakana")}
+        >
+          <h1>Katakana</h1>
+        </div>
+      </div>
+      <>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <span className="character-title-title">{characterType_cap}</span>
+            <p className="character-title-description">Basic Symbols</p>
+            <p className="character-instruction">
+              (click on the cards to listen to its pronounciation)
+            </p>
+            <Link
+              to={`/characters/${characterType}/lesson`}
+              state={{ type: `${characterType}` }}
+            >
+              <Button id="character-button">
+                Let's learn {characterType_cap}!
+              </Button>
+            </Link>
           </div>
         </div>
-        <>
-          <div className="character-title">
-            <MiniCharacter />
-            <div className="character-title-text">
-              <span className="character-title-title">{characterType_cap}</span>
-              <p className="character-title-description">Basic Symbols</p>
-              <p className="character-instruction">
-                (click on the cards to listen to its pronounciation)
-              </p>
-              <Link
-                to={`/characters/${characterType}/lesson`}
-                state={{ type: `${characterType}` }}
-              >
-                <Button id="character-button">
-                  Let's learn {characterType_cap}!
-                </Button>
-              </Link>
-            </div>
+        <div className="character-grid">{displayBasic}</div>
+        <div className="character-title">
+          <MiniCharacter />
+          <div className="character-title-text">
+            <h1 className="character-title-title">Dakuon</h1>
+            <p className="character-instruction">
+              Addition of a symbol changes the pronounciation
+            </p>
           </div>
-          <div className="character-grid">{displayBasic}</div>
-          <div className="character-title">
-            <MiniCharacter />
-            <div className="character-title-text">
-              <h1 className="character-title-title">Dakuon</h1>
-              <p className="character-instruction">
-                Addition of a symbol changes the pronounciation
-              </p>
-            </div>
-          </div>
-          <div className="character-grid">{displayDakuon}</div>
-        </>
-      </div>
+        </div>
+        <div className="character-grid">{displayDakuon}</div>
+      </>
     </div>
   );
 }

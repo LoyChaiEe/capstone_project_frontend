@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MiniCharacter } from "../SVG";
 import axios from "axios";
-import useSWR from "swr";
 import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";

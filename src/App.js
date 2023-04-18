@@ -1,4 +1,3 @@
-import "./App.css";
 import Home from "./pages/Home";
 import Lesson from "./pages/Lesson";
 import Profile from "./pages/Profile";
@@ -20,7 +19,8 @@ import RootLayout from "./RootLayout/RootLayout";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route index element={<Home />} />
+      <Route index element={<Landing />} />
+      <Route path="home" element={<Home />} />
       <Route path="vocabs">
         <Route path="lesson" element={<LessonTest />} />
       </Route>
@@ -33,7 +33,6 @@ const router = createBrowserRouter(
         <Route path="user" element={<Profile />} />
         <Route path="edit" element={<EditProfile />} />
       </Route>
-
       <Route path="about">
         <Route path="about" element={<About />} />
         <Route path="landing" element={<AudioButton />} />
