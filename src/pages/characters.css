@@ -1,3 +1,5 @@
+@import "@fontsource/zen-maru-gothic";
+
 .character-container {
   display: flex;
   flex-direction: column;
@@ -93,6 +95,8 @@
   width: 100px;
   height: 100px;
   background-color: white;
+  color: inherit;
+  font-family: "Zen Maru Gothic", sans-serif;
 }
 
 .character-wrapper:hover {
@@ -114,10 +118,8 @@
   font-weight: bold;
 }
 
-.character-lower-wrapper {
-  width: 100%;
-}
-
 .pronounciation {
   font-size: 15px;
+  width: 100%;
+  font-family: "Rubik", sans-serif;
 }

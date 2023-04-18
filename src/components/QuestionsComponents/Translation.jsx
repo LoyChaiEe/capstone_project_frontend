@@ -4,16 +4,56 @@ import axios from "axios";
 import useSWR from "swr";
 import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
+import { useOutletContext } from "react-router-dom";
+import { Howl } from "howler";
 
 export default function Translation(props) {
   const questionData = props.questionData;
   const wordBank = props.wordBank;
+  const [userData] = useOutletContext();
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
   const type = questionData?.question_type.split("-");
 
-  console.log("TYPE", type);
+  const speaker = userData.voicevox_id;
+  const play = async (e) => {
+    const questionPhrase = questionData.question;
+    const startIndex = questionPhrase.indexOf(":") + 1;
+    const text = questionPhrase.slice(startIndex);
+    const data = await createAudio(text);
+    const audioSRC = URL.createObjectURL(data);
+    const sound = new Howl({
+      src: [audioSRC],
+      autoplay: false,
+      loop: false,
+      volume: 2,
+      format: "wav",
+    });
+    sound.play();
+  };
+
+  const createQuery = async (text) => {
+    const response = await axios.post(
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
+    );
+    return response.data;
+  };
+
+  const createVoice = async (text) => {
+    const query = await createQuery(text);
+    const response = await axios.post(
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
+      query,
+      { responseType: "blob" }
+    );
+    return response.data;
+  };
+
+  const createAudio = async (text) => {
+    const data = await createVoice(text);
+    return data;
+  };
 
   const verify = async () => {
     console.log(userInput);
@@ -91,10 +131,6 @@ export default function Translation(props) {
     </Button>
   ));
 
-  console.log(type);
-  console.log(choiceDisplay);
-  console.log(displayAnswer);
-
   if (displayAnswer.length !== 0) {
     props.canSubmit(true);
   } else {
@@ -103,8 +139,8 @@ export default function Translation(props) {
   return (
     <>
       <div style={{ backgroundColor: "orange" }}>
-        {/* <MiniCharacter /> */}
         <span>{questionData.question}</span>
+        <button onClick={play}>Hi</button>
       </div>
       {displayAnswer}
       <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>

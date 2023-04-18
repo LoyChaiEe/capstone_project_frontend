@@ -37,7 +37,7 @@ export default function Characters() {
         src: [audioSRC],
         autoplay: false,
         loop: false,
-        volume: 1,
+        volume: 2,
         format: "wav",
       });
       sound.play();

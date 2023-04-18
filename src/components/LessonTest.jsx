@@ -100,7 +100,6 @@ const LessonTest = () => {
   ];
   for (let i = 0; i < 3; i++) {
     const questionData = questionsDatas[i];
-    console.log(questionData)
     const type = questionData.question_type.split("-");
     let content = {
       title: `Question ${i + 1}`,
