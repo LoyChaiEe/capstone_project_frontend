@@ -1,26 +1,38 @@
-import React, {useRef, useState, useEffect} from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { MiniCharacter } from "../SVG";
-import axios from "axios"
+import axios from "axios";
+import { FLASK_URL } from "../../BACKEND_URL";
 
 export default function Writing(props) {
   const canvasRef = useRef(null);
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isPainted, setIsPainted] = useState(false);
+  const [prediction, setPrediction] = useState("")
+  const questionData = props.questionData;
+  const type = questionData.question_type.split("-");
 
-  //initialise white background and thickness of brush
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "#fff"; // set the background color to white
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.lineWidth = 10;
-  }, []);
+    setPrediction("");
+  }, [questionData]);
 
-  //when user hold down the mouse button, draw
+  //Enable/disable submit button
+  useEffect(() => {
+    if(isPainted){
+      props.canSubmit(true)
+    }
+  }, [isPainted, props])
+
   const handleMouseDown = (event) => {
     setMouseCoordinates(event);
     setIsDrawing(true);
+    setIsPainted(true);
 
     // Start Drawing
     const canvas = canvasRef.current;
@@ -29,7 +41,6 @@ export default function Writing(props) {
     context.moveTo(mouseX, mouseY);
   };
 
-  //track user's mouse cursor
   const handleMouseMove = (event) => {
     setMouseCoordinates(event);
 
@@ -41,12 +52,10 @@ export default function Writing(props) {
     }
   };
 
-  //When user done drawing
   const handleMouseUp = (event) => {
     setMouseCoordinates(event);
     setIsDrawing(false);
   };
-
 
   const setMouseCoordinates = (event) => {
     const canvas = canvasRef.current;
@@ -55,42 +64,47 @@ export default function Writing(props) {
     setMouseY(event.clientY - boundings.top);
   };
 
-  //Clear canvas
   const handleClear = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "#fff"; // set the background color to white
     context.fillRect(0, 0, canvas.width, canvas.height);
+    setIsPainted(false);
+    props.canSubmit(false);
   };
 
-  //Modelpredict, send an axios request to flask backend
-  const predict = async() => {
+  const handleSave = async () => {
     const canvas = canvasRef.current;
     const canvasDataURL = canvas.toDataURL("image/png", 1.0); // set the MIME type to PNG
     try {
-      const response = await axios.post("http://localhost:5000/writing/verify/hiragana", {
-        dataURL: canvasDataURL,
-        answer: "し"
-      });
-      console.log(response.data);
+      const response = await axios.post(
+        //`${FLASK_URL}/writing/verify/${type[2]}`,
+        "http://localhost:5000/writing/verify/hiragana",
+        {
+          dataURL: canvasDataURL,
+          answer: questionData.answer,
+        }
+      );
+      setPrediction(response.data.output)
+      console.log(response.data.output);
     } catch (error) {
       console.error(error);
     }
   };
 
+  //Verify the input of the user using machine learning models
+  useEffect(()  => {
+    if(props.hasSubmit){
+      handleSave()
+    }
+  }, [props.hasSubmit])
   return (
-    <main>
-      <div className="left-block">
-        <div className="buttons">
-          <button id="clear" type="button" onClick={handleClear}>
-            Clear
-          </button>
-          <button id="save" type="button" onClick={predict}>
-            predict
-          </button>
-        </div>
+    <>
+      <div>
+        <MiniCharacter />
+        <span>{questionData.question}</span>
       </div>
-      <div className="right-block">
+      <div className="right-block" style={{ backgroundColor: "orange" }}>
         <canvas
           id="paint-canvas"
           width="640"
@@ -100,21 +114,15 @@ export default function Writing(props) {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         ></canvas>
+        <br></br>
+        <button id="clear" type="button" onClick={handleClear}>
+          Clear
+        </button>
+        {prediction !== "" && (
+          <span hidden={!props.hasSubmit}>You wrote {prediction}</span>
+        )}
       </div>
-    </main>
-  )
+    </>
+  );
 }
 
-
-// return (
-//   <>
-//     <div>
-//       Welcome to Test
-//       <MiniCharacter />
-//     </div>
-//     <div>Questions</div>
-//     <div>Answer display</div>
-//     <div>Possible inputs</div>
-//     <button onClick={() => props.canSubmit(true)}>disable/enable</button>
-//   </>
-// );
