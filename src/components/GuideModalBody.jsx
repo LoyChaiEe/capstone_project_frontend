@@ -17,11 +17,9 @@ export default function GuideModalBody() {
         setLessonWords(res.data);
       });
     } catch (err) {
-      console.log("ERR", err);
+      console.log("Error retrieving words from lesson", err);
     }
   }, []);
-
-  console.log(lessonWords);
 
   const play = async (e) => {
     const text = e.target.textContent;
@@ -40,7 +38,6 @@ export default function GuideModalBody() {
   };
 
   const createQuery = async (text) => {
-    //change speaker query to the id of the waifu
     const response = await axios.post(
       `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
     );
