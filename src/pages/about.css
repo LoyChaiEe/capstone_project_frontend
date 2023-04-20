@@ -1,0 +1,38 @@
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.about-character-container {
+  display: grid;
+  margin-right: auto;
+  margin-left: auto;
+  grid-auto-columns: 1fr;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.about-character-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-character {
+  object-fit: cover;
+  width: 259.33px;
+  height: 300px;
+}
+
+.about-character-lower {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}

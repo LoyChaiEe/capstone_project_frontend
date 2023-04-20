@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import { Howl } from "howler";
+import "./about.css";
 
 export default function About() {
   const [voicevoxCharacters, setVoicevoxCharacters] = useState([]);
@@ -18,32 +19,42 @@ export default function About() {
 
   const play = async (e) => {
     const speakerId = e.target.value;
-    const text = e.target.textContent;
-    const data = await createAudio(text, speakerId);
-    const audioSRC = URL.createObjectURL(data);
-    const sound = new Howl({
-      src: [audioSRC],
-      autoplay: false,
-      loop: false,
-      volume: 1,
-      format: "wav",
-    });
-    sound.play();
+    const button = e.target.closest("button");
+    if (button) {
+      const text = button.getAttribute("data-value");
+      const data = await createAudio(text, speakerId);
+      const audioSRC = URL.createObjectURL(data);
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 2,
+        format: "wav",
+      });
+      sound.play();
+    }
   };
 
   const displayVoicevoxCharacters = voicevoxCharacters.map(
     (voicevoxCharacter, index) => (
       <>
-        <img
-          src={voicevoxCharacter.full_body_image_url}
-          alt={voicevoxCharacter.full_body_image_url}
-          key={index}
-        />
-        <div>
-          {voicevoxCharacter.voicevox_character}
-          <button onClick={play} value={voicevoxCharacter.voicevox_voice}>
-            {voicevoxCharacter.voicevox_voice}
-          </button>
+        <div className="about-character-wrapper">
+          <img
+            src={voicevoxCharacter.full_body_image_url}
+            alt={voicevoxCharacter.full_body_image_url}
+            className="about-character"
+            key={index}
+          />
+          <div className="about-character-lower">
+            {voicevoxCharacter.voicevox_character}
+            <button
+              onClick={play}
+              value={voicevoxCharacter.voicevox_voice}
+              data-value={`こんにちは、私の名前は ${voicevoxCharacter.character}`}
+            >
+              {voicevoxCharacter.voicevox_voice}
+            </button>
+          </div>
         </div>
       </>
     )
@@ -72,9 +83,11 @@ export default function About() {
   };
 
   return (
-    <div>
+    <div className="about-container">
       <span>ABOUT</span>
-      {displayVoicevoxCharacters}
+      <div className="about-character-container">
+        {displayVoicevoxCharacters}
+      </div>
     </div>
   );
 }
