@@ -1,0 +1,17 @@
+.user-question-wrapper {
+  background-color: orange;
+  font-size: 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
+.user-answer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aquamarine;
+  flex: 1;
+}

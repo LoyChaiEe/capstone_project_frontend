@@ -1,18 +1,31 @@
-.recognition-display {
-  display: inline;
-  padding: 5px;
-  flex-direction: column;
+.user-question-wrapper {
+  background-color: orange;
+  font-size: 30px;
+  flex: 1;
+  display: flex;
   align-items: center;
-  border-style: solid;
-  border-width: 2px 2px 6px;
-  border-color: rgba(0, 0, 0, 0.298);
-  border-radius: 10px;
-  cursor: pointer;
-  transition-property: all;
-  transition-duration: 200ms;
-  transition-timing-function: ease;
+  justify-content: center;
+  color: black;
 }
 
-.character {
-  font-size: 24px;
+.user-answer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aquamarine;
+  flex: 1;
+}
+
+.selected {
+  background-color: rgba(235, 160, 144, 0.5);
+  color: #9f7b71;
+}
+
+.wordArray-grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  width: 320px;
 }

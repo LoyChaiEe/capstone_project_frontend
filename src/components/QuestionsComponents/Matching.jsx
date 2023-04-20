@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MiniCharacter } from "../PNG";
 import "./matching.css";
 import { Button } from "antd";
+import { QuestionButton } from "../Buttons";
 import axios from "axios";
 import { Backend_URL } from "../../BACKEND_URL";
 //global for the question
@@ -68,25 +69,25 @@ export default function Matching(props) {
   console.log(disabledTrackerLeft);
   console.log(disabledTrackerRight);
   //Set output rows
-  const leftCol = inputRow?.map((x) => (
-    <Button
+  const leftCol = inputRow?.map((x, i) => (
+    <QuestionButton
       onClick={addLeft}
-      className={"matching-grid-item"}
-      style={{ backgroundColor: x === leftSelect ? "blue" : "white" }}
+      id={x === leftSelect ? "blue" : "white"}
       disabled={disabledTrackerLeft[`${x}`]}
+      key={i}
     >
       {x}
-    </Button>
+    </QuestionButton>
   ));
-  const rightCol = outputRow?.map((x) => (
-    <Button
+  const rightCol = outputRow?.map((x, i) => (
+    <QuestionButton
       onClick={addRight}
-      className={"matching-grid-item"}
-      style={{ backgroundColor: x === rightSelect ? "blue" : "white" }}
+      id={x === rightSelect ? "blue" : "white"}
       disabled={disabledTrackerRight[`${x}`]}
+      key={i}
     >
       {x}
-    </Button>
+    </QuestionButton>
   ));
 
   if (count === 5) {
@@ -95,13 +96,10 @@ export default function Matching(props) {
 
   return (
     <>
-      <div>
-        <MiniCharacter />
-        <span>{questionData.question}</span>
-      </div>
+      <span className="user-question-wrapper">{questionData.question}</span>
       <div className="matching-grid-container">
-        <div>{leftCol}</div>
-        <div>{rightCol}</div>
+        <div className="columns">{leftCol}</div>
+        <div className="columns">{rightCol}</div>
       </div>
     </>
   );

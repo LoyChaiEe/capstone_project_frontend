@@ -53,32 +53,28 @@ const LessonTest = () => {
   //this just temp
 
   //Question Data will be changed for testing
-  const {
-    data: questionsDatas,
-    mutate: refetchLQinfo,
-    isLoading: LQADataLoaded,
-    error,
-  } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${
-      userLessonInfo?.slice(-1)[0].lesson?.id + 1
-    }`,
-    getter,
-    { revalidateOnFocus: false }
-  );
-
-  //Testing for matching
   // const {
   //   data: questionsDatas,
   //   mutate: refetchLQinfo,
   //   isLoading: LQADataLoaded,
   //   error,
   // } = useSWR(
-  //   `${Backend_URL}/tests/questions/get/${
-  //     13
+  //   `${Backend_URL}/LQA/questions/get/${
+  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
   //   }`,
   //   getter,
   //   { revalidateOnFocus: false }
   // );
+
+  //Testing for matching
+  const {
+    data: questionsDatas,
+    mutate: refetchLQinfo,
+    isLoading: LQADataLoaded,
+    error,
+  } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
+    revalidateOnFocus: false,
+  });
 
   //Loader for loading data
   if (
@@ -137,22 +133,13 @@ const LessonTest = () => {
     key: item.title,
     title: item.title,
   }));
-  const contentStyle = {
-    // lineHeight: "260px",
-    textAlign: "center",
-    color: token.colorTextTertiary,
-    // backgroundColor: token.colorFillAlter,
-    borderRadius: token.borderRadiusLG,
-    // border: `1px dashed ${token.colorBorder}`,
-    marginTop: 16,
-  };
+
   return (
     <>
       <div className="lesson-container">
         <div className="lesson-wrapper">
-          {/* <Steps current={current} items={items} /> */}
           <Progress percent={(current / 15) * 100} />
-          <div className="question">
+          <div className="question-wrapper">
             {steps[current].content}
             {steps[current].display}
           </div>

@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { MiniCharacter } from "../PNG";
-import "./matching.css";
-import { Button } from "antd";
+import "./recognition.css";
+import { QuestionButton } from "../Buttons";
 import axios from "axios";
 import { Howl } from "howler";
 import { Backend_URL } from "../../BACKEND_URL";
-const soundPlay = (src) => {
-  const sound = new Howl({
-    src,
-    html5: true,
-    preload: true,
-  });
-  sound.play();
-};
 
 export default function Recognition(props) {
   /* Things need to do in this component:
@@ -25,6 +17,8 @@ export default function Recognition(props) {
   const [inputData, setInputData] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
   const [isCorrect, setCorrect] = useState(null);
+  const [prevSelectedButton, setPrevSelectedButton] = useState(null);
+
   //Retrieve random input
   useEffect(() => {
     axios
@@ -38,6 +32,7 @@ export default function Recognition(props) {
       });
     setUserAnswer("");
     setCorrect(null);
+    setPrevSelectedButton(null);
   }, [questionData]);
 
   //Verify answer
@@ -56,8 +51,15 @@ export default function Recognition(props) {
 
   //Play sounds
   const select = async (e) => {
+    if (prevSelectedButton) {
+      prevSelectedButton.classList.remove("selected");
+    }
+
+    const selectedButton = e.target;
+    selectedButton.classList.add("selected");
+    const text = selectedButton.textContent;
+    setPrevSelectedButton(selectedButton);
     //retrieve the id of the button
-    const text = e.target.textContent;
     //setState to keep track the choice user select
     setUserAnswer(text);
     const choiceData = inputData?.find(
@@ -111,13 +113,9 @@ export default function Recognition(props) {
       display = word;
     }
     return (
-      <Button
-        style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
-        onClick={select}
-        disabled={props.hasSubmit}
-      >
+      <QuestionButton onClick={select} disabled={props.hasSubmit}>
         {display}
-      </Button>
+      </QuestionButton>
     );
   });
 
@@ -129,14 +127,14 @@ export default function Recognition(props) {
 
   return (
     <>
-      <div>
-        <MiniCharacter />
-        <span>{questionData.question}</span>
+      {/* <MiniCharacter /> */}
+      <span className="user-question-wrapper">{questionData.question}</span>
+      <div className="user-answer-wrapper">
+        <div className="wordArray-grid">{inputDisplay}</div>
       </div>
       <div hidden={!props.hasSubmit}>
         You are {isCorrect ? "correct" : "wrong"}
       </div>
-      <div>{inputDisplay}</div>
     </>
   );
 }

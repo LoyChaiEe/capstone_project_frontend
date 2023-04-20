@@ -16,9 +16,10 @@ export default function Translation(props) {
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const type = questionData?.question_type.split("-");
 
+  const type = questionData?.question_type.split("-");
   const speaker = userData.voicevox_id;
+
   const play = async (e) => {
     const questionPhrase = questionData.question;
     const startIndex = questionPhrase.indexOf(":") + 1;
@@ -157,30 +158,12 @@ export default function Translation(props) {
 
   return (
     <>
-      <div style={{ backgroundColor: "orange" }}>
-        <button
-          className="modal-close-button"
-          onClick={() => showTranslation()}
-        >
-          {questionData.question}
-        </button>
-        <Modal
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={null}
-        >
-          <QuestionModalBody />
-          <div className="modal-footer">
-            <button onClick={handleOk} className="modal-close-button">
-              Exit
-            </button>
-          </div>
-        </Modal>
-        <button onClick={play}>Hi</button>
+      <div className="user-question-wrapper">
+        {questionData.question}
+        {type[1] !== "English" && <button onClick={play}>Hi</button>}
       </div>
-      {displayAnswer}
-      <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
+      <div className="user-answer-wrapper">{displayAnswer}</div>
+      <div className="user-question-wrapper">{choiceDisplay}</div>
       <div hidden={!props.hasSubmit}>
         You are {isCorrect ? "correct" : "wrong"}
       </div>
