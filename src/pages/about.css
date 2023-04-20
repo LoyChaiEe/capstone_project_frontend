@@ -17,11 +17,14 @@
 }
 
 .about-character-wrapper {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 0.5em 1em -0.125em hsla(0, 0%, 4%, 0.1),
+    0 0 0 1px hsla(0, 0%, 4%, 0.02);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .about-character {
@@ -33,6 +36,9 @@
 .about-character-lower {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  border-top: solid 1px black;
+  padding-top: 10px;
+  margin-top: 10px;
 }
