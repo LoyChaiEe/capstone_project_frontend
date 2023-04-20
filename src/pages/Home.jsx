@@ -8,9 +8,11 @@ export default function Home() {
   return (
     <div className="home-container">
       <div className="home-chapter-wrapper">
-        <div className="chapter-title-wrapper">
-          <h1>Chapter 1</h1>
-          <p>Learning vocabs</p>
+        <div className="chapter-title-container">
+          <div className="chapter-title-wrapper">
+            <h1 className="chapter-title">Chapter 1</h1>
+            <p className="chapter-title-para">Learning vocabs</p>
+          </div>
           <GuideModalButton />
         </div>
         <div className="chapter-lesson-wrapper">

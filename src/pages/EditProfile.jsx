@@ -106,6 +106,8 @@ export default function EditProfile() {
     setIsUserDataUpdated(false);
   };
 
+  console.log(voices);
+
   return (
     <>
       <div className="edit-profile-container">
@@ -180,7 +182,7 @@ export default function EditProfile() {
               {voices &&
                 voices.map((voice, index) => (
                   <option value={voice.id} key={index}>
-                    {voice.id}
+                    {voice.voicevox_character}
                   </option>
                 ))}
             </select>

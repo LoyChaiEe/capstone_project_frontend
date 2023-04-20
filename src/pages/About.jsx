@@ -3,6 +3,7 @@ import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import { Howl } from "howler";
 import "./about.css";
+import { Button } from "../components/Buttons";
 
 export default function About() {
   const [voicevoxCharacters, setVoicevoxCharacters] = useState([]);
@@ -20,19 +21,17 @@ export default function About() {
   const play = async (e) => {
     const speakerId = e.target.value;
     const button = e.target.closest("button");
-    if (button) {
-      const text = button.getAttribute("data-value");
-      const data = await createAudio(text, speakerId);
-      const audioSRC = URL.createObjectURL(data);
-      const sound = new Howl({
-        src: [audioSRC],
-        autoplay: false,
-        loop: false,
-        volume: 2,
-        format: "wav",
-      });
-      sound.play();
-    }
+    const text = button.getAttribute("data-value");
+    const data = await createAudio(text, speakerId);
+    const audioSRC = URL.createObjectURL(data);
+    const sound = new Howl({
+      src: [audioSRC],
+      autoplay: false,
+      loop: false,
+      volume: 2,
+      format: "wav",
+    });
+    sound.play();
   };
 
   const displayVoicevoxCharacters = voicevoxCharacters.map(
@@ -47,13 +46,13 @@ export default function About() {
           />
           <div className="about-character-lower">
             {voicevoxCharacter.voicevox_character}
-            <button
+            <Button
               onClick={play}
               value={voicevoxCharacter.voicevox_voice}
-              data-value={`こんにちは、私の名前は ${voicevoxCharacter.character}`}
+              data-value={`こんにちは、私の名前は${voicevoxCharacter.voicevox_character}`}
             >
               {voicevoxCharacter.voicevox_voice}
-            </button>
+            </Button>
           </div>
         </div>
       </>

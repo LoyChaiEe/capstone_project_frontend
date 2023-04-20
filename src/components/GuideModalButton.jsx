@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import GuideModalBody from "./GuideModalBody";
 import "./guideModalButton.css";
+import { Button } from "./Buttons";
 
 export default function GuideModalButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,9 +24,7 @@ export default function GuideModalButton() {
   };
   return (
     <div>
-      <button className="modal-close-button" onClick={() => showGuide()}>
-        View guide
-      </button>
+      <Button onClick={() => showGuide()}>View guide</Button>
       <Modal
         open={isModalOpen}
         onOk={handleOk}
