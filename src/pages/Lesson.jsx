@@ -72,7 +72,7 @@ const LessonTest = () => {
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
+  } = useSWR(`${Backend_URL}/tests/questions/get/${6}`, getter, {
     revalidateOnFocus: false,
   });
 
@@ -138,7 +138,11 @@ const LessonTest = () => {
     <>
       <div className="lesson-container">
         <div className="lesson-wrapper">
-          <Progress percent={(current / 15) * 100} />
+          <Progress
+            percent={((current / 15) * 100).toFixed(0)}
+            strokeColor={"white"}
+            size={[500, 20]}
+          />
           <div className="question-wrapper">
             {steps[current].content}
             {steps[current].display}

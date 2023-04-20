@@ -5,6 +5,7 @@ import { QuestionButton } from "../Buttons";
 import axios from "axios";
 import { Howl } from "howler";
 import { Backend_URL } from "../../BACKEND_URL";
+import { useOutletContext } from "react-router-dom";
 
 export default function Recognition(props) {
   /* Things need to do in this component:
@@ -14,10 +15,13 @@ export default function Recognition(props) {
   //Data Retreival
   const questionData = props.questionData;
   const wordBank = props.wordBank;
+  const [userData] = useOutletContext();
   const [inputData, setInputData] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
   const [isCorrect, setCorrect] = useState(null);
   const [prevSelectedButton, setPrevSelectedButton] = useState(null);
+
+  const speaker = userData.voicevox_id;
 
   //Retrieve random input
   useEffect(() => {
@@ -82,7 +86,7 @@ export default function Recognition(props) {
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
     const response = await axios.post(
-      `http://localhost:50021/audio_query?speaker=3&text=${text}`
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
     );
     return response.data;
   };
@@ -90,7 +94,7 @@ export default function Recognition(props) {
   const createVoice = async (text) => {
     const query = await createQuery(text);
     const response = await axios.post(
-      "http://localhost:50021/synthesis?speaker=3",
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
       query,
       { responseType: "blob" }
     );
@@ -113,7 +117,7 @@ export default function Recognition(props) {
       display = word;
     }
     return (
-      <QuestionButton onClick={select} disabled={props.hasSubmit}>
+      <QuestionButton onClick={select} disabled={props.hasSubmit} key={i}>
         {display}
       </QuestionButton>
     );
