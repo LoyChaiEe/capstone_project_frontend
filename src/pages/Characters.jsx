@@ -141,6 +141,7 @@ export default function Characters() {
             <Link
               to={`/characters/${characterType}/lesson`}
               state={{ type: `${characterType}` }}
+              className="link-wrapper"
             >
               <Button id="character-button">
                 Let's learn {characterType_cap}!

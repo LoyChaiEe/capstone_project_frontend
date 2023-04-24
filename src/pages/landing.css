@@ -1,9 +1,13 @@
 .landing-container {
   width: 100%;
-  height: 100vh;
-  border-bottom-right-radius: 25%;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-hero-section {
+  height: 60vh;
   background-image: url("../assets/teacher.png");
-  background-position: 100% 50%;
+  background-position: 90% 0%;
   background-repeat: no-repeat;
   background-size: auto 100vh;
   background-attachment: scroll;
@@ -13,9 +17,15 @@
 
 .landing-hero-text-container {
   position: relative;
-  margin-left: 50px;
-  top: 10%;
   text-align: left;
+  margin-top: 10%;
+  margin-left: 10%;
+}
+
+.landing-logo-wrapper {
+  display: inline-block;
+  margin-top: -5%;
+  margin-right: 200px;
 }
 
 .landing-hero-title {
@@ -28,4 +38,29 @@
   width: 50%;
   margin-bottom: 20px;
   font-size: 25px;
+}
+
+.link-text-wrapper {
+  text-decoration: none;
+}
+
+.landing-section-two {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.voicevox-character-wrapper {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+.voicevox-characters {
+  border-radius: 50%;
+  background-color: rgb(255, 231, 230);
+  outline: 5px solid;
 }

@@ -17,6 +17,12 @@
   object-fit: cover;
 }
 
+.landing-logo {
+  width: auto;
+  height: 750px;
+  object-fit: cover;
+}
+
 .setting-button {
   width: 40px;
   height: 40px;
@@ -37,6 +43,12 @@
 }
 
 .edit-button {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
+
+.sound {
   width: 20px;
   height: 20px;
   object-fit: cover;

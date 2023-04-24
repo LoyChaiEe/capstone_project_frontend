@@ -121,3 +121,7 @@
   width: 100%;
   font-family: "Rubik", sans-serif;
 }
+
+.link-wrapper {
+  text-decoration: none;
+}

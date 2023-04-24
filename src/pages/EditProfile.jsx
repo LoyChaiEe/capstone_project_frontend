@@ -187,7 +187,7 @@ export default function EditProfile() {
                 ))}
             </select>
           </div>
-          <Link to="/profile/user">
+          <Link to="/profile/user" className="link-wrapper">
             <Button onClick={handleProfileChange}>Done</Button>
           </Link>
         </div>

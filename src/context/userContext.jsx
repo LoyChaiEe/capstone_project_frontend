@@ -11,14 +11,13 @@ export const UserContextProvider = (props) => {
   const [userEmail, setUserEmail] = useState("");
   const [allUserData, setAllUserData] = useState([]);
   const [isUserDataUpdated, setIsUserDataUpdated] = useState(false);
-  const [voicevoxImage, setVoicevoxImage] = useState("");
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       const { email } = user;
       setUserEmail(email);
     }
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, isLoading]);
 
   useEffect(() => {
     if (userEmail) {
@@ -45,7 +44,7 @@ export const UserContextProvider = (props) => {
         console.log("Axios get all users error", error);
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
 
   return (
     <UserContext.Provider

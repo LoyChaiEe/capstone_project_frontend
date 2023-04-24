@@ -1,20 +1,26 @@
 .button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #ee9f90;
-  padding: 10px;
-  border-radius: 15px;
+  padding: 15px;
+  border-radius: 25px;
   cursor: pointer;
   border: none;
   color: white;
   font-weight: bold;
   font-size: 20px;
+  outline: rgba(0, 0, 0, 0) solid 5px;
+  outline-offset: 2px;
   transition-property: all;
   transition-duration: 200ms;
   transition-timing-function: ease;
+  margin: 7px;
 }
 
 .button-wrapper:hover {
-  background-color: #ffe7e6;
-  color: #ee9f90;
+  background-color: #eca495;
+  outline: #eca495 solid 3px;
 }
 
 .question-button-wrapper {

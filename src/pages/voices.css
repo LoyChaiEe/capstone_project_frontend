@@ -1,4 +1,4 @@
-.about-container {
+.voices-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,17 +6,22 @@
   width: 100%;
 }
 
-.about-character-container {
+.voices-title {
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.voices-character-container {
   display: grid;
   margin-right: auto;
   margin-left: auto;
   grid-auto-columns: 1fr;
   gap: 16px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto auto;
 }
 
-.about-character-wrapper {
+.voices-character-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,13 +32,13 @@
   border-radius: 10px;
 }
 
-.about-character {
+.voices-character {
   object-fit: cover;
   width: 259.33px;
   height: 300px;
 }
 
-.about-character-lower {
+.voices-character-lower {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -41,4 +46,21 @@
   border-top: solid 1px black;
   padding-top: 10px;
   margin-top: 10px;
+}
+
+.voices-character-lower-names {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.voices-character-japanese {
+  margin: 0;
+  font-size: 20px;
+}
+
+.voices-character-english {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
 }

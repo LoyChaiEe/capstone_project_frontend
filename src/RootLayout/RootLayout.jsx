@@ -7,6 +7,7 @@ import "./rootLayout.css";
 export default function RootLayout() {
   const { userData, setUserData, setIsUserDataUpdated } =
     useContext(UserContext);
+
   return (
     <div className="app">
       <Navbar userData={userData} />

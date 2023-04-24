@@ -13,11 +13,11 @@ export default function ProfileComponent() {
 
   useEffect(() => {
     axios
-      .get(`${Backend_URL}/voicevoxes/speaker/${userData.voicevox_id}`)
+      .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
       .then((response) => {
         setVoicevoxImage(response.data.face_image_url);
       });
-  }, [userData.voicevox_id]);
+  }, [userData?.voicevox_id]);
 
   if (!userData?.email_address) return null;
 

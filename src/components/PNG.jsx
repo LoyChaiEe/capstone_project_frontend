@@ -10,12 +10,12 @@ export function NavLogo() {
   );
 }
 
-export function AboutPNG() {
+export function VoicesPNG() {
   return (
     <img
-      src={require("../assets/home.png")}
+      src={require("../assets/voices.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="voices-png"
     />
   );
 }
@@ -60,6 +60,16 @@ export function MiniCharacter() {
   );
 }
 
+export function LandingLogo() {
+  return (
+    <img
+      src={require("../assets/landing-logo.png")}
+      className="landing-logo"
+      alt="landing-logo"
+    />
+  );
+}
+
 export function SettingBtn() {
   return (
     <img
@@ -97,5 +107,11 @@ export function EditBtn() {
       className="edit-button"
       alt="edit-button"
     />
+  );
+}
+
+export function Sound() {
+  return (
+    <img src={require("../assets/sound.png")} className="sound" alt="sound" />
   );
 }

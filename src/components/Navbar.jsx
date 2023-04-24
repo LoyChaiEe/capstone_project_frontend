@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
-import { NavLogo, LessonPNG, CharacterPNG, ProfilePNG, AboutPNG } from "./PNG";
+import { NavLogo, LessonPNG, CharacterPNG, ProfilePNG, VoicesPNG } from "./PNG";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL.js";
@@ -65,14 +65,14 @@ export default function Navbar(userData) {
             </Link>
           </li>
           <li className="nav-link-wrapper">
-            <Link to="/about/about" className="nav-link-text-wrapper">
-              <AboutPNG />
-              <span className="nav-link-text">ABOUT</span>
+            <Link to="/voicevox/voices" className="nav-link-text-wrapper">
+              <VoicesPNG />
+              <span className="nav-link-text">VOICES</span>
             </Link>
           </li>
           <li className="nav-link-wrapper">
             <Link to="/about/landing" className="nav-link-text-wrapper">
-              <AboutPNG />
+              <VoicesPNG />
               <span className="nav-link-text">LANDING</span>
             </Link>
           </li>
