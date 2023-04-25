@@ -19,6 +19,7 @@ import Matching from "./QuestionsComponents/Matching";
 import Meaning from "./QuestionsComponents/Meaning";
 import Translation from "./QuestionsComponents/Translation";
 import Recognition from "./QuestionsComponents/Recognition";
+import Writing from "./QuestionsComponents/Writing";
 import Finish from "./Finish";
 const getter = (url) => axios.get(url).then((res) => res.data);
 
@@ -57,32 +58,32 @@ const LessonTest = () => {
   //this just temp
 
   //Question Data will be changed for testing
-  const {
-    data: questionsDatas,
-    mutate: refetchLQinfo,
-    isLoading: LQADataLoaded,
-    error,
-  } = useSWR(
-    `${Backend_URL}/LQA/questions/get/${
-      userLessonInfo?.slice(-1)[0].lesson?.id + 1
-    }`,
-    getter,
-    { revalidateOnFocus: false }
-  );
-
-  //Testing for matching
   // const {
   //   data: questionsDatas,
   //   mutate: refetchLQinfo,
   //   isLoading: LQADataLoaded,
   //   error,
   // } = useSWR(
-  //   `${Backend_URL}/tests/questions/get/${
-  //     13
+  //   `${Backend_URL}/LQA/questions/get/${
+  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
   //   }`,
   //   getter,
   //   { revalidateOnFocus: false }
   // );
+
+  //Testing for matching
+  const {
+    data: questionsDatas,
+    mutate: refetchLQinfo,
+    isLoading: LQADataLoaded,
+    error,
+  } = useSWR(
+    `${Backend_URL}/tests/questions/get/${
+      13
+    }`,
+    getter,
+    { revalidateOnFocus: false }
+  );
 
   //Loader for loading data
   if (
@@ -102,9 +103,9 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 3; i++) {
+  console.log(questionsDatas);
+  for (let i = 0; i < 5; i++) {
     const questionData = questionsDatas[i];
-    console.log(questionData)
     const type = questionData.question_type.split("-");
     let content = {
       title: `Question ${i + 1}`,
@@ -236,6 +237,14 @@ function questionSelect(
         <Translation
           questionData={questionData}
           wordBank={wordBank}
+          canSubmit={submitFunction}
+          hasSubmit={hasSubmit}
+        />
+      );
+    case "writing":
+      return (
+        <Writing
+          questionData={questionData}
           canSubmit={submitFunction}
           hasSubmit={hasSubmit}
         />
