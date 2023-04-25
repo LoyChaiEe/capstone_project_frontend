@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .home-chapter-wrapper {
@@ -12,12 +14,12 @@
 .chapter-title-container {
   width: 100%;
   background-color: antiquewhite;
-  border-radius: 10px;
+  border-radius: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .chapter-title-wrapper {
@@ -35,8 +37,8 @@
 }
 
 .chapter-lesson-btn {
-  height: 65px;
-  width: 70px;
+  height: 100px;
+  width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,32 +46,15 @@
   margin-bottom: 20px;
   position: relative;
   z-index: 0;
+  background-color: aqua;
+  border-radius: 50%;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 }
 
-.chapter-lesson-btn::before {
-  content: "";
-  background-color: rgb(104, 219, 180);
-  height: 10px;
-  width: 100%;
-  z-index: -1;
-  top: 32px;
-  position: absolute;
-}
-
-.chapter-lesson-btn::after {
-  content: "";
+.chapter-lesson-btn:hover {
   background-color: aquamarine;
-  width: 100%;
-  z-index: -1;
-  position: absolute;
-  box-shadow: rgb(104, 219, 180) 0px 7px 0px;
-  height: 65px;
-  border-radius: 50%/50%;
-}
-
-.chapter-lesson-btn::after:hover {
-  background-color: black;
-  box-shadow: rgb(100, 212, 175) 0px 8px 0px;
 }
 
 .chapter-lesson {

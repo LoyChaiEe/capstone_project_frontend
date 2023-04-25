@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import GuideModalBody from "./GuideModalBody";
 import "./guideModalButton.css";
+// import { Button } from "./Buttons";
 import { Button } from "./Buttons";
 
 export default function GuideModalButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showGuide = async () => {
-    try {
-      console.log("Open Guide");
-    } catch (err) {
-      console.log("ERROR", err);
-    }
     setIsModalOpen(true);
   };
 
@@ -33,9 +29,7 @@ export default function GuideModalButton() {
       >
         <GuideModalBody />
         <div className="modal-footer">
-          <button onClick={handleOk} className="modal-close-button">
-            Exit
-          </button>
+          <Button onClick={handleOk}>Exit</Button>
         </div>
       </Modal>
     </div>

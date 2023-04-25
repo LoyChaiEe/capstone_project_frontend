@@ -106,8 +106,6 @@ export default function EditProfile() {
     setIsUserDataUpdated(false);
   };
 
-  console.log(voices);
-
   return (
     <>
       <div className="edit-profile-container">

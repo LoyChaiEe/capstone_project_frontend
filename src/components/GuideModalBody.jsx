@@ -61,14 +61,17 @@ export default function GuideModalBody() {
 
   return (
     <div>
-      <h1>Words in Lesson 1!</h1>
-      {lessonWords.map((words, index) => {
-        return (
-          <button onClick={play} key={index}>
-            {words.character.character}
-          </button>
-        );
-      })}
+      <h1 className="modal-title">Words in Lesson 1!</h1>
+      <p className="modal-para">Click on the words to hear how they sound</p>
+      <div className="words-lesson-wrapper">
+        {lessonWords.map((words, index) => {
+          return (
+            <button onClick={play} key={index} className="words-lesson">
+              {words.character.character}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
