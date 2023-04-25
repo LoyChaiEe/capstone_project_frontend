@@ -13,10 +13,46 @@ export function Button(props) {
   );
 }
 
+export function AdvancementButton(props) {
+  return (
+    <button
+      className="advancement-button-wrapper"
+      {...props}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
+}
+
 export function QuestionButton(props) {
   return (
     <button
       className="question-button-wrapper"
+      {...props}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
+}
+
+export function TranslationButton(props) {
+  return (
+    <button
+      className="translation-button-wrapper"
+      {...props}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
+}
+
+export function TranslationAnswerButton(props) {
+  return (
+    <button
+      className="translation-answer-button-wrapper"
       {...props}
       onClick={props.onClick}
     >

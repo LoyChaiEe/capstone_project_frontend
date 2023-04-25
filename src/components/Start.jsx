@@ -1,12 +1,15 @@
 import React from "react";
-import { MiniCharacter } from "./PNG";
+import { Teacher } from "./PNG";
+import "./startFinish.css";
 
 const Start = (props) => {
   const placeholder = props.type; //Depends on type
   return (
     <>
-      <MiniCharacter />
-      <p>Lets start learning some Japanese {placeholder}!</p>
+      <div className="start-finish-wrapper">
+        <Teacher />
+        <p>Lets start learning some Japanese {placeholder}!</p>
+      </div>
     </>
   );
 };

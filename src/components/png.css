@@ -1,6 +1,6 @@
 .nav-logo {
   object-fit: cover;
-  width: 150px;
+  width: 200px;
   margin-top: 35px;
   margin-bottom: 20px;
 }
@@ -51,5 +51,10 @@
 .sound {
   width: 20px;
   height: 20px;
+  object-fit: cover;
+}
+
+.teacher {
+  height: 500px;
   object-fit: cover;
 }

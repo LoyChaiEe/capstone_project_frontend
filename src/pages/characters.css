@@ -6,6 +6,7 @@
   width: 70%;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 50px;
 }
 
 .character-selection-title {
@@ -25,7 +26,7 @@
   width: 100%;
   cursor: pointer;
   color: rgb(204, 204, 204);
-  border-bottom: 4px solid rgb(204, 204, 204);
+  border-bottom: 4px solid rgb(0, 0, 0, 0);
   transition-property: all;
   transition-duration: 150ms;
   transition-timing-function: ease;

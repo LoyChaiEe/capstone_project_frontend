@@ -23,16 +23,20 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-color: bisque;
 }
 
-#blue {
+#default {
+  margin: 5px;
   width: 75px;
   height: 75px;
-  background-color: blue;
+  background-color: rgba(233, 171, 158, 0.847);
+  font-size: 20px;
 }
 
 #white {
+  margin: 5px;
   width: 75px;
   height: 75px;
-  /* background-color: antiquewhite; */
+  font-size: 20px;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { Button, message, Steps, theme } from "antd";
+import { Button, message, Steps, theme, ConfigProvider } from "antd";
 import { useState } from "react";
 import { Progress } from "antd";
 import Start from "../components/Start";
@@ -72,7 +72,7 @@ const LessonTest = () => {
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/${6}`, getter, {
+  } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
     revalidateOnFocus: false,
   });
 
@@ -140,43 +140,66 @@ const LessonTest = () => {
         <div className="lesson-wrapper">
           <Progress
             percent={((current / 15) * 100).toFixed(0)}
-            strokeColor={"white"}
+            strokeColor={"#570344"}
             size={[500, 20]}
           />
           <div className="question-wrapper">
             {steps[current].content}
             {steps[current].display}
           </div>
-          <div
-            style={{
-              marginTop: 24,
-            }}
-          >
+          <div className="advancement-wrapper">
             {current < steps.length && (
-              <Button
-                type="primary"
-                onClick={next}
-                disabled={!hasSubmit && current !== 0}
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#ee9f90",
+                  },
+                }}
               >
-                Next
-              </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={next}
+                  disabled={!hasSubmit && current !== 0}
+                >
+                  NEXT
+                </Button>
+              </ConfigProvider>
             )}
             {current < steps.length && (
-              <Button
-                type="primary"
-                onClick={submit}
-                disabled={!canSubmit || hasSubmit}
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#ee9f90",
+                  },
+                }}
               >
-                Submit
-              </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={submit}
+                  disabled={!canSubmit || hasSubmit}
+                >
+                  SUBMIT
+                </Button>
+              </ConfigProvider>
             )}
             {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#ee9f90",
+                  },
+                }}
               >
-                Done
-              </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={() => message.success("Processing complete!")}
+                >
+                  DONE
+                </Button>
+              </ConfigProvider>
             )}
           </div>
         </div>

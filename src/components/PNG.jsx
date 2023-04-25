@@ -3,7 +3,7 @@ import "./png.css";
 export function NavLogo() {
   return (
     <img
-      src={require("../assets/home-logo-500-02.png")}
+      src={require("../assets/home-logo-500-03.png")}
       className="nav-logo"
       alt="nav-logo"
     />
@@ -113,5 +113,15 @@ export function EditBtn() {
 export function Sound() {
   return (
     <img src={require("../assets/sound.png")} className="sound" alt="sound" />
+  );
+}
+
+export function Teacher() {
+  return (
+    <img
+      src={require("../assets/teacher.png")}
+      className="teacher"
+      alt="teacher"
+    />
   );
 }

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
-import { Modal } from "antd";
-import QuestionModalBody from "../QuestionModalBody";
+import { TranslationButton } from "../Buttons";
 import "./translation.css";
 
 export default function Translation(props) {
@@ -15,7 +13,6 @@ export default function Translation(props) {
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const type = questionData?.question_type.split("-");
   const speaker = userData.voicevox_id;
@@ -119,19 +116,19 @@ export default function Translation(props) {
     setInput(userChoice);
   };
   const choiceDisplay = input?.map((input) => (
-    <Button onClick={add} disabled={props.hasSubmit}>
+    <TranslationButton onClick={add} disabled={props.hasSubmit}>
       {type[1] === "English" ? input.character : input.meaning}
-    </Button>
+    </TranslationButton>
   ));
 
   const displayAnswer = userInput?.map((input) => (
-    <Button
-      style={{ backgroundColor: "green" }}
+    <TranslationButton
+      style={{ backgroundColor: "rgba(233, 171, 158, 0.847)" }}
       onClick={remove}
       disabled={props.hasSubmit}
     >
       {type[1] === "English" ? input.character : input.meaning}
-    </Button>
+    </TranslationButton>
   ));
 
   if (displayAnswer.length !== 0) {
@@ -139,22 +136,6 @@ export default function Translation(props) {
   } else {
     props.canSubmit(false);
   }
-
-  const showTranslation = async () => {
-    try {
-      console.log("Open Guide");
-    } catch (err) {
-      console.log("ERROR", err);
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <>

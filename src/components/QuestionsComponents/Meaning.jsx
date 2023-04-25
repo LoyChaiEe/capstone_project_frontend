@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { MiniCharacter } from "../PNG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
 import { QuestionButton } from "../Buttons";
-// import { Button } from "antd";
 import "./meaning.css";
 
 export default function Meaning(props) {
@@ -39,11 +37,11 @@ export default function Meaning(props) {
   const select = (e) => {
     e.preventDefault();
     if (prevSelectedButton) {
-      prevSelectedButton.classList.remove("selected");
+      prevSelectedButton.classList.remove("meaning-selected");
     }
 
     const selectedButton = e.target;
-    selectedButton.classList.add("selected");
+    selectedButton.classList.add("meaning-selected");
     const selected = selectedButton.textContent;
     setWordSelected(selected);
     setIsWordSelected(true);

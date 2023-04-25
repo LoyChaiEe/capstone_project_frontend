@@ -174,7 +174,7 @@ export default function EditProfile() {
           <div className="edit-profile-info-wrapper">
             <h1 className="edit-profile-title-info">Waifu Voice:</h1>
             <select
-              className="profile-input-box"
+              className="edit-profile-selection-info"
               name="voicevox_id"
               value={textInput.voicevox_id}
               onChange={handleTextInputChange}
@@ -187,10 +187,10 @@ export default function EditProfile() {
                 ))}
             </select>
           </div>
-          <Link to="/profile/user" className="link-wrapper">
-            <Button onClick={handleProfileChange}>Done</Button>
-          </Link>
         </div>
+        <Link to="/profile/user" className="link-wrapper">
+          <Button onClick={handleProfileChange}>Done</Button>
+        </Link>
       </div>
       <div>
         <Outlet />

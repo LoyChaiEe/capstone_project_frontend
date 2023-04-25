@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: #9f7b71;
 }
 
 .user-answer-wrapper {
@@ -16,8 +16,8 @@
   flex: 1;
 }
 
-.selected {
-  background-color: rgba(235, 160, 144, 0.5);
+.meaning-selected {
+  background-color: rgba(233, 171, 158, 0.847);
   color: #9f7b71;
 }
 
@@ -27,5 +27,6 @@
   gap: 20px;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  width: 320px;
+  /* width: 320px; */
+  background-color: blueviolet;
 }

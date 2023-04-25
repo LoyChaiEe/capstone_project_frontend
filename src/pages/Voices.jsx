@@ -22,28 +22,29 @@ export default function Voices() {
   const play = async (e) => {
     const speakerId = e.target.value;
     const button = e.target.closest("button");
-    const text = button.getAttribute("data-value");
-    const data = await createAudio(text, speakerId);
-    const audioSRC = URL.createObjectURL(data);
-    const sound = new Howl({
-      src: [audioSRC],
-      autoplay: false,
-      loop: false,
-      volume: 2,
-      format: "wav",
-    });
-    sound.play();
+    if (button) {
+      const text = button.getAttribute("data-value");
+      const data = await createAudio(text, speakerId);
+      const audioSRC = URL.createObjectURL(data);
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 2,
+        format: "wav",
+      });
+      sound.play();
+    }
   };
 
   const displayVoicevoxCharacters = voicevoxCharacters.map(
-    (voicevoxCharacter, index) => (
+    (voicevoxCharacter) => (
       <>
-        <div className="voices-character-wrapper">
+        <div className="voices-character-wrapper" key={voicevoxCharacter.id}>
           <img
             src={voicevoxCharacter.full_body_image_url}
             alt={voicevoxCharacter.full_body_image_url}
             className="voices-character"
-            key={index}
           />
           <div className="voices-character-lower">
             <div className="voices-character-lower-names">
@@ -59,7 +60,7 @@ export default function Voices() {
               value={voicevoxCharacter.voicevox_voice}
               data-value={`こんにちは、私の名前は${voicevoxCharacter.voicevox_character}`}
             >
-              <Sound />
+              {/* <Sound /> */}
             </Button>
           </div>
         </div>

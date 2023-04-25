@@ -60,11 +60,13 @@ export default function ProfileComponent() {
         </div>
         <div className="profile-info-wrapper">
           <h1 className="profile-info">Waifu voice:</h1>
-          <img
-            src={voicevoxImage}
-            alt={voicevoxImage}
-            className="profile-waifu-voice"
-          />
+          <div className="profile-waifu-voice-wrapper">
+            <img
+              src={voicevoxImage}
+              alt={voicevoxImage}
+              className="profile-waifu-voice"
+            />
+          </div>
         </div>
       </div>
       <div className="profile-settings-wrapper">

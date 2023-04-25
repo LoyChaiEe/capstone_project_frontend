@@ -17,6 +17,7 @@
   background-repeat: no-repeat;
   background-position: 50% 10%;
   background-size: cover;
+  background-color: #ffe7e6;
 }
 
 .profile-title {
@@ -41,12 +42,16 @@
   flex-direction: column;
   align-items: stretch;
   margin-bottom: 10px;
+  /* background-color: aqua; */
 }
 
 .profile-info-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
+  /* background-color: burlywood; */
+  width: 100%;
 }
 
 .profile-info {
@@ -64,10 +69,19 @@
   border-bottom: 2px solid rgba(159, 123, 113, 0.5);
 }
 
+.profile-waifu-voice-wrapper {
+  width: 75%;
+  display: flex;
+  align-items: left;
+}
+
 .profile-waifu-voice {
   width: 100px;
   height: 100px;
   object-fit: cover;
+  outline: 2px solid rgba(159, 123, 113, 0.5);
+  border-radius: 50%;
+  background-color: #ffe7e6;
 }
 
 .profile-settings-wrapper {

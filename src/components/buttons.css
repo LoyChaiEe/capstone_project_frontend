@@ -38,6 +38,34 @@
   width: 150px;
 }
 
+.advancement-button-wrapper {
+  background-color: #ee9f90;
+  padding: 10px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  width: 150px;
+}
+
+.translation-button-wrapper {
+  background-color: #ee9f90;
+  border: none;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  width: 125px;
+  color: white;
+}
+
+.translation-button-wrapper:hover {
+  background-color: rgba(233, 171, 158, 0.847);
+}
+
 .settings-btn {
   background-color: #ee9f90;
   display: flex;
