@@ -12,11 +12,14 @@ export default function ProfileComponent() {
   const [voicevoxImage, setVoicevoxImage] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
-      .then((response) => {
-        setVoicevoxImage(response.data.face_image_url);
-      });
+    const getVoicevox = async () => {
+      await axios
+        .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
+        .then((response) => {
+          setVoicevoxImage(response.data.face_image_url);
+        });
+    };
+    getVoicevox();
   }, [userData?.voicevox_id]);
 
   if (!userData?.email_address) return null;

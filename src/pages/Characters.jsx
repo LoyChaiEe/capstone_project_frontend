@@ -30,7 +30,6 @@ export default function Characters() {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(accessToken);
     return response.data;
   };
 

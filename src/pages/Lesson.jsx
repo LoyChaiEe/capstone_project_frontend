@@ -50,7 +50,6 @@ const LessonTest = () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(accessToken);
     return response.data;
   };
 
