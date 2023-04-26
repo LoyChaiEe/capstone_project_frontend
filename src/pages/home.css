@@ -8,18 +8,25 @@
 }
 
 .home-chapter-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 60%;
 }
 
 .chapter-title-container {
-  width: 100%;
-  background-color: antiquewhite;
+  width: calc(100% - 100px);
+  background-color: #ffe7e6;
   border-radius: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px 50px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  color: #570344;
+  border-style: solid;
+  border-width: 2px 2px 8px;
+  border-color: #9f7b71;
 }
 
 .chapter-title-wrapper {
@@ -29,7 +36,6 @@
 .chapter-lesson-wrapper {
   display: flex;
   width: 100%;
-  background-color: rgb(229, 229, 229);
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
@@ -46,18 +52,23 @@
   margin-bottom: 20px;
   position: relative;
   z-index: 0;
-  background-color: aqua;
+  background-color: #eca495;
   border-radius: 50%;
+  border-style: solid;
+  border-width: 2px 2px 8px;
+  border-color: #00000029;
   transition-property: all;
   transition-duration: 200ms;
   transition-timing-function: ease;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
 }
 
 .chapter-lesson-btn:hover {
-  background-color: aquamarine;
+  background-color: #e79787;
 }
 
 .chapter-lesson {
   position: absolute;
-  color: black;
 }

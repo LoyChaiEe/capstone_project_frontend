@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import GuideModalBody from "./GuideModalBody";
 import "./guideModalButton.css";
-// import { Button } from "./Buttons";
-import { Button } from "./Buttons";
+import { Button, AdvancementButton } from "./Buttons";
 
 export default function GuideModalButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +19,9 @@ export default function GuideModalButton() {
   };
   return (
     <div>
-      <Button onClick={() => showGuide()}>View guide</Button>
+      <AdvancementButton onClick={() => showGuide()}>
+        View guide
+      </AdvancementButton>
       <Modal
         open={isModalOpen}
         onOk={handleOk}
