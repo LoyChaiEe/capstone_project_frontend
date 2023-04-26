@@ -8,12 +8,32 @@ import { Link } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "../components/Buttons";
 import { useOutletContext } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const getter = (url) => axios.get(url).then((res) => res.data);
+// const getter = (url) => axios.get(url).then((res) => res.data);
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 export default function Characters() {
+  const { getAccessTokenSilently } = useAuth0();
   const [userData] = useOutletContext();
   const [characterType, setCharacterType] = useState("hiragana");
+
+  const getter = async (url) => {
+    const accessToken = await getAccessTokenSilently({
+      audience: `${audience}`,
+      scope: `${scope}`,
+    });
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(accessToken);
+    return response.data;
+  };
+
   const { data: characters, mutate: refetch } = useSWR(
     `${Backend_URL}/characters/${characterType}`,
     getter

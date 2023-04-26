@@ -148,6 +148,7 @@ export default function EditProfile() {
       });
     setIsProfileUpdated(true);
     setIsUserDataUpdated(false);
+    console.log(accessToken);
   };
 
   return (

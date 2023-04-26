@@ -14,9 +14,12 @@ import Meaning from "../components/QuestionsComponents/Meaning";
 import Translation from "../components/QuestionsComponents/Translation";
 import Recognition from "../components/QuestionsComponents/Recognition";
 import Finish from "../components/Finish";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./lesson.css";
 
-const getter = (url) => axios.get(url).then((res) => res.data);
+// const getter = (url) => axios.get(url).then((res) => res.data);
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 const override = css`
   display: block;
@@ -25,6 +28,8 @@ const override = css`
 `;
 
 const LessonTest = () => {
+  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
+    useAuth0();
   const { state } = useLocation();
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -33,6 +38,22 @@ const LessonTest = () => {
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
   //{ revalidateOnFocus: false } to prevent alt-tab from re-rendering
+
+  const getter = async (url) => {
+    const accessToken = await getAccessTokenSilently({
+      audience: `${audience}`,
+      scope: `${scope}`,
+    });
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(accessToken);
+    return response.data;
+  };
+
   const {
     data: userLessonInfo,
     mutate: refetchULinfo,
