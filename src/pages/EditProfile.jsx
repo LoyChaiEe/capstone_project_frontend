@@ -7,10 +7,15 @@ import axios from "axios";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { EditBtn } from "../components/PNG";
 import { Button } from "../components/Buttons";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 export default function EditProfile() {
+  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
+    useAuth0();
   const [userData, setUserData, setIsUserDataUpdated] = useOutletContext();
   const [updatedPhotoFile, setUpdatedPhotoFile] = useState("");
   const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
@@ -42,6 +47,18 @@ export default function EditProfile() {
   };
 
   const handlePhotoSubmit = async (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      loginWithRedirect();
+      return;
+    }
+
+    // get access token
+    const accessToken = await getAccessTokenSilently({
+      audience: `${audience}`,
+      scope: `${scope}`,
+    });
+
     const profilePhotoRef = ref(
       storage,
       `${PROFILE_PHOTO_FOLDER}/${updatedPhotoFile.name}`
@@ -54,10 +71,18 @@ export default function EditProfile() {
         })
     );
     await axios
-      .put(`${Backend_URL}/users/photoUrl`, {
-        profile_pic_url: photoUrl,
-        email_address: userData.email_address,
-      })
+      .put(
+        `${Backend_URL}/users/photoUrl`,
+        {
+          profile_pic_url: photoUrl,
+          email_address: userData.email_address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         setUpdatedPhotoFileUrl(response.data.profile_pic_url);
         setUserData({
@@ -76,18 +101,37 @@ export default function EditProfile() {
 
   const handleProfileChange = async (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated) {
+      loginWithRedirect();
+      return;
+    }
+
+    // get access token
+    const accessToken = await getAccessTokenSilently({
+      audience: `${audience}`,
+      scope: `${scope}`,
+    });
     // input validation
     // if (!currentLastName || !currentUsername)
     //   return alert("All fields have to be filled");
 
     await axios
-      .put(`${Backend_URL}/users/profile`, {
-        first_name: textInput.first_name,
-        last_name: textInput.last_name,
-        username: textInput.username,
-        email_address: userData.email_address,
-        voicevox_id: textInput.voicevox_id,
-      })
+      .put(
+        `${Backend_URL}/users/profile`,
+        {
+          first_name: textInput.first_name,
+          last_name: textInput.last_name,
+          username: textInput.username,
+          email_address: userData.email_address,
+          voicevox_id: textInput.voicevox_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         setUserData({
           ...userData,
