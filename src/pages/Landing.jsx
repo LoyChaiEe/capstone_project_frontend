@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./landing.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "../components/Buttons";
+import { Button, LogoutButton } from "../components/Buttons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
+
 export default function Landing() {
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [voicevoxCharacters, setVoicevoxCharacters] = useState([]);
 
   useEffect(() => {
@@ -25,6 +28,41 @@ export default function Landing() {
     return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
   };
 
+  useEffect(() => {
+    const createUser = async () => {
+      if (isAuthenticated) {
+        console.log(isAuthenticated);
+        const userInfo = {
+          username: user?.nickname,
+          first_name: user?.given_name || user?.name,
+          last_name: user?.family_name || "",
+          email_address: user?.email,
+          profile_pic_url: user?.picture,
+          voicevox_id: 1,
+        };
+        try {
+          // get access token
+          const accessToken = await getAccessTokenSilently({
+            audience: `${audience}`,
+            scope: `${scope}`,
+          });
+          console.log(accessToken);
+          console.log(userInfo);
+          await axios.post(`${Backend_URL}/users/newUser`, userInfo, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+        } catch (err) {
+          console.log(userInfo);
+          console.log("Axios post to BE error", err);
+        }
+        console.log(userInfo);
+      }
+    };
+    createUser();
+  }, [getAccessTokenSilently, isAuthenticated, user]);
+
   const displayVoicevoxCharacters = voicevoxCharacters.map(
     (voicevoxCharacter, index) => (
       <img
@@ -38,6 +76,7 @@ export default function Landing() {
 
   return (
     <div className="landing-container">
+      <LogoutButton />
       <div className="landing-hero-section">
         <div className="landing-hero-text-container">
           <h1 className="landing-hero-title">
