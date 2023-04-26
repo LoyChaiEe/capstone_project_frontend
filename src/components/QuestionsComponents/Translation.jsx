@@ -139,15 +139,20 @@ export default function Translation(props) {
 
   return (
     <>
-      <div className="user-question-wrapper">
-        {questionData.question}
-        {type[1] !== "English" && <button onClick={play}>Hi</button>}
-      </div>
-      <div className="user-answer-wrapper">{displayAnswer}</div>
-      <div className="user-question-wrapper">{choiceDisplay}</div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
+      {!props.hasSubmit ? (
+        <>
+          <div className="user-question-wrapper">
+            {questionData.question}
+            {type[1] !== "English" && <button onClick={play}>Hi</button>}
+          </div>
+          <div className="user-answer-wrapper">{displayAnswer}</div>
+          <div className="user-question-wrapper">{choiceDisplay}</div>
+        </>
+      ) : (
+        <div hidden={!props.hasSubmit} className="user-question-wrapper">
+          You are {isCorrect ? "correct" : "wrong"}
+        </div>
+      )}
     </>
   );
 }

@@ -77,13 +77,18 @@ export default function Meaning(props) {
 
   return (
     <>
-      <span className="user-question-wrapper">{questionData.question}</span>
-      <div className="user-answer-wrapper">
-        <div className="wordArray-grid">{wordArrayDisplay}</div>
-      </div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
+      {!props.hasSubmit ? (
+        <>
+          <span className="user-question-wrapper">{questionData.question}</span>
+          <div className="user-answer-wrapper">
+            <div className="wordArray-grid">{wordArrayDisplay}</div>
+          </div>
+        </>
+      ) : (
+        <div hidden={!props.hasSubmit} className="user-question-wrapper">
+          You are {isCorrect ? "correct" : "wrong"}
+        </div>
+      )}
     </>
   );
 }

@@ -38,6 +38,10 @@
   width: 150px;
 }
 
+.question-button-wrapper:hover {
+  background-color: #e79787;
+}
+
 .advancement-button-wrapper {
   background-color: #ee9f90;
   padding: 10px;
