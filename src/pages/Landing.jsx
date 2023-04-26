@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./landing.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, LogoutButton } from "../components/Buttons";
+import { Button, LogoutButton, LoginButton } from "../components/Buttons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 
-const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
-const scope = process.env.REACT_APP_AUTH0_SCOPE;
-
 export default function Landing() {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const [voicevoxCharacters, setVoicevoxCharacters] = useState([]);
 
   useEffect(() => {
@@ -22,11 +19,6 @@ export default function Landing() {
       console.log("Error retrieving voicevox data", err);
     }
   }, []);
-
-  const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
-    return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
-  };
 
   const displayVoicevoxCharacters = voicevoxCharacters.map(
     (voicevoxCharacter, index) => (

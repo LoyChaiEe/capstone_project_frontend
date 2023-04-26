@@ -9,18 +9,24 @@ import { Backend_URL } from "../BACKEND_URL";
 export default function ProfileComponent() {
   const { isAuthenticated } = useAuth0();
   const [userData] = useOutletContext();
-  const [voicevoxImage, setVoicevoxImage] = useState("");
+  const [userVoiceImage, setUserVoiceImage] = useState("");
 
   useEffect(() => {
     const getVoicevox = async () => {
-      await axios
-        .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
-        .then((response) => {
-          setVoicevoxImage(response.data.face_image_url);
-        });
+      try {
+        if (userData?.voicevox_id) {
+          await axios
+            .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
+            .then((response) => {
+              setUserVoiceImage(response.data.face_image_url);
+            });
+        }
+      } catch (err) {
+        console.log("Error retrieving vocicevox speaker", err);
+      }
     };
     getVoicevox();
-  }, [userData?.voicevox_id]);
+  }, [userData]);
 
   if (!userData?.email_address) return null;
 
@@ -65,8 +71,8 @@ export default function ProfileComponent() {
           <h1 className="profile-info">Waifu voice:</h1>
           <div className="profile-waifu-voice-wrapper">
             <img
-              src={voicevoxImage}
-              alt={voicevoxImage}
+              src={userVoiceImage}
+              alt={userVoiceImage}
               className="profile-waifu-voice"
             />
           </div>

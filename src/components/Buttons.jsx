@@ -84,3 +84,8 @@ export function LogoutButton() {
     </button>
   );
 }
+
+export function LoginButton() {
+  const { loginWithRedirect } = useAuth0();
+  return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
+}

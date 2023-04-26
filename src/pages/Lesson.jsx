@@ -17,7 +17,6 @@ import Finish from "../components/Finish";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./lesson.css";
 
-// const getter = (url) => axios.get(url).then((res) => res.data);
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
@@ -28,8 +27,7 @@ const override = css`
 `;
 
 const LessonTest = () => {
-  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
-    useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const { state } = useLocation();
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);

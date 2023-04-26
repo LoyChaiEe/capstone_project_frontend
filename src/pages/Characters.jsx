@@ -10,7 +10,6 @@ import { Button } from "../components/Buttons";
 import { useOutletContext } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
-// const getter = (url) => axios.get(url).then((res) => res.data);
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 const scope = process.env.REACT_APP_AUTH0_SCOPE;
 

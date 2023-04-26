@@ -23,38 +23,60 @@ export const UserContextProvider = (props) => {
   }, [user, isAuthenticated, isLoading]);
 
   useEffect(() => {
-    const createUser = async () => {
-      if (isAuthenticated) {
-        const userInfo = {
-          username: user?.nickname,
-          first_name: user?.given_name || user?.name,
-          last_name: user?.family_name || "",
-          email_address: user?.email,
-          profile_pic_url: user?.picture,
-          voicevox_id: 1,
-        };
-        try {
-          // get access token
-          const accessToken = await getAccessTokenSilently({
-            audience: `${audience}`,
-            scope: `${scope}`,
+    const findOrAddUser = async () => {
+      if (userEmail) {
+        await axios
+          .get(`${Backend_URL}/users/${userEmail}`)
+          .then((response) => {
+            setUserData(response.data);
           });
-          await axios
-            .post(`${Backend_URL}/users/newUser`, userInfo, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((res) => {
-              setUserData(res.data);
+      } else if (isAuthenticated) {
+        const createUser = async () => {
+          const userInfo = {
+            username: user?.nickname,
+            first_name: user?.given_name || user?.name,
+            last_name: user?.family_name || "",
+            email_address: user?.email,
+            profile_pic_url: user?.picture,
+            voicevox_id: 1,
+          };
+          try {
+            // get access token
+            const accessToken = await getAccessTokenSilently({
+              audience: `${audience}`,
+              scope: `${scope}`,
             });
-        } catch (err) {
-          console.log("Axios post to BE error", err);
-        }
+            await axios
+              .post(`${Backend_URL}/users/newUser`, userInfo, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              })
+              .then((res) => {
+                setUserData(res.data);
+              });
+          } catch (err) {
+            console.log("Axios post to BE error", err);
+          }
+        };
+        createUser();
+      } else if (isUserDataUpdated === true) {
+        axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
+          setUserData(response.data);
+          console.log(response.data);
+        });
+      } else {
+        setIsUserDataUpdated(false);
       }
     };
-    createUser();
-  }, [getAccessTokenSilently, isAuthenticated, user]);
+    findOrAddUser();
+  }, [
+    user,
+    userEmail,
+    getAccessTokenSilently,
+    isAuthenticated,
+    isUserDataUpdated,
+  ]);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -67,27 +89,6 @@ export const UserContextProvider = (props) => {
       }
     }
   }, [isAuthenticated, isLoading]);
-
-  useEffect(() => {
-    const addOrUpdateUser = async () => {
-      if (userEmail) {
-        await axios
-          .get(`${Backend_URL}/users/${userEmail}`)
-          .then((response) => {
-            setUserData(response.data);
-          });
-      } else if (isUserDataUpdated === true) {
-        await axios
-          .get(`${Backend_URL}/users/${userEmail}`)
-          .then((response) => {
-            setUserData(response.data);
-          });
-      } else {
-        setIsUserDataUpdated(false);
-      }
-    };
-    addOrUpdateUser();
-  }, [userEmail, isUserDataUpdated]);
 
   return (
     <UserContext.Provider
