@@ -8,6 +8,7 @@ import { Outlet, useOutletContext, useNavigate } from "react-router-dom";
 import { EditBtn } from "../components/PNG";
 import { Button } from "../components/Buttons";
 import { useAuth0 } from "@auth0/auth0-react";
+import { notification } from "antd";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
@@ -34,6 +35,32 @@ export default function EditProfile() {
       setVoices(response.data);
     });
   }, []);
+
+  const fieldsAlert = () => {
+    notification.open({
+      message: `Error`,
+      description: "All fields must be filled",
+      placement: "topRight",
+      duration: 3,
+    });
+  };
+
+  const photoSuccess = () => {
+    notification.open({
+      message: "Success",
+      description: "Profile photo has been successfully changed",
+      placement: "bottomLeft",
+      duration: 2,
+    });
+  };
+  const profileSuccess = () => {
+    notification.open({
+      message: "Success",
+      description: "Profile has been successfully edited",
+      placement: "bottomLeft",
+      duration: 2,
+    });
+  };
 
   const handleTextChange = (setter) => (e) => {
     const value = e.target.value;
@@ -89,9 +116,8 @@ export default function EditProfile() {
           profile_pic_url: response.data.profile_pic_url,
         });
         setIsUserDataUpdated(true);
-        // if (setIsUserDataUpdated !== false) {
-        //   alert("Profile photo has been successfully uploaded!");
-        // }
+        navigate("/profile/user");
+        photoSuccess();
       })
       .catch((err) => {
         console.log("Axios profile photo update error", err);
@@ -106,15 +132,14 @@ export default function EditProfile() {
       loginWithRedirect();
       return;
     }
+    // input validation
+    if (!currentFirstName || !currentLastName || !currentUsername)
+      return fieldsAlert();
 
-    // get access token
     const accessToken = await getAccessTokenSilently({
       audience: `${audience}`,
       scope: `${scope}`,
     });
-    // input validation
-    if (!currentFirstName || !currentLastName || !currentUsername)
-      return alert("All fields have to be filled");
 
     await axios
       .put(
@@ -146,6 +171,7 @@ export default function EditProfile() {
         setCurrentUsername(response.data.username);
         setCurrentVoice(response.data.voicevox_id);
         navigate("/profile/user");
+        profileSuccess();
       })
       .catch((err) => {
         console.log("Axios profile update error", err);

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { SettingBtn } from "./PNG";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogOutBtn } from "./PNG";
+import { message, Popconfirm, ConfigProvider } from "antd";
 
 export function Button(props) {
   return (
@@ -73,15 +74,33 @@ export function SettingsButton() {
 
 export function LogoutButton() {
   const { logout } = useAuth0();
+  const confirm = (e) => {
+    message.success("Logging out");
+    logout({ logoutParams: { returnTo: window.location.origin } });
+  };
+
   return (
-    <button
-      onClick={() =>
-        logout({ logoutParams: { returnTo: window.location.origin } })
-      }
-      className="log-button"
+    <ConfigProvider
+      theme={{
+        token: {
+          colorText: "#570344",
+          colorPrimary: "#570344",
+        },
+      }}
     >
-      <LogOutBtn />
-    </button>
+      <Popconfirm
+        title="Log Out"
+        description="Are you sure you want to log out?"
+        onConfirm={confirm}
+        showCancel="false"
+        okText="Yes"
+        cancelText="No"
+      >
+        <button className="log-button">
+          <LogOutBtn />
+        </button>
+      </Popconfirm>
+    </ConfigProvider>
   );
 }
 
