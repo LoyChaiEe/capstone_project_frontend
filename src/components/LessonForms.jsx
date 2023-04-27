@@ -1,20 +1,14 @@
-import {
-  LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Button, message, Steps, theme } from "antd";
 import { useState } from "react";
+import { Button, message, theme } from "antd";
 import { Progress } from "antd";
 
 const LessonForms = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
-  const [hasSubmit, setHasSubmit] = useState(true)
-  const [answer, setAnswer] = useState([])
-  const [input, setInput] = useState([])
-  const [submittedAnswer, setSubmittedAnswer] = useState("")
+  const [hasSubmit, setHasSubmit] = useState(true);
+  const [answer, setAnswer] = useState([]);
+  const [input, setInput] = useState([]);
+  const [submittedAnswer, setSubmittedAnswer] = useState("");
 
   //Steps contain the data needed for the question
   const steps = [
@@ -47,55 +41,65 @@ const LessonForms = () => {
     //reset every question
     setCurrent(current + 1);
     setHasSubmit(true);
-    setInput(steps[current+1].input)
+    setInput(steps[current + 1].input);
     setAnswer([]);
     setSubmittedAnswer("");
   };
   const submit = () => {
-    const ans = answer.join("")
+    const ans = answer.join("");
     setHasSubmit(false);
-    setSubmittedAnswer(ans)
+    setSubmittedAnswer(ans);
   };
   const add = (text) => {
-    const ans = [...answer, text]
-    const userInput = [...input]
+    const ans = [...answer, text];
+    const userInput = [...input];
     const index = input.indexOf(text);
     userInput.splice(index, 1);
     setAnswer(ans);
-    setInput(userInput)
+    setInput(userInput);
   };
   const remove = (text) => {
     const ans = [...answer];
     const userInput = [...input, text];
     const index = answer.indexOf(text);
     ans.splice(index, 1);
-    setAnswer(ans)
+    setAnswer(ans);
     setInput(userInput);
-  }
+  };
 
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,
   }));
   const contentStyle = {
-    lineHeight: '260px',
-    textAlign: 'center',
+    lineHeight: "260px",
+    textAlign: "center",
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
   };
-  const inputElement = input.map(x => 
-    <Button style={{ color: "green" }} onClick={(e) => add(e.target.textContent)}>{x}</Button>
-  )
-  const answerElement = answer.map(x => 
-  <Button style={{ color: "red" }} onClick={(e) => remove(e.target.textContent)}>{x}</Button>
-  )
+  const inputElement = input.map((x) => (
+    <Button
+      style={{ color: "green" }}
+      onClick={(e) => add(e.target.textContent)}
+    >
+      {x}
+    </Button>
+  ));
+  const answerElement = answer.map((x) => (
+    <Button
+      style={{ color: "red" }}
+      onClick={(e) => remove(e.target.textContent)}
+    >
+      {x}
+    </Button>
+  ));
   return (
     <>
       {/* <Steps current={current} items={items} /> */}
-      <Progress percent={((current) / 3) * 100} />
+      <Progress percent={(current / 3) * 100} />
       <div style={contentStyle}>
         {steps[current].content}
         {answerElement}
@@ -106,10 +110,11 @@ const LessonForms = () => {
           marginTop: 24,
         }}
       >
-        {current < steps.length  && (
+        {current < steps.length && (
           <Button
             style={{
-              backgroundColor: submittedAnswer === steps[current].answer ? "green" : "red",
+              backgroundColor:
+                submittedAnswer === steps[current].answer ? "green" : "red",
               color: "white",
             }}
             type="primary"
@@ -119,7 +124,7 @@ const LessonForms = () => {
             Next
           </Button>
         )}
-        {current < steps.length  && (
+        {current < steps.length && (
           <Button
             type="primary"
             onClick={() => submit()}
@@ -141,4 +146,3 @@ const LessonForms = () => {
   );
 };
 export default LessonForms;
-

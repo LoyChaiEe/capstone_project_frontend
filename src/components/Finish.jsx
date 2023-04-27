@@ -1,16 +1,21 @@
 import React from "react";
-import { MiniCharacter } from "./SVG";
+import { Teacher } from "./PNG";
 import { Link } from "react-router-dom";
+import { AdvancementButton } from "./Buttons";
+import "./startFinish.css";
 
 const Finish = (props) => {
   const placeholder = props.type; //Depends on type
+  console.log(placeholder);
   return (
     <>
-      <MiniCharacter />
-      <p>FINISH!</p>
-      <Link to={`/`} >
-        <button>Go to Home</button>
-      </Link>
+      <div className="start-finish-wrapper">
+        <Teacher />
+        <p>FINISH!</p>
+        <Link to="/lesson" className="link-text-wrapper">
+          <AdvancementButton>Go to Home</AdvancementButton>
+        </Link>
+      </div>
     </>
   );
 };

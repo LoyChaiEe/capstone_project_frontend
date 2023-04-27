@@ -1,10 +1,40 @@
-.matching-grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
+.user-question-wrapper {
+  font-size: 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
 }
 
-.matching-grid-item {
-  background-color: #ccc;
-  padding: 10px;
+.matching-grid-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.columns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: bisque;
+}
+
+#default {
+  margin: 5px;
+  width: 75px;
+  height: 75px;
+  background-color: rgba(233, 171, 158, 0.847);
+  font-size: 20px;
+}
+
+#white {
+  margin: 5px;
+  width: 75px;
+  height: 75px;
+  font-size: 20px;
 }

@@ -1,6 +1,6 @@
 .nav-logo {
   object-fit: cover;
-  width: 150px;
+  width: 200px;
   margin-top: 35px;
   margin-bottom: 20px;
 }
@@ -14,6 +14,12 @@
 .mini-character {
   width: auto;
   height: 150px;
+  object-fit: cover;
+}
+
+.landing-logo {
+  width: auto;
+  height: 750px;
   object-fit: cover;
 }
 
@@ -39,5 +45,16 @@
 .edit-button {
   width: 20px;
   height: 20px;
+  object-fit: cover;
+}
+
+.sound {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
+
+.teacher {
+  height: 500px;
   object-fit: cover;
 }

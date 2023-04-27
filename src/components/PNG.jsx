@@ -1,26 +1,26 @@
-import "./svg.css";
+import "./png.css";
 
 export function NavLogo() {
   return (
     <img
-      src={require("../assets/home-logo-500-02.png")}
+      src={require("../assets/home-logo-500-03.png")}
       className="nav-logo"
       alt="nav-logo"
     />
   );
 }
 
-export function HomeSVG() {
+export function VoicesPNG() {
   return (
     <img
-      src={require("../assets/home.png")}
+      src={require("../assets/voices.png")}
       className="nav-link-logo"
-      alt="home-png"
+      alt="voices-png"
     />
   );
 }
 
-export function LessonSVG() {
+export function LessonPNG() {
   return (
     <img
       src={require("../assets/lesson.png")}
@@ -30,7 +30,7 @@ export function LessonSVG() {
   );
 }
 
-export function CharacterSVG() {
+export function CharacterPNG() {
   return (
     <img
       src={require("../assets/character.png")}
@@ -40,22 +40,12 @@ export function CharacterSVG() {
   );
 }
 
-export function ProfileSVG() {
+export function ProfilePNG() {
   return (
     <img
       src={require("../assets/profile.png")}
       className="nav-link-logo"
       alt="profile-png"
-    />
-  );
-}
-
-export function AboutSVG() {
-  return (
-    <img
-      src={require("../assets/about.png")}
-      className="nav-link-logo"
-      alt="about-png"
     />
   );
 }
@@ -66,6 +56,16 @@ export function MiniCharacter() {
       src={require("../assets/mini-character.png")}
       className="mini-character"
       alt="mini-character"
+    />
+  );
+}
+
+export function LandingLogo() {
+  return (
+    <img
+      src={require("../assets/landing-logo.png")}
+      className="landing-logo"
+      alt="landing-logo"
     />
   );
 }
@@ -106,6 +106,22 @@ export function EditBtn() {
       src={require("../assets/edit-button.png")}
       className="edit-button"
       alt="edit-button"
+    />
+  );
+}
+
+export function Sound() {
+  return (
+    <img src={require("../assets/sound.png")} className="sound" alt="sound" />
+  );
+}
+
+export function Teacher() {
+  return (
+    <img
+      src={require("../assets/teacher.png")}
+      className="teacher"
+      alt="teacher"
     />
   );
 }

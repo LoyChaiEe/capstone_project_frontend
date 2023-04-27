@@ -17,7 +17,7 @@ export const UserContextProvider = (props) => {
       const { email } = user;
       setUserEmail(email);
     }
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, isLoading]);
 
   useEffect(() => {
     if (userEmail) {
@@ -32,7 +32,7 @@ export const UserContextProvider = (props) => {
     } else {
       setIsUserDataUpdated(false);
     }
-  }, [userEmail]);
+  }, [userEmail, isUserDataUpdated]);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -44,11 +44,16 @@ export const UserContextProvider = (props) => {
         console.log("Axios get all users error", error);
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
 
   return (
     <UserContext.Provider
-      value={{ userData, allUserData, setUserData, setIsUserDataUpdated }}
+      value={{
+        userData,
+        allUserData,
+        setUserData,
+        setIsUserDataUpdated,
+      }}
     >
       {props.children}
     </UserContext.Provider>

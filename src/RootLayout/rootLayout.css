@@ -3,9 +3,12 @@
   height: 100vh;
   overflow-y: auto;
   color: #9f7b71;
+  margin-left: 300px;
+  width: calc(100vw - 300px);
+  font-family: "Rubik", sans-serif;
 }
 
 .app-body {
-  margin-left: 300px;
-  padding-top: 35px;
+  display: flex;
+  justify-content: center;
 }

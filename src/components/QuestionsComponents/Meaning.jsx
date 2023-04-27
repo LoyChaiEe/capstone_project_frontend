@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { MiniCharacter } from "../SVG";
 import { Backend_URL } from "../../BACKEND_URL";
 import axios from "axios";
-import Button from "../Button";
-// import { Button } from "antd";
+import { QuestionButton } from "../Buttons";
 import "./meaning.css";
 
 export default function Meaning(props) {
@@ -39,11 +37,11 @@ export default function Meaning(props) {
   const select = (e) => {
     e.preventDefault();
     if (prevSelectedButton) {
-      prevSelectedButton.classList.remove("selected");
+      prevSelectedButton.classList.remove("meaning-selected");
     }
 
     const selectedButton = e.target;
-    selectedButton.classList.add("selected");
+    selectedButton.classList.add("meaning-selected");
     const selected = selectedButton.textContent;
     setWordSelected(selected);
     setIsWordSelected(true);
@@ -60,9 +58,9 @@ export default function Meaning(props) {
   };
 
   const wordArrayDisplay = wordArray.map((wordArray) => (
-    <Button onClick={select} disabled={props.hasSubmit}>
+    <QuestionButton onClick={select} disabled={props.hasSubmit}>
       {type[1] === "English" ? wordArray.character : wordArray.meaning}
-    </Button>
+    </QuestionButton>
   ));
 
   // enable or disable submit button
@@ -79,11 +77,18 @@ export default function Meaning(props) {
 
   return (
     <>
-      <span>{questionData.question}</span>
-      <div>{wordArrayDisplay}</div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
+      {!props.hasSubmit ? (
+        <>
+          <span className="user-question-wrapper">{questionData.question}</span>
+          <div className="user-answer-wrapper">
+            <div className="wordArray-grid">{wordArrayDisplay}</div>
+          </div>
+        </>
+      ) : (
+        <div hidden={!props.hasSubmit} className="user-question-wrapper">
+          You are {isCorrect ? "correct" : "wrong"}
+        </div>
+      )}
     </>
   );
 }

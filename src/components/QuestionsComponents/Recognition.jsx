@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
-import "./matching.css";
-import { Button } from "antd";
+import { MiniCharacter } from "../PNG";
+import "./recognition.css";
+import { QuestionButton } from "../Buttons";
 import axios from "axios";
 import { Howl } from "howler";
 import { Backend_URL } from "../../BACKEND_URL";
-const soundPlay = (src) => {
-  const sound = new Howl({
-    src,
-    html5: true,
-    preload: true,
-  });
-  sound.play();
-};
+import { useOutletContext } from "react-router-dom";
 
 export default function Recognition(props) {
   /* Things need to do in this component:
@@ -21,28 +14,34 @@ export default function Recognition(props) {
 
   //Data Retreival
   const questionData = props.questionData;
-  const wordBank = props.wordBank
-  const [inputData, setInputData] = useState([])
-  const [userAnswer, setUserAnswer] = useState("")
-  const [isCorrect, setCorrect] = useState(null)
+  const wordBank = props.wordBank;
+  const [userData] = useOutletContext();
+  const [inputData, setInputData] = useState([]);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [isCorrect, setCorrect] = useState(null);
+  const [prevSelectedButton, setPrevSelectedButton] = useState(null);
+
+  const speaker = userData.voicevox_id;
+
   //Retrieve random input
   useEffect(() => {
     axios
       .post(`${Backend_URL}/questions/recognition/input`, {
         questionData: questionData,
-        wordBank: wordBank
+        wordBank: wordBank,
       })
       .then((res) => {
         console.log(res.data);
-        setInputData(res.data)
+        setInputData(res.data);
       });
-      setUserAnswer("")
-      setCorrect(null)
+    setUserAnswer("");
+    setCorrect(null);
+    setPrevSelectedButton(null);
   }, [questionData]);
 
   //Verify answer
-  useEffect(() =>{
-    if(userAnswer !== ""){
+  useEffect(() => {
+    if (userAnswer !== "") {
       axios
         .post(`${Backend_URL}/questions/recognition/verify`, {
           answer: questionData,
@@ -52,16 +51,25 @@ export default function Recognition(props) {
           setCorrect(res.data.isCorrect);
         });
     }
-  }, [props.hasSubmit])
+  }, [props.hasSubmit]);
 
   //Play sounds
-  const select = async(e) => {
+  const select = async (e) => {
+    if (prevSelectedButton) {
+      prevSelectedButton.classList.remove("selected");
+    }
+
+    const selectedButton = e.target;
+    selectedButton.classList.add("selected");
+    const text = selectedButton.textContent;
+    setPrevSelectedButton(selectedButton);
     //retrieve the id of the button
-    const text = e.target.textContent
     //setState to keep track the choice user select
-    setUserAnswer(text)
-    const choiceData = inputData?.find(obj => obj.character === text || obj.pronounciation === text);
-    const wordtoplay = choiceData.character
+    setUserAnswer(text);
+    const choiceData = inputData?.find(
+      (obj) => obj.character === text || obj.pronounciation === text
+    );
+    const wordtoplay = choiceData.character;
     const data = await createAudio(wordtoplay);
     const audioSRC = URL.createObjectURL(data);
     //Audio play portion
@@ -70,16 +78,15 @@ export default function Recognition(props) {
       autoplay: false,
       loop: false,
       volume: 1,
-      format: "wav"
+      format: "wav",
     });
     sound.play();
-
-  }
+  };
 
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
     const response = await axios.post(
-      `http://localhost:50021/audio_query?speaker=3&text=${text}`
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
     );
     return response.data;
   };
@@ -87,7 +94,7 @@ export default function Recognition(props) {
   const createVoice = async (text) => {
     const query = await createQuery(text);
     const response = await axios.post(
-      "http://localhost:50021/synthesis?speaker=3",
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
       query,
       { responseType: "blob" }
     );
@@ -100,26 +107,21 @@ export default function Recognition(props) {
   };
 
   const inputDisplay = inputData.map((ele, i) => {
-    const word = ele.character
-    const pronounciation = ele.pronounciation
-    const type = questionData.question_type.split("-")
-    let display
-    if (type[1] === "character"){
-      display = pronounciation
+    const word = ele.character;
+    const pronounciation = ele.pronounciation;
+    const type = questionData.question_type.split("-");
+    let display;
+    if (type[1] === "character") {
+      display = pronounciation;
+    } else {
+      display = word;
     }
-    else{
-      display = word
-    }
-      return (
-        <Button
-          style={{ backgroundColor: display === userAnswer ? "blue" : "white" }}
-          onClick={select}
-          disabled={props.hasSubmit}
-        >
-          {display}
-        </Button>
-      );
-  })
+    return (
+      <QuestionButton onClick={select} disabled={props.hasSubmit} key={i}>
+        {display}
+      </QuestionButton>
+    );
+  });
 
   if (userAnswer !== "") {
     props.canSubmit(true);
@@ -129,14 +131,19 @@ export default function Recognition(props) {
 
   return (
     <>
-      <div>
-        <MiniCharacter />
-        <span>{questionData.question}</span>
-      </div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
-      <div>{inputDisplay}</div>
+      {/* <MiniCharacter /> */}
+      {!props.hasSubmit ? (
+        <>
+          <span className="user-question-wrapper">{questionData.question}</span>
+          <div className="user-answer-wrapper">
+            <div className="wordArray-recognition-grid">{inputDisplay}</div>
+          </div>
+        </>
+      ) : (
+        <div hidden={!props.hasSubmit} className="user-question-wrapper">
+          You are {isCorrect ? "correct" : "wrong"}
+        </div>
+      )}
     </>
   );
 }

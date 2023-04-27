@@ -3,48 +3,46 @@ import { Button } from "antd";
 import axios from "axios";
 import { Howl } from "howler";
 
-export default function AudioButton(){
+export default function AudioButton() {
+  const speaker = 9;
   const play = async (e) => {
     const text = e.target.textContent;
-    console.log(text)
+    console.log(text);
     const data = await createAudio(text);
     const audioSRC = URL.createObjectURL(data);
-    console.log(audioSRC)
+    console.log(audioSRC);
     const sound = new Howl({
       src: [audioSRC],
       autoplay: false,
       loop: false,
       volume: 1,
-      format: "wav"
+      format: "wav",
     });
     sound.play();
-  }
+  };
 
   const createQuery = async (text) => {
     //change speaker query to the id of the waifu
     const response = await axios.post(
-      `http://localhost:50021/audio_query?speaker=3&text=${text}`
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
     );
     return response.data;
   };
 
-  const createVoice = async(text) =>{
+  const createVoice = async (text) => {
     const query = await createQuery(text);
     const response = await axios.post(
-      "http://localhost:50021/synthesis?speaker=3",
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
       query,
       { responseType: "blob" }
     );
     return response.data;
-  }
+  };
 
   const createAudio = async (text) => {
     const data = await createVoice(text);
     return data;
-  }
-  return (
-    <Button onClick={play}>
-      かえるぴょ
-    </Button>
-  );
+  };
+  // return <Button onClick={play}>かえるぴょ</Button>;
+  return <Button onClick={play}>振り向いて欲しくて背伸びをしてばかりで</Button>;
 }

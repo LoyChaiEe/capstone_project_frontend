@@ -18,12 +18,7 @@ root.render(
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: `${audience}`,
-        // audience: `${domain}/api/v2/`,
-        // scope: "read:current_user",
       }}
-      // audience={`${domain}/api/v2/`}
-      // audience={audience}
-      // scope="read:current_user"
     >
       <App />
     </Auth0Provider>

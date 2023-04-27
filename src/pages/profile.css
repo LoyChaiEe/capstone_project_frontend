@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .profile-image-wrapper {
@@ -12,12 +13,16 @@
   flex-direction: column;
   align-items: center;
   border-bottom: 2px solid rgba(159, 123, 113, 0.5);
+  background-image: url("../assets/profile-banner.png");
+  background-repeat: no-repeat;
+  background-position: 50% 10%;
+  background-size: cover;
+  background-color: #ffe7e6;
 }
 
 .profile-title {
   margin-bottom: 30px;
   font-size: 50px;
-  line-height: 50px;
   font-weight: bold;
 }
 
@@ -37,12 +42,16 @@
   flex-direction: column;
   align-items: stretch;
   margin-bottom: 10px;
+  /* background-color: aqua; */
 }
 
 .profile-info-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
+  /* background-color: burlywood; */
+  width: 100%;
 }
 
 .profile-info {
@@ -58,6 +67,21 @@
   text-align: left;
   padding-bottom: 10px;
   border-bottom: 2px solid rgba(159, 123, 113, 0.5);
+}
+
+.profile-waifu-voice-wrapper {
+  width: 75%;
+  display: flex;
+  align-items: left;
+}
+
+.profile-waifu-voice {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  outline: 2px solid rgba(159, 123, 113, 0.5);
+  border-radius: 50%;
+  background-color: #ffe7e6;
 }
 
 .profile-settings-wrapper {

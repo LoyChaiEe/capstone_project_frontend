@@ -1,19 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
 import axios from "axios";
-import useSWR from "swr";
-import { Button } from "antd";
 import { Backend_URL } from "../../BACKEND_URL";
+import { useOutletContext } from "react-router-dom";
+import { Howl } from "howler";
+import { TranslationButton } from "../Buttons";
+import "./translation.css";
 
 export default function Translation(props) {
   const questionData = props.questionData;
   const wordBank = props.wordBank;
+  const [userData] = useOutletContext();
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
-  const type = questionData?.question_type.split("-");
 
-  console.log("TYPE", type);
+  const type = questionData?.question_type.split("-");
+  const speaker = userData.voicevox_id;
+
+  const play = async (e) => {
+    const questionPhrase = questionData.question;
+    const startIndex = questionPhrase.indexOf(":") + 1;
+    const text = questionPhrase.slice(startIndex);
+    const data = await createAudio(text);
+    const audioSRC = URL.createObjectURL(data);
+    const sound = new Howl({
+      src: [audioSRC],
+      autoplay: false,
+      loop: false,
+      volume: 2,
+      format: "wav",
+    });
+    sound.play();
+  };
+
+  const createQuery = async (text) => {
+    const response = await axios.post(
+      `http://localhost:50021/audio_query?speaker=${speaker}&text=${text}`
+    );
+    return response.data;
+  };
+
+  const createVoice = async (text) => {
+    const query = await createQuery(text);
+    const response = await axios.post(
+      `http://localhost:50021/synthesis?speaker=${speaker}`,
+      query,
+      { responseType: "blob" }
+    );
+    return response.data;
+  };
+
+  const createAudio = async (text) => {
+    const data = await createVoice(text);
+    return data;
+  };
 
   const verify = async () => {
     console.log(userInput);
@@ -76,41 +116,43 @@ export default function Translation(props) {
     setInput(userChoice);
   };
   const choiceDisplay = input?.map((input) => (
-    <Button onClick={add} disabled={props.hasSubmit}>
+    <TranslationButton onClick={add} disabled={props.hasSubmit}>
       {type[1] === "English" ? input.character : input.meaning}
-    </Button>
+    </TranslationButton>
   ));
 
   const displayAnswer = userInput?.map((input) => (
-    <Button
-      style={{ backgroundColor: "green" }}
+    <TranslationButton
+      style={{ backgroundColor: "rgba(233, 171, 158, 0.847)" }}
       onClick={remove}
       disabled={props.hasSubmit}
     >
       {type[1] === "English" ? input.character : input.meaning}
-    </Button>
+    </TranslationButton>
   ));
-
-  console.log(type);
-  console.log(choiceDisplay);
-  console.log(displayAnswer);
 
   if (displayAnswer.length !== 0) {
     props.canSubmit(true);
   } else {
     props.canSubmit(false);
   }
+
   return (
     <>
-      <div style={{ backgroundColor: "orange" }}>
-        {/* <MiniCharacter /> */}
-        <span>{questionData.question}</span>
-      </div>
-      {displayAnswer}
-      <div style={{ backgroundColor: "orange" }}>{choiceDisplay}</div>
-      <div hidden={!props.hasSubmit}>
-        You are {isCorrect ? "correct" : "wrong"}
-      </div>
+      {!props.hasSubmit ? (
+        <>
+          <div className="user-question-wrapper">
+            {questionData.question}
+            {type[1] !== "English" && <button onClick={play}>Hi</button>}
+          </div>
+          <div className="user-answer-wrapper">{displayAnswer}</div>
+          <div className="user-question-wrapper">{choiceDisplay}</div>
+        </>
+      ) : (
+        <div hidden={!props.hasSubmit} className="user-question-wrapper">
+          You are {isCorrect ? "correct" : "wrong"}
+        </div>
+      )}
     </>
   );
 }

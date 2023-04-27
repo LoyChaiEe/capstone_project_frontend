@@ -1,0 +1,28 @@
+.words-lesson {
+  cursor: pointer;
+  margin: 5px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 25px;
+  color: #9f7b71;
+}
+
+.words-lesson:hover {
+  color: black;
+}
+
+.modal-title {
+  color: #9f7b71;
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+.modal-para {
+  color: #9f7b71;
+}
+
+.words-lesson-wrapper {
+  border-top: 2px solid #9f7b71;
+  padding-top: 30px;
+  margin-top: 30px;
+}
