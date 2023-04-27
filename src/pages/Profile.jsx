@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { SettingsButton, LogoutButton } from "../components/Buttons";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
+import { Spin } from "antd";
 
 export default function ProfileComponent() {
   const { isAuthenticated } = useAuth0();
@@ -70,11 +71,13 @@ export default function ProfileComponent() {
         <div className="profile-info-wrapper">
           <h1 className="profile-info">Waifu voice:</h1>
           <div className="profile-waifu-voice-wrapper">
-            <img
-              src={userVoiceImage}
-              alt={userVoiceImage}
-              className="profile-waifu-voice"
-            />
+            <Spin size="large" spinning={!userVoiceImage}>
+              <img
+                src={userVoiceImage}
+                alt={userVoiceImage}
+                className="profile-waifu-voice"
+              />
+            </Spin>
           </div>
         </div>
       </div>

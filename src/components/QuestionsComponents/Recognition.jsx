@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { MiniCharacter } from "../PNG";
 import "./recognition.css";
 import { QuestionButton } from "../Buttons";
 import axios from "axios";
 import { Howl } from "howler";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 export default function Recognition(props) {
   /* Things need to do in this component:
@@ -20,20 +23,38 @@ export default function Recognition(props) {
   const [userAnswer, setUserAnswer] = useState("");
   const [isCorrect, setCorrect] = useState(null);
   const [prevSelectedButton, setPrevSelectedButton] = useState(null);
+  const { getAccessTokenSilently } = useAuth0();
 
   const speaker = userData.voicevox_id;
 
   //Retrieve random input
   useEffect(() => {
-    axios
-      .post(`${Backend_URL}/questions/recognition/input`, {
-        questionData: questionData,
-        wordBank: wordBank,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setInputData(res.data);
+    const questionWords = async () => {
+      // get access token
+      const accessToken = await getAccessTokenSilently({
+        audience: `${audience}`,
+        scope: `${scope}`,
       });
+
+      await axios
+        .post(
+          `${Backend_URL}/questions/recognition/input`,
+          {
+            questionData: questionData,
+            wordBank: wordBank,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          setInputData(res.data);
+        });
+    };
+    questionWords();
     setUserAnswer("");
     setCorrect(null);
     setPrevSelectedButton(null);
@@ -42,14 +63,30 @@ export default function Recognition(props) {
   //Verify answer
   useEffect(() => {
     if (userAnswer !== "") {
-      axios
-        .post(`${Backend_URL}/questions/recognition/verify`, {
-          answer: questionData,
-          userAnswer: userAnswer,
-        })
-        .then((res) => {
-          setCorrect(res.data.isCorrect);
+      const verifyingAnswer = async () => {
+        // get access token
+        const accessToken = getAccessTokenSilently({
+          audience: `${audience}`,
+          scope: `${scope}`,
         });
+        await axios
+          .post(
+            `${Backend_URL}/questions/recognition/verify`,
+            {
+              answer: questionData,
+              userAnswer: userAnswer,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          )
+          .then((res) => {
+            setCorrect(res.data.isCorrect);
+          });
+      };
+      verifyingAnswer();
     }
   }, [props.hasSubmit]);
 

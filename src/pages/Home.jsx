@@ -12,7 +12,7 @@ export default function Home() {
             <h1 className="chapter-title">Chapter 1</h1>
             <p className="chapter-title-para">Learning vocabs</p>
           </div>
-          <GuideModalButton />
+          <GuideModalButton lesson_id={1} chapter={1} />
         </div>
         <div className="chapter-lesson-wrapper">
           <Link
@@ -38,7 +38,7 @@ export default function Home() {
             <h1 className="chapter-title">Chapter 2</h1>
             <p className="chapter-title-para">Learning vocabs</p>
           </div>
-          <GuideModalButton />
+          <GuideModalButton lesson_id={11} chapter={2} />
         </div>
         <div className="chapter-lesson-wrapper">
           <Link
@@ -64,7 +64,7 @@ export default function Home() {
             <h1 className="chapter-title">Chapter 3</h1>
             <p className="chapter-title-para">Learning vocabs</p>
           </div>
-          <GuideModalButton />
+          <GuideModalButton lesson_id={21} chapter={3} />
         </div>
         <div className="chapter-lesson-wrapper">
           <Link

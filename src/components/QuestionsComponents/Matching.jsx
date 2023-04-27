@@ -5,10 +5,13 @@ import axios from "axios";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
+import { useAuth0 } from "@auth0/auth0-react";
 
 //global for the question
 let disabledTrackerLeft = {};
 let disabledTrackerRight = {};
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 export default function Matching(props) {
   const questionData = props.questionData;
@@ -18,23 +21,41 @@ export default function Matching(props) {
   const [inputRow, setInputRow] = useState([]); // This is the left row
   const [outputRow, setOutputRow] = useState([]); // This is the right row
   const [count, setCount] = useState(0);
+  const { getAccessTokenSilently } = useAuth0();
 
   const speaker = userData.voicevox_id;
 
   //query random input
   useEffect(() => {
-    axios
-      .post(`${Backend_URL}/questions/matching/random`, {
-        questionData: questionData,
-      })
-      .then((res) => {
-        setInputRow(res.data.inputRow);
-        setOutputRow(res.data.outputRow);
-        for (let i = 0; i < 5; i++) {
-          disabledTrackerLeft[`${res.data.inputRow[i]}`] = false;
-          disabledTrackerRight[`${res.data.outputRow[i]}`] = false;
-        }
+    const questionWords = async () => {
+      // get access token
+      const accessToken = await getAccessTokenSilently({
+        audience: `${audience}`,
+        scope: `${scope}`,
       });
+
+      await axios
+        .post(
+          `${Backend_URL}/questions/matching/random`,
+          {
+            questionData: questionData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          setInputRow(res.data.inputRow);
+          setOutputRow(res.data.outputRow);
+          for (let i = 0; i < 5; i++) {
+            disabledTrackerLeft[`${res.data.inputRow[i]}`] = false;
+            disabledTrackerRight[`${res.data.outputRow[i]}`] = false;
+          }
+        });
+    };
+    questionWords();
     setCount(0);
     disabledTrackerLeft = {};
     disabledTrackerRight = {};
@@ -43,24 +64,40 @@ export default function Matching(props) {
   //verify
   useEffect(() => {
     if (leftSelect !== "" && rightSelect !== "") {
-      axios
-        .post(`${Backend_URL}/questions/matching/verify`, {
-          left: leftSelect,
-          right: rightSelect,
-          type: questionData.question_type.split("-"),
-        })
-        .then((res) => {
-          if (res.data.isCorrect) {
-            disabledTrackerLeft[`${leftSelect}`] = true;
-            disabledTrackerRight[`${rightSelect}`] = true;
-            setCount(count + 1);
-          } else {
-            //for future changing colour to red
-            console.log("you are wrong");
-          }
-          setLeftSelect("");
-          setRightSelect("");
+      const verifyingAnswer = async () => {
+        // get access token
+        const accessToken = await getAccessTokenSilently({
+          audience: `${audience}`,
+          scope: `${scope}`,
         });
+        await axios
+          .post(
+            `${Backend_URL}/questions/matching/verify`,
+            {
+              left: leftSelect,
+              right: rightSelect,
+              type: questionData.question_type.split("-"),
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.data.isCorrect) {
+              disabledTrackerLeft[`${leftSelect}`] = true;
+              disabledTrackerRight[`${rightSelect}`] = true;
+              setCount(count + 1);
+            } else {
+              //for future changing colour to red
+              console.log("you are wrong");
+            }
+            setLeftSelect("");
+            setRightSelect("");
+          });
+      };
+      verifyingAnswer();
     }
   }, [leftSelect, rightSelect]);
 
@@ -114,13 +151,13 @@ export default function Matching(props) {
           colorPrimary: "#ee9f90",
         },
       }}
+      key={i}
     >
       <Button
         type="primary"
         onClick={addLeft}
         id={x === leftSelect ? "default" : "white"}
         disabled={disabledTrackerLeft[`${x}`]}
-        key={i}
       >
         {x}
       </Button>
@@ -134,13 +171,13 @@ export default function Matching(props) {
           colorPrimary: "#ee9f90",
         },
       }}
+      key={i}
     >
       <Button
         type="primary"
         onClick={addRight}
         id={x === rightSelect ? "default" : "white"}
         disabled={disabledTrackerRight[`${x}`]}
-        key={i}
       >
         {x}
       </Button>

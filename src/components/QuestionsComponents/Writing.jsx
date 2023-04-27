@@ -9,7 +9,7 @@ export default function Writing(props) {
   const [mouseY, setMouseY] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isPainted, setIsPainted] = useState(false);
-  const [prediction, setPrediction] = useState("")
+  const [prediction, setPrediction] = useState("");
   const questionData = props.questionData;
   const type = questionData.question_type.split("-");
 
@@ -24,10 +24,10 @@ export default function Writing(props) {
 
   //Enable/disable submit button
   useEffect(() => {
-    if(isPainted){
-      props.canSubmit(true)
+    if (isPainted) {
+      props.canSubmit(true);
     }
-  }, [isPainted, props])
+  }, [isPainted, props]);
 
   const handleMouseDown = (event) => {
     setMouseCoordinates(event);
@@ -85,7 +85,7 @@ export default function Writing(props) {
           answer: questionData.answer,
         }
       );
-      setPrediction(response.data.output)
+      setPrediction(response.data.output);
       console.log(response.data.output);
     } catch (error) {
       console.error(error);
@@ -93,11 +93,11 @@ export default function Writing(props) {
   };
 
   //Verify the input of the user using machine learning models
-  useEffect(()  => {
-    if(props.hasSubmit){
-      handleSave()
+  useEffect(() => {
+    if (props.hasSubmit) {
+      handleSave();
     }
-  }, [props.hasSubmit])
+  }, [props.hasSubmit]);
   return (
     <>
       <div>
@@ -125,4 +125,3 @@ export default function Writing(props) {
     </>
   );
 }
-

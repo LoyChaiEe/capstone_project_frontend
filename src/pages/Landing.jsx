@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./landing.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, LogoutButton, LoginButton } from "../components/Buttons";
+import { Button, LoginButton, LogoutButton } from "../components/Buttons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
