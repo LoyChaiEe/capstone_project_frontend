@@ -168,7 +168,6 @@ export default function Recognition(props) {
 
   return (
     <>
-      {/* <MiniCharacter /> */}
       {!props.hasSubmit ? (
         <>
           <span className="user-question-wrapper">{questionData.question}</span>

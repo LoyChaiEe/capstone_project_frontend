@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
 import axios from "axios";
 import { FLASK_URL } from "../../BACKEND_URL";
+import { Button } from "../Buttons";
+import "./writing.css";
 
 export default function Writing(props) {
   const canvasRef = useRef(null);
@@ -101,8 +102,7 @@ export default function Writing(props) {
   return (
     <>
       <div>
-        <MiniCharacter />
-        <span>{questionData.question}</span>
+        <span className="user-question-wrapper">{questionData.question}</span>
       </div>
       <div className="right-block" style={{ backgroundColor: "orange" }}>
         <canvas
@@ -114,12 +114,14 @@ export default function Writing(props) {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         ></canvas>
-        <br></br>
-        <button id="clear" type="button" onClick={handleClear}>
+        <br />
+        <Button id="clear" type="button" onClick={handleClear}>
           Clear
-        </button>
+        </Button>
         {prediction !== "" && (
-          <span hidden={!props.hasSubmit}>You wrote {prediction}</span>
+          <span hidden={!props.hasSubmit} className="user-question-wrapper">
+            You wrote {prediction}
+          </span>
         )}
       </div>
     </>

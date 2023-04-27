@@ -60,13 +60,14 @@
   text-align: left;
   padding-bottom: 10px;
   color: inherit;
+  padding-left: 10px;
 }
 
 .edit-profile-selection-info {
   width: 75%;
   border: 2px solid rgba(159, 123, 113, 0.5);
   font-size: 20px;
-  padding: 10px 10px;
+  padding: 10px;
   text-align: left;
   color: inherit;
   cursor: pointer;
