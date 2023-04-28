@@ -5,19 +5,29 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { SettingsButton, LogoutButton } from "../components/Buttons";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
+import { Spin } from "antd";
 
 export default function ProfileComponent() {
   const { isAuthenticated } = useAuth0();
   const [userData] = useOutletContext();
-  const [voicevoxImage, setVoicevoxImage] = useState("");
+  const [userVoiceImage, setUserVoiceImage] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
-      .then((response) => {
-        setVoicevoxImage(response.data.face_image_url);
-      });
-  }, [userData?.voicevox_id]);
+    const getVoicevox = async () => {
+      try {
+        if (userData?.voicevox_id) {
+          await axios
+            .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
+            .then((response) => {
+              setUserVoiceImage(response.data.face_image_url);
+            });
+        }
+      } catch (err) {
+        console.log("Error retrieving vocicevox speaker", err);
+      }
+    };
+    getVoicevox();
+  }, [userData]);
 
   if (!userData?.email_address) return null;
 
@@ -61,11 +71,13 @@ export default function ProfileComponent() {
         <div className="profile-info-wrapper">
           <h1 className="profile-info">Waifu voice:</h1>
           <div className="profile-waifu-voice-wrapper">
-            <img
-              src={voicevoxImage}
-              alt={voicevoxImage}
-              className="profile-waifu-voice"
-            />
+            <Spin size="large" spinning={!userVoiceImage}>
+              <img
+                src={userVoiceImage}
+                alt={userVoiceImage}
+                className="profile-waifu-voice"
+              />
+            </Spin>
           </div>
         </div>
       </div>

@@ -4,10 +4,11 @@ import { Backend_URL } from "../BACKEND_URL";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Outlet, useOutletContext, useNavigate } from "react-router-dom";
 import { EditBtn } from "../components/PNG";
 import { Button } from "../components/Buttons";
 import { useAuth0 } from "@auth0/auth0-react";
+import { notification } from "antd";
 
 const PROFILE_PHOTO_FOLDER = "profile-picture-url";
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
@@ -17,13 +18,17 @@ export default function EditProfile() {
   const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
     useAuth0();
   const [userData, setUserData, setIsUserDataUpdated] = useOutletContext();
+  const navigate = useNavigate();
   const [updatedPhotoFile, setUpdatedPhotoFile] = useState("");
   const [updatedPhotoFileUrl, setUpdatedPhotoFileUrl] = useState("");
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
   const [profilePhotoURL, setProfilePhotoURL] = useState("");
   const [voices, setVoices] = useState("");
-  const [textInput, setTextInput] = useState("");
+  const [currentFirstName, setCurrentFirstName] = useState("");
+  const [currentLastName, setCurrentLastName] = useState("");
+  const [currentUsername, setCurrentUsername] = useState("");
+  const [currentVoice, setCurrentVoice] = useState(1);
 
   useEffect(() => {
     axios.get(`${Backend_URL}/voicevoxes/`).then((response) => {
@@ -31,12 +36,35 @@ export default function EditProfile() {
     });
   }, []);
 
-  const handleTextInputChange = (e) => {
-    const { name, value } = e.target;
-    setTextInput({
-      ...textInput,
-      [name]: value,
+  const fieldsAlert = () => {
+    notification.open({
+      message: `Error`,
+      description: "All fields must be filled",
+      placement: "topRight",
+      duration: 3,
     });
+  };
+
+  const photoSuccess = () => {
+    notification.open({
+      message: "Success",
+      description: "Profile photo has been successfully changed",
+      placement: "bottomLeft",
+      duration: 2,
+    });
+  };
+  const profileSuccess = () => {
+    notification.open({
+      message: "Success",
+      description: "Profile has been successfully edited",
+      placement: "bottomLeft",
+      duration: 2,
+    });
+  };
+
+  const handleTextChange = (setter) => (e) => {
+    const value = e.target.value;
+    setter(value);
   };
 
   const handleUpdatedPhoto = (e) => {
@@ -52,13 +80,11 @@ export default function EditProfile() {
       loginWithRedirect();
       return;
     }
-
     // get access token
     const accessToken = await getAccessTokenSilently({
       audience: `${audience}`,
       scope: `${scope}`,
     });
-
     const profilePhotoRef = ref(
       storage,
       `${PROFILE_PHOTO_FOLDER}/${updatedPhotoFile.name}`
@@ -90,41 +116,40 @@ export default function EditProfile() {
           profile_pic_url: response.data.profile_pic_url,
         });
         setIsUserDataUpdated(true);
+        navigate("/profile/user");
+        photoSuccess();
       })
       .catch((err) => {
         console.log("Axios profile photo update error", err);
       });
-    alert("Profile photo has been successfully uploaded!");
     setProfilePhotoURL("");
     setIsUserDataUpdated(false);
   };
 
   const handleProfileChange = async (e) => {
     e.preventDefault();
-
     if (!isAuthenticated) {
       loginWithRedirect();
       return;
     }
+    // input validation
+    if (!currentFirstName || !currentLastName || !currentUsername)
+      return fieldsAlert();
 
-    // get access token
     const accessToken = await getAccessTokenSilently({
       audience: `${audience}`,
       scope: `${scope}`,
     });
-    // input validation
-    // if (!currentLastName || !currentUsername)
-    //   return alert("All fields have to be filled");
 
     await axios
       .put(
         `${Backend_URL}/users/profile`,
         {
-          first_name: textInput.first_name,
-          last_name: textInput.last_name,
-          username: textInput.username,
+          first_name: currentFirstName,
+          last_name: currentLastName,
+          username: currentUsername,
           email_address: userData.email_address,
-          voicevox_id: textInput.voicevox_id,
+          voicevox_id: currentVoice,
         },
         {
           headers: {
@@ -141,6 +166,12 @@ export default function EditProfile() {
           voicevox_id: response.data.voicevox_id,
         });
         setIsUserDataUpdated(true);
+        setCurrentFirstName(response.data.first_name);
+        setCurrentLastName(response.data.last_name);
+        setCurrentUsername(response.data.username);
+        setCurrentVoice(response.data.voicevox_id);
+        navigate("/profile/user");
+        profileSuccess();
       })
       .catch((err) => {
         console.log("Axios profile update error", err);
@@ -148,7 +179,10 @@ export default function EditProfile() {
       });
     setIsProfileUpdated(true);
     setIsUserDataUpdated(false);
-    console.log(accessToken);
+    setCurrentFirstName("");
+    setCurrentLastName("");
+    setCurrentUsername("");
+    setCurrentVoice(1);
   };
 
   return (
@@ -180,7 +214,9 @@ export default function EditProfile() {
                 onChange={handleUpdatedPhoto}
               />
             </label>
-            <Button onClick={handlePhotoSubmit}>Submit</Button>
+            {isChangedPhoto !== false ? (
+              <Button onClick={handlePhotoSubmit}>Submit</Button>
+            ) : null}
           </div>
         </div>
         <div className="edit-profile-info-container">
@@ -189,9 +225,9 @@ export default function EditProfile() {
             <input
               className="edit-profile-text-info"
               name="first_name"
-              value={textInput.first_name}
+              value={currentFirstName}
               placeholder="Enter name"
-              onChange={handleTextInputChange}
+              onChange={handleTextChange(setCurrentFirstName)}
             />
           </div>
           <div className="edit-profile-info-wrapper">
@@ -199,9 +235,9 @@ export default function EditProfile() {
             <input
               className="edit-profile-text-info"
               name="last_name"
-              value={textInput.last_name}
+              value={currentLastName}
               placeholder="Enter last name"
-              onChange={handleTextInputChange}
+              onChange={handleTextChange(setCurrentLastName)}
             />
           </div>
           <div className="edit-profile-info-wrapper">
@@ -209,9 +245,9 @@ export default function EditProfile() {
             <input
               className="edit-profile-text-info"
               name="username"
-              value={textInput.username}
+              value={currentUsername}
               placeholder="Enter username"
-              onChange={handleTextInputChange}
+              onChange={handleTextChange(setCurrentUsername)}
             />
           </div>
           <div className="edit-profile-info-wrapper">
@@ -219,8 +255,8 @@ export default function EditProfile() {
             <select
               className="edit-profile-selection-info"
               name="voicevox_id"
-              value={textInput.voicevox_id}
-              onChange={handleTextInputChange}
+              value={currentVoice}
+              onChange={handleTextChange(setCurrentVoice)}
             >
               {voices &&
                 voices.map((voice, index) => (
@@ -231,9 +267,7 @@ export default function EditProfile() {
             </select>
           </div>
         </div>
-        <Link to="/profile/user" className="link-wrapper">
-          <Button onClick={handleProfileChange}>Done</Button>
-        </Link>
+        <Button onClick={handleProfileChange}>Done</Button>
       </div>
       <div>
         <Outlet />

@@ -23,12 +23,6 @@
   margin-left: 10%;
 }
 
-.landing-logo-wrapper {
-  display: inline-block;
-  margin-top: -5%;
-  margin-right: 200px;
-}
-
 .landing-hero-title {
   margin-bottom: 20px;
   font-size: 60px;
@@ -55,13 +49,14 @@
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-auto-columns: 1fr;
   justify-items: center;
-  margin-bottom: 25px;
-  margin-top: 25px;
+  margin: 25px auto;
 }
 
 .voicevox-characters {
   border-radius: 50%;
   background-color: rgb(255, 231, 230);
-  outline: 5px solid;
+  outline: solid 3px #9f7b71;
 }

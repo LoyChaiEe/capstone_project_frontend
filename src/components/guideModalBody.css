@@ -8,7 +8,8 @@
 }
 
 .words-lesson:hover {
-  color: black;
+  color: #570344;
+  font-weight: 700;
 }
 
 .modal-title {

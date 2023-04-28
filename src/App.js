@@ -6,6 +6,7 @@ import Characters from "./pages/Characters";
 import Voices from "./pages/Voices";
 import AudioButton from "./components/ButtonTest";
 import Landing from "./pages/Landing";
+import LessonTest from "./pages/Lesson";
 import {
   createBrowserRouter,
   createRoutesFromElements,

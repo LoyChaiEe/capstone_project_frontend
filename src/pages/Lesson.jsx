@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button, message, Steps, theme, ConfigProvider } from "antd";
 import { useState } from "react";
-import { Progress } from "antd";
+import { Progress, Spin } from "antd";
 import Start from "../components/Start";
 import useSWR from "swr";
 import { Backend_URL } from "../BACKEND_URL";
@@ -17,7 +17,6 @@ import Finish from "../components/Finish";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./lesson.css";
 
-// const getter = (url) => axios.get(url).then((res) => res.data);
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
@@ -28,8 +27,7 @@ const override = css`
 `;
 
 const LessonTest = () => {
-  const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
-    useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const { state } = useLocation();
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
@@ -50,7 +48,6 @@ const LessonTest = () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(accessToken);
     return response.data;
   };
 
@@ -93,7 +90,7 @@ const LessonTest = () => {
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/${13}`, getter, {
+  } = useSWR(`${Backend_URL}/tests/questions/get/${14}`, getter, {
     revalidateOnFocus: false,
   });
 
@@ -106,7 +103,12 @@ const LessonTest = () => {
     !userLessonInfo ||
     !questionsDatas
   )
-    return <BeatLoader css={override} size={20} color={"#123abc"} />;
+    // return <BeatLoader css={override} size={20} color={"#123abc"} />;
+    return (
+      <div className="lesson-container">
+        <Spin size="large" />
+      </div>
+    );
 
   //Steps contain the data/conmponent  to display on the question needed for the question
   const steps = [
@@ -130,11 +132,13 @@ const LessonTest = () => {
       ),
     };
     steps.push(content);
+    console.log(questionData);
   }
   steps.push({
     title: "Finish",
     content: <Finish lesson_id={0} user_id={0} />,
   });
+
   //Functions that facilitate the interactivity of the component
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
   const next = (e) => {
@@ -154,6 +158,8 @@ const LessonTest = () => {
     key: item.title,
     title: item.title,
   }));
+
+  console.log(items);
 
   return (
     <>

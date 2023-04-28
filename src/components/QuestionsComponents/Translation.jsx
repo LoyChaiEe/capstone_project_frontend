@@ -3,8 +3,12 @@ import axios from "axios";
 import { Backend_URL } from "../../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
-import { TranslationButton } from "../Buttons";
+import { TranslationButton, Button } from "../Buttons";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./translation.css";
+
+const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
+const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
 export default function Translation(props) {
   const questionData = props.questionData;
@@ -13,6 +17,7 @@ export default function Translation(props) {
   const [input, setInput] = useState([]);
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
+  const { getAccessTokenSilently } = useAuth0();
 
   const type = questionData?.question_type.split("-");
   const speaker = userData.voicevox_id;
@@ -56,13 +61,22 @@ export default function Translation(props) {
   };
 
   const verify = async () => {
-    console.log(userInput);
+    // get access token
+    const accessToken = await getAccessTokenSilently({
+      audience: `${audience}`,
+      scope: `${scope}`,
+    });
     const correct = await axios.post(
       `${Backend_URL}/questions/translation/verify`,
       {
         userInput: userInput,
         questionID: questionData.question_id,
         lessonID: questionData.lesson_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
     setIsCorrect(correct.data.isCorrect);
@@ -75,16 +89,33 @@ export default function Translation(props) {
 
   //get input
   useEffect(() => {
-    axios
-      .post(`${Backend_URL}/questions/translation/input`, {
-        wordBank: wordBank,
-        type: type,
-        answer: questionData.answer,
-        difficulty: questionData.difficulty,
-      })
-      .then((res) => {
-        setInput(res.data);
+    const questionWords = async () => {
+      // get access token
+      const accessToken = await getAccessTokenSilently({
+        audience: `${audience}`,
+        scope: `${scope}`,
       });
+
+      await axios
+        .post(
+          `${Backend_URL}/questions/translation/input`,
+          {
+            wordBank: wordBank,
+            type: type,
+            answer: questionData.answer,
+            difficulty: questionData.difficulty,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          setInput(res.data);
+        });
+    };
+    questionWords();
     //reset every question
     setUserInput([]);
     setIsCorrect();
@@ -116,7 +147,7 @@ export default function Translation(props) {
     setInput(userChoice);
   };
   const choiceDisplay = input?.map((input) => (
-    <TranslationButton onClick={add} disabled={props.hasSubmit}>
+    <TranslationButton onClick={add} disabled={props.hasSubmit} key={input.id}>
       {type[1] === "English" ? input.character : input.meaning}
     </TranslationButton>
   ));
@@ -126,6 +157,7 @@ export default function Translation(props) {
       style={{ backgroundColor: "rgba(233, 171, 158, 0.847)" }}
       onClick={remove}
       disabled={props.hasSubmit}
+      key={input.id}
     >
       {type[1] === "English" ? input.character : input.meaning}
     </TranslationButton>
@@ -143,7 +175,7 @@ export default function Translation(props) {
         <>
           <div className="user-question-wrapper">
             {questionData.question}
-            {type[1] !== "English" && <button onClick={play}>Hi</button>}
+            {type[1] !== "English" && <Button onClick={play}></Button>}
           </div>
           <div className="user-answer-wrapper">{displayAnswer}</div>
           <div className="user-question-wrapper">{choiceDisplay}</div>

@@ -4,7 +4,7 @@ import { Backend_URL } from "../BACKEND_URL";
 import { Howl } from "howler";
 import "./voices.css";
 import { Button } from "../components/Buttons";
-import { Sound } from "../components/PNG";
+import { Spin } from "antd";
 
 export default function Voices() {
   const [voicevoxCharacters, setVoicevoxCharacters] = useState([]);
@@ -38,14 +38,16 @@ export default function Voices() {
   };
 
   const displayVoicevoxCharacters = voicevoxCharacters.map(
-    (voicevoxCharacter) => (
+    (voicevoxCharacter, index) => (
       <>
-        <div className="voices-character-wrapper" key={voicevoxCharacter.id}>
-          <img
-            src={voicevoxCharacter.full_body_image_url}
-            alt={voicevoxCharacter.full_body_image_url}
-            className="voices-character"
-          />
+        <div className="voices-character-wrapper" key={index}>
+          <Spin size="large" spinning={!voicevoxCharacter.full_body_image_url}>
+            <img
+              src={voicevoxCharacter.full_body_image_url}
+              alt={voicevoxCharacter.full_body_image_url}
+              className="voices-character"
+            />
+          </Spin>
           <div className="voices-character-lower">
             <div className="voices-character-lower-names">
               <h1 className="voices-character-japanese">
@@ -59,9 +61,7 @@ export default function Voices() {
               onClick={play}
               value={voicevoxCharacter.voicevox_voice}
               data-value={`こんにちは、私の名前は${voicevoxCharacter.voicevox_character}`}
-            >
-              {/* <Sound /> */}
-            </Button>
+            ></Button>
           </div>
         </div>
       </>

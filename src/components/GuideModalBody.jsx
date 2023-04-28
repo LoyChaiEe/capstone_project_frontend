@@ -5,7 +5,7 @@ import { Backend_URL } from "../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
 
-export default function GuideModalBody() {
+export default function GuideModalBody({ lesson_id, chapter }) {
   const [lessonWords, setLessonWords] = useState([]);
   const [userData] = useOutletContext();
 
@@ -13,7 +13,7 @@ export default function GuideModalBody() {
 
   useEffect(() => {
     try {
-      axios.get(`${Backend_URL}/LQA/lesson/words/${1}`).then((res) => {
+      axios.get(`${Backend_URL}/LQA/lesson/words/${lesson_id}`).then((res) => {
         setLessonWords(res.data);
       });
     } catch (err) {
@@ -61,7 +61,7 @@ export default function GuideModalBody() {
 
   return (
     <div>
-      <h1 className="modal-title">Words in Lesson 1!</h1>
+      <h1 className="modal-title">Words in Chapter {chapter}!</h1>
       <p className="modal-para">Click on the words to hear how they sound</p>
       <div className="words-lesson-wrapper">
         {lessonWords.map((words, index) => {

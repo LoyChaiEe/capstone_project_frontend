@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
-import { MiniCharacter } from "../SVG";
 import axios from "axios";
 import { FLASK_URL } from "../../BACKEND_URL";
+import { Button } from "../Buttons";
+import "./writing.css";
 
 export default function Writing(props) {
   const canvasRef = useRef(null);
@@ -9,7 +10,7 @@ export default function Writing(props) {
   const [mouseY, setMouseY] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isPainted, setIsPainted] = useState(false);
-  const [prediction, setPrediction] = useState("")
+  const [prediction, setPrediction] = useState("");
   const questionData = props.questionData;
   const type = questionData.question_type.split("-");
 
@@ -24,10 +25,10 @@ export default function Writing(props) {
 
   //Enable/disable submit button
   useEffect(() => {
-    if(isPainted){
-      props.canSubmit(true)
+    if (isPainted) {
+      props.canSubmit(true);
     }
-  }, [isPainted, props])
+  }, [isPainted, props]);
 
   const handleMouseDown = (event) => {
     setMouseCoordinates(event);
@@ -85,7 +86,7 @@ export default function Writing(props) {
           answer: questionData.answer,
         }
       );
-      setPrediction(response.data.output)
+      setPrediction(response.data.output);
       console.log(response.data.output);
     } catch (error) {
       console.error(error);
@@ -93,16 +94,15 @@ export default function Writing(props) {
   };
 
   //Verify the input of the user using machine learning models
-  useEffect(()  => {
-    if(props.hasSubmit){
-      handleSave()
+  useEffect(() => {
+    if (props.hasSubmit) {
+      handleSave();
     }
-  }, [props.hasSubmit])
+  }, [props.hasSubmit]);
   return (
     <>
       <div>
-        <MiniCharacter />
-        <span>{questionData.question}</span>
+        <span className="user-question-wrapper">{questionData.question}</span>
       </div>
       <div className="right-block" style={{ backgroundColor: "orange" }}>
         <canvas
@@ -114,15 +114,16 @@ export default function Writing(props) {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         ></canvas>
-        <br></br>
-        <button id="clear" type="button" onClick={handleClear}>
+        <br />
+        <Button id="clear" type="button" onClick={handleClear}>
           Clear
-        </button>
+        </Button>
         {prediction !== "" && (
-          <span hidden={!props.hasSubmit}>You wrote {prediction}</span>
+          <span hidden={!props.hasSubmit} className="user-question-wrapper">
+            You wrote {prediction}
+          </span>
         )}
       </div>
     </>
   );
 }
-
