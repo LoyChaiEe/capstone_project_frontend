@@ -32,7 +32,7 @@ export default function Characters() {
     voicevoxVoice();
     const getLatestLesson = async () => {
       await axios
-        .get(`${Backend_URL}/userLesson/${characterType}/${userData?.id}`)
+        .get(`${Backend_URL}/userLesson/${characterType}/${userData.id}`)
         .then((res) => {
           setLatestLesson(res.data);
         });
@@ -45,12 +45,17 @@ export default function Characters() {
       await axios
         .post(`${Backend_URL}/userWordbank/${characterType}/${userData?.id}`)
         .then((res) => {
-          setWordBank(res.data);
-          console.log("HELLOOO", res.data);
+          const uniqueArr = res.data.filter((obj, index, self) => {
+            return (
+              index ===
+              self.findIndex((t) => t.character_id === obj.character_id)
+            );
+          });
+          setWordBank(uniqueArr);
         });
     };
     getUserWordBank();
-  }, []);
+  }, [characterType, userData]);
 
   const getter = async (url) => {
     const accessToken = await getAccessTokenSilently({
@@ -191,7 +196,11 @@ export default function Characters() {
             </p>
             <Link
               to={`/characters/${characterType}/lesson`}
-              state={{ type: `${characterType}`, lesson_id: `${latestLesson}` }}
+              state={{
+                type: `${characterType}`,
+                lesson_id: `${latestLesson}`,
+                wordBank: wordBank,
+              }}
               className="link-wrapper"
             >
               <Button id="character-button">

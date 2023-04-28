@@ -64,17 +64,21 @@ const LessonTest = () => {
       revalidateOnFocus: false,
     }
   );
-  const {
-    data: userWordBank,
-    mutate: refetchUWinfo,
-    isLoading: userWordbankDataLoaded,
-  } = useSWR(
-    `${Backend_URL}/userWordBank/${state?.type}/${state?.lesson_id}`,
-    getter,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+
+  const userWordBank = state.wordBank;
+  console.log(userWordBank);
+  // const {
+  //   data: userWordBank,
+  //   mutate: refetchUWinfo,
+  //   isLoading: userWordbankDataLoaded,
+  // } = useSWR(
+  //   `${Backend_URL}/userWordBank/${state?.type}/${state?.lesson_id}`,
+  //   getter,
+  //   {
+  //     revalidateOnFocus: false,
+  //   }
+  // );
+  // console.log(userWordBank);
   //Potential bug since the way our data structured only handle 1 chapter per lesson type
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
@@ -96,14 +100,14 @@ const LessonTest = () => {
   //   mutate: refetchLQinfo,
   //   isLoading: LQADataLoaded,
   //   error,
-  // } = useSWR(`${Backend_URL}/tests/questions/get/${state.lesson_id}`, getter, {
+  // } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
   //   revalidateOnFocus: false,
   // });
 
   //Loader for loading data
   if (
     userLessonDataLoaded ||
-    userWordbankDataLoaded ||
+    // userWordbankDataLoaded ||
     LQADataLoaded ||
     !userWordBank ||
     !userLessonInfo ||
@@ -141,7 +145,13 @@ const LessonTest = () => {
   }
   steps.push({
     title: "Finish",
-    content: <Finish lesson_id={state.lesson_id} user_id={userData.id} />,
+    content: (
+      <Finish
+        lesson_id={state.lesson_id}
+        user_id={userData.id}
+        characterType={state?.type}
+      />
+    ),
   });
 
   //Functions that facilitate the interactivity of the component
