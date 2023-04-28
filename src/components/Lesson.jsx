@@ -1,14 +1,13 @@
 import React from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import axios from "axios";
-import { Button, message, Steps, theme, ConfigProvider } from "antd";
+import { Button, theme, ConfigProvider } from "antd";
 import { useState } from "react";
 import { Progress, Spin } from "antd";
 import Start from "../components/Start";
 import useSWR from "swr";
 import { Backend_URL } from "../BACKEND_URL";
 import { css } from "@emotion/react";
-import { BeatLoader } from "react-spinners";
 import Matching from "../components/QuestionsComponents/Matching";
 import Meaning from "../components/QuestionsComponents/Meaning";
 import Translation from "../components/QuestionsComponents/Translation";
@@ -53,20 +52,20 @@ const LessonTest = () => {
     return response.data;
   };
 
-  const {
-    data: userLessonInfo,
-    mutate: refetchULinfo,
-    isLoading: userLessonDataLoaded,
-  } = useSWR(
-    `${Backend_URL}/userLesson/${state?.type}/${state?.lesson_id}`,
-    getter,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+  // const {
+  //   data: userLessonInfo,
+  //   mutate: refetchULinfo,
+  //   isLoading: userLessonDataLoaded,
+  // } = useSWR(
+  //   // `${Backend_URL}/userLesson/${state?.type}/${state?.lesson_id}`,
+  //   `${Backend_URL}/userLesson/${state?.type}/${14}`,
+  //   getter,
+  //   {
+  //     revalidateOnFocus: false,
+  //   }
+  // );
 
   const userWordBank = state.wordBank;
-  console.log(userWordBank);
   // const {
   //   data: userWordBank,
   //   mutate: refetchUWinfo,
@@ -100,17 +99,17 @@ const LessonTest = () => {
   //   mutate: refetchLQinfo,
   //   isLoading: LQADataLoaded,
   //   error,
-  // } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
+  // } = useSWR(`${Backend_URL}/tests/questions/get/${14}`, getter, {
   //   revalidateOnFocus: false,
   // });
 
   //Loader for loading data
   if (
-    userLessonDataLoaded ||
+    // userLessonDataLoaded ||
     // userWordbankDataLoaded ||
     LQADataLoaded ||
     !userWordBank ||
-    !userLessonInfo ||
+    // !userLessonInfo ||
     !questionsDatas
   )
     // return <BeatLoader css={override} size={20} color={"#123abc"} />;
@@ -127,7 +126,7 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 1; i++) {
     const questionData = questionsDatas[i];
     const type = questionData.question_type.split("-");
     let content = {
@@ -182,6 +181,7 @@ const LessonTest = () => {
             percent={((current / 15) * 100).toFixed(0)}
             strokeColor={"#570344"}
             size={[500, 20]}
+            showInfo={false}
           />
           <div className="question-wrapper">
             {steps[current].content}
@@ -221,23 +221,6 @@ const LessonTest = () => {
                   disabled={!canSubmit || hasSubmit}
                 >
                   SUBMIT
-                </Button>
-              </ConfigProvider>
-            )}
-            {current === steps.length - 1 && (
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorPrimary: "#ee9f90",
-                  },
-                }}
-              >
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={() => message.success("Processing complete!")}
-                >
-                  DONE
                 </Button>
               </ConfigProvider>
             )}

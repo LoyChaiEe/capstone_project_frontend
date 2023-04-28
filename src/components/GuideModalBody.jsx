@@ -23,10 +23,8 @@ export default function GuideModalBody({ lesson_id, chapter }) {
 
   const play = async (e) => {
     const text = e.target.textContent;
-    console.log(text);
     const data = await createAudio(text);
     const audioSRC = URL.createObjectURL(data);
-    console.log(audioSRC);
     const sound = new Howl({
       src: [audioSRC],
       autoplay: false,

@@ -87,7 +87,6 @@ export default function Writing(props) {
         }
       );
       setPrediction(response.data.output);
-      console.log(response.data.output);
     } catch (error) {
       console.error(error);
     }
@@ -114,13 +113,14 @@ export default function Writing(props) {
           className="canvas-wrapper"
         ></canvas>
         <br />
-        <Button id="clear" type="button" onClick={handleClear}>
-          Clear
-        </Button>
-        {prediction !== "" && (
+        {prediction !== "" ? (
           <span hidden={!props.hasSubmit} className="user-question-wrapper">
             You wrote {prediction}
           </span>
+        ) : (
+          <Button id="clear" type="button" onClick={handleClear}>
+            Clear
+          </Button>
         )}
       </div>
     </>

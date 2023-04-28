@@ -18,4 +18,5 @@
   border: 1px solid #9f7b71;
   box-shadow: 0 0.5em 1em -0.125em hsla(0, 0%, 4%, 0.1),
     0 0 0 1px hsla(0, 0%, 4%, 0.02);
+  cursor: crosshair;
 }

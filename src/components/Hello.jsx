@@ -31,7 +31,6 @@ function AudioPlayer() {
     const data = await createVoice(text);
     return data;
   };
-  console.log("hello");
 
   return (
     <div>

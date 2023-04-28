@@ -60,7 +60,6 @@ export default function Recognition(props) {
           }
         )
         .then((res) => {
-          console.log(res.data);
           setInputData(res.data);
         });
     };
@@ -109,25 +108,30 @@ export default function Recognition(props) {
     const selectedButton = e.target;
     selectedButton.classList.add("selected");
     const text = selectedButton.textContent;
+    const characters = inputData.map((obj) => obj.character);
+    const answers = characters.join(",");
+    const index = answers.indexOf(text);
     setPrevSelectedButton(selectedButton);
-    //retrieve the id of the button
-    //setState to keep track the choice user select
+    if (index > -1) {
+      const word = answers[index];
+      setUserAnswer(word);
+      const choiceData = inputData?.find(
+        (obj) => obj.character === text || obj.pronounciation === text
+      );
+      const wordtoplay = choiceData.character;
+      const data = await createAudio(wordtoplay);
+      const audioSRC = URL.createObjectURL(data);
+      //Audio play portion
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 1,
+        format: "wav",
+      });
+      sound.play();
+    }
     setUserAnswer(text);
-    const choiceData = inputData?.find(
-      (obj) => obj.character === text || obj.pronounciation === text
-    );
-    const wordtoplay = choiceData.character;
-    const data = await createAudio(wordtoplay);
-    const audioSRC = URL.createObjectURL(data);
-    //Audio play portion
-    const sound = new Howl({
-      src: [audioSRC],
-      autoplay: false,
-      loop: false,
-      volume: 1,
-      format: "wav",
-    });
-    sound.play();
   };
 
   const createQuery = async (text) => {

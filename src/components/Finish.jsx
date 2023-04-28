@@ -7,9 +7,6 @@ import { Backend_URL } from "../BACKEND_URL";
 import axios from "axios";
 
 const Finish = (props) => {
-  const placeholder = props.type; //Depends on type
-  // console.log(props);
-
   const handleClick = () => {
     const addintowordbank = async () => {
       await axios
@@ -29,11 +26,19 @@ const Finish = (props) => {
       <div className="start-finish-wrapper">
         <Teacher />
         <p>FINISH!</p>
-        <Link to="/lesson" className="link-text-wrapper">
-          <AdvancementButton onClick={handleClick}>
-            Go to Home
-          </AdvancementButton>
-        </Link>
+        {props.type === "vocabs" ? (
+          <Link to="/lesson" className="link-text-wrapper">
+            <AdvancementButton onClick={handleClick}>
+              Go to Home
+            </AdvancementButton>
+          </Link>
+        ) : (
+          <Link to="/characters/display" className="link-text-wrapper">
+            <AdvancementButton onClick={handleClick}>
+              Go to Home
+            </AdvancementButton>
+          </Link>
+        )}
       </div>
     </>
   );

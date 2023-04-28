@@ -8,7 +8,7 @@ import { Backend_URL } from "../BACKEND_URL";
 export default function Vocab() {
   const [wordBank, setWordBank] = useState([]);
   const [userData] = useOutletContext();
-  const [latestLesson, setLatestLesson] = useState("");
+  // const [latestLesson, setLatestLesson] = useState("");
 
   useEffect(() => {
     const getUserWordBank = async () => {
@@ -27,17 +27,17 @@ export default function Vocab() {
     getUserWordBank();
   }, [userData]);
 
-  useEffect(() => {
-    const getLatestLesson = async () => {
-      await axios
-        .get(`${Backend_URL}/userLesson/vocabs/${userData.id}`)
-        .then((res) => {
-          setLatestLesson(res.data);
-        });
-    };
-    getLatestLesson();
-  }, []);
-  console.log("vocab word bank", wordBank, "latest lesson", latestLesson);
+  //get latest lesson
+  // useEffect(() => {
+  //   const getLatestLesson = async () => {
+  //     await axios
+  //       .get(`${Backend_URL}/userLesson/vocabs/${userData.id}`)
+  //       .then((res) => {
+  //         setLatestLesson(res.data);
+  //       });
+  //   };
+  //   getLatestLesson();
+  // }, []);
 
   return (
     <div className="home-container">
@@ -54,7 +54,7 @@ export default function Vocab() {
             to="/vocabs/lesson"
             className="chapter-lesson-btn"
             id="one"
-            state={{ type: `vocabs`, lesson_id: 1, wordBank: wordBank }}
+            state={{ type: `vocabs`, lesson_id: 11, wordBank: wordBank }}
           >
             <span className="chapter-lesson">Lesson 1</span>
           </Link>
