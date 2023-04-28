@@ -18,9 +18,20 @@ export default function Translation(props) {
   const [userInput, setUserInput] = useState([]); //display the user input answer
   const [isCorrect, setIsCorrect] = useState();
   const { getAccessTokenSilently } = useAuth0();
+  const [speaker, setSpeaker] = useState("");
 
   const type = questionData?.question_type.split("-");
-  const speaker = userData.voicevox_id;
+
+  useEffect(() => {
+    const voicevoxVoice = async () => {
+      await axios
+        .get(`${Backend_URL}/voicevoxes/speaker/${userData.voicevox_id}`)
+        .then((res) => {
+          setSpeaker(res.data.voicevox_voice);
+        });
+    };
+    voicevoxVoice();
+  });
 
   const play = async (e) => {
     const questionPhrase = questionData.question;

@@ -24,8 +24,18 @@ export default function Recognition(props) {
   const [isCorrect, setCorrect] = useState(null);
   const [prevSelectedButton, setPrevSelectedButton] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
+  const [speaker, setSpeaker] = useState("");
 
-  const speaker = userData.voicevox_id;
+  useEffect(() => {
+    const voicevoxVoice = async () => {
+      await axios
+        .get(`${Backend_URL}/voicevoxes/speaker/${userData.voicevox_id}`)
+        .then((res) => {
+          setSpeaker(res.data.voicevox_voice);
+        });
+    };
+    voicevoxVoice();
+  });
 
   //Retrieve random input
   useEffect(() => {

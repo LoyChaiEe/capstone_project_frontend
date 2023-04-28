@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
 import "./characters.css";
@@ -17,6 +17,40 @@ export default function Characters() {
   const { getAccessTokenSilently } = useAuth0();
   const [userData] = useOutletContext();
   const [characterType, setCharacterType] = useState("hiragana");
+  const [speaker, setSpeaker] = useState("");
+  const [latestLesson, setLatestLesson] = useState("");
+  const [wordBank, setWordBank] = useState([]);
+
+  useEffect(() => {
+    const voicevoxVoice = async () => {
+      await axios
+        .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
+        .then((res) => {
+          setSpeaker(res.data?.voicevox_voice);
+        });
+    };
+    voicevoxVoice();
+    const getLatestLesson = async () => {
+      await axios
+        .get(`${Backend_URL}/userLesson/${characterType}/${userData?.id}`)
+        .then((res) => {
+          setLatestLesson(res.data);
+        });
+    };
+    getLatestLesson();
+  }, [userData, characterType, latestLesson]);
+
+  useEffect(() => {
+    const getUserWordBank = async () => {
+      await axios
+        .post(`${Backend_URL}/userWordbank/${characterType}/${userData?.id}`)
+        .then((res) => {
+          setWordBank(res.data);
+          console.log("HELLOOO", res.data);
+        });
+    };
+    getUserWordBank();
+  }, []);
 
   const getter = async (url) => {
     const accessToken = await getAccessTokenSilently({
@@ -44,7 +78,6 @@ export default function Characters() {
     c.toUpperCase()
   );
 
-  const speaker = userData.voicevox_id;
   const play = async (e) => {
     const button = e.target.closest("button");
     if (button) {
@@ -158,7 +191,7 @@ export default function Characters() {
             </p>
             <Link
               to={`/characters/${characterType}/lesson`}
-              state={{ type: `${characterType}` }}
+              state={{ type: `${characterType}`, lesson_id: `${latestLesson}` }}
               className="link-wrapper"
             >
               <Button id="character-button">
