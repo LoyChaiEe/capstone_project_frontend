@@ -101,10 +101,8 @@ export default function Writing(props) {
   }, [props.hasSubmit]);
   return (
     <>
-      <div>
-        <span className="user-question-wrapper">{questionData.question}</span>
-      </div>
-      <div className="right-block" style={{ backgroundColor: "orange" }}>
+      <span className="user-question-wrapper">{questionData.question}</span>
+      <div className="canvas-container">
         <canvas
           id="paint-canvas"
           width="640"
@@ -113,6 +111,7 @@ export default function Writing(props) {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          className="canvas-wrapper"
         ></canvas>
         <br />
         <Button id="clear" type="button" onClick={handleClear}>

@@ -22,8 +22,18 @@ export default function Matching(props) {
   const [outputRow, setOutputRow] = useState([]); // This is the right row
   const [count, setCount] = useState(0);
   const { getAccessTokenSilently } = useAuth0();
+  const [speaker, setSpeaker] = useState("");
 
-  const speaker = userData.voicevox_id;
+  useEffect(() => {
+    const voicevoxVoice = async () => {
+      await axios
+        .get(`${Backend_URL}/voicevoxes/speaker/${userData.voicevox_id}`)
+        .then((res) => {
+          setSpeaker(res.data.voicevox_voice);
+        });
+    };
+    voicevoxVoice();
+  });
 
   //query random input
   useEffect(() => {
@@ -112,7 +122,9 @@ export default function Matching(props) {
       volume: 3,
       format: "wav",
     });
-    sound.play();
+    if (!questionData.audio_disabled) {
+      sound.play();
+    }
     setLeftSelect(text);
   };
 
@@ -184,9 +196,15 @@ export default function Matching(props) {
     </ConfigProvider>
   ));
 
-  if (count === 5) {
-    props.setHasSubmit(true);
-  }
+  // if (count === 5) {
+  //   props.setHasSubmit(true);
+  // }
+
+  useEffect(() => {
+    if (count === 5) {
+      props.setHasSubmit(true);
+    }
+  }, [count]);
 
   return (
     <>

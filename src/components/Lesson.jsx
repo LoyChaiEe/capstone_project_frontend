@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import { Button, message, Steps, theme, ConfigProvider } from "antd";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import Matching from "../components/QuestionsComponents/Matching";
 import Meaning from "../components/QuestionsComponents/Meaning";
 import Translation from "../components/QuestionsComponents/Translation";
 import Recognition from "../components/QuestionsComponents/Recognition";
+import Writing from "../components/QuestionsComponents/Writing";
 import Finish from "../components/Finish";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./lesson.css";
@@ -33,6 +34,7 @@ const LessonTest = () => {
   const [current, setCurrent] = useState(0);
   const [hasSubmit, setHasSubmit] = useState(true);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [userData] = useOutletContext();
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
   //{ revalidateOnFocus: false } to prevent alt-tab from re-rendering
@@ -55,49 +57,57 @@ const LessonTest = () => {
     data: userLessonInfo,
     mutate: refetchULinfo,
     isLoading: userLessonDataLoaded,
-  } = useSWR(`${Backend_URL}/userLesson/${state?.type}/1`, getter, {
-    revalidateOnFocus: false,
-  });
-  const {
-    data: userWordBank,
-    mutate: refetchUWinfo,
-    isLoading: userWordbankDataLoaded,
-  } = useSWR(`${Backend_URL}/userWordBank/${state?.type}/1`, getter, {
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `${Backend_URL}/userLesson/${state?.type}/${state?.lesson_id}`,
+    getter,
+    {
+      revalidateOnFocus: false,
+    }
+  );
+
+  const userWordBank = state.wordBank;
+  console.log(userWordBank);
+  // const {
+  //   data: userWordBank,
+  //   mutate: refetchUWinfo,
+  //   isLoading: userWordbankDataLoaded,
+  // } = useSWR(
+  //   `${Backend_URL}/userWordBank/${state?.type}/${state?.lesson_id}`,
+  //   getter,
+  //   {
+  //     revalidateOnFocus: false,
+  //   }
+  // );
+  // console.log(userWordBank);
   //Potential bug since the way our data structured only handle 1 chapter per lesson type
   //So if user click next node for chapter 2, it will be lesson_id = 11, which is a hiragana/katakana/nonexistent lesson
   //Need some way to restructure our backend seeder file for this
   //this just temp
 
   //Question Data will be changed for testing
-  // const {
-  //   data: questionsDatas,
-  //   mutate: refetchLQinfo,
-  //   isLoading: LQADataLoaded,
-  //   error,
-  // } = useSWR(
-  //   `${Backend_URL}/LQA/questions/get/${
-  //     userLessonInfo?.slice(-1)[0].lesson?.id + 1
-  //   }`,
-  //   getter,
-  //   { revalidateOnFocus: false }
-  // );
-
-  //Testing for matching
   const {
     data: questionsDatas,
     mutate: refetchLQinfo,
     isLoading: LQADataLoaded,
     error,
-  } = useSWR(`${Backend_URL}/tests/questions/get/${14}`, getter, {
+  } = useSWR(`${Backend_URL}/LQA/questions/get/${state.lesson_id}`, getter, {
     revalidateOnFocus: false,
   });
+
+  //Testing for matching
+  // const {
+  //   data: questionsDatas,
+  //   mutate: refetchLQinfo,
+  //   isLoading: LQADataLoaded,
+  //   error,
+  // } = useSWR(`${Backend_URL}/tests/questions/get/${11}`, getter, {
+  //   revalidateOnFocus: false,
+  // });
 
   //Loader for loading data
   if (
     userLessonDataLoaded ||
-    userWordbankDataLoaded ||
+    // userWordbankDataLoaded ||
     LQADataLoaded ||
     !userWordBank ||
     !userLessonInfo ||
@@ -117,7 +127,7 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     const questionData = questionsDatas[i];
     const type = questionData.question_type.split("-");
     let content = {
@@ -132,11 +142,16 @@ const LessonTest = () => {
       ),
     };
     steps.push(content);
-    console.log(questionData);
   }
   steps.push({
     title: "Finish",
-    content: <Finish lesson_id={0} user_id={0} />,
+    content: (
+      <Finish
+        lesson_id={state.lesson_id}
+        user_id={userData.id}
+        characterType={state?.type}
+      />
+    ),
   });
 
   //Functions that facilitate the interactivity of the component
@@ -158,8 +173,6 @@ const LessonTest = () => {
     key: item.title,
     title: item.title,
   }));
-
-  console.log(items);
 
   return (
     <>
@@ -276,6 +289,15 @@ function questionSelect(
         <Translation
           questionData={questionData}
           wordBank={wordBank}
+          canSubmit={submitFunction}
+          hasSubmit={hasSubmit}
+        />
+      );
+    case "writing":
+      return (
+        <Writing
+          questionData={questionData}
+          // wordBank={wordBank}
           canSubmit={submitFunction}
           hasSubmit={hasSubmit}
         />
