@@ -126,7 +126,7 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 15; i++) {
     const questionData = questionsDatas[i];
     const type = questionData.question_type.split("-");
     let content = {
