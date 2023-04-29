@@ -34,7 +34,7 @@ export default function Characters() {
       await axios
         .get(`${Backend_URL}/userLesson/${characterType}/${userData.id}`)
         .then((res) => {
-          setLatestLesson(res.data);
+          setLatestLesson(res.data - 1);
         });
     };
     getLatestLesson();
@@ -198,7 +198,7 @@ export default function Characters() {
               to={`/characters/${characterType}/lesson`}
               state={{
                 type: `${characterType}`,
-                lesson_id: `${latestLesson}`,
+                lesson_id: `${latestLesson + 2}`,
                 wordBank: wordBank,
               }}
               className="link-wrapper"

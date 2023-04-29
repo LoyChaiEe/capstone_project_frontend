@@ -63,7 +63,6 @@ export const UserContextProvider = (props) => {
       } else if (isUserDataUpdated === true) {
         axios.get(`${Backend_URL}/users/${userEmail}`).then((response) => {
           setUserData(response.data);
-          console.log(response.data);
         });
       } else {
         setIsUserDataUpdated(false);

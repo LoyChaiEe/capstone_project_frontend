@@ -34,7 +34,6 @@ const router = createBrowserRouter(
       </Route>
       <Route path="voicevox">
         <Route path="voices" element={<Voices />} />
-        <Route path="landing" element={<AudioButton />} />
       </Route>
     </Route>
   )

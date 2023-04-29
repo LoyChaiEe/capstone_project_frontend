@@ -51,12 +51,6 @@ export default function Navbar(userData) {
               <span className="nav-link-text">VOICES</span>
             </Link>
           </li>
-          <li className="nav-link-wrapper">
-            <Link to="/about/landing" className="nav-link-text-wrapper">
-              <VoicesPNG />
-              <span className="nav-link-text">LANDING</span>
-            </Link>
-          </li>
         </ul>
       ) : null}
     </div>

@@ -99,10 +99,11 @@ export default function Matching(props) {
               disabledTrackerLeft[`${leftSelect}`] = true;
               disabledTrackerRight[`${rightSelect}`] = true;
               setCount(count + 1);
-            } else {
-              //for future changing colour to red
-              console.log("you are wrong");
             }
+            //  else {
+            //   //for future changing colour to red
+            //   console.log("you are wrong");
+            // }
             setLeftSelect("");
             setRightSelect("");
           });
@@ -113,23 +114,45 @@ export default function Matching(props) {
 
   const addLeft = async (e) => {
     const text = e.target.textContent;
-    const data = await createAudio(text);
-    const audioSRC = URL.createObjectURL(data);
-    const sound = new Howl({
-      src: [audioSRC],
-      autoplay: false,
-      loop: false,
-      volume: 3,
-      format: "wav",
-    });
-    if (!questionData.audio_disabled) {
-      sound.play();
+    const answers = questionData.answer.split("、");
+    const index = answers.indexOf(text);
+    if (index > -1) {
+      const word = answers[index];
+      const data = await createAudio(word);
+      const audioSRC = URL.createObjectURL(data);
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 3,
+        format: "wav",
+      });
+      if (!questionData.audio_disabled) {
+        sound.play();
+      }
     }
     setLeftSelect(text);
   };
 
-  const addRight = (e) => {
+  const addRight = async (e) => {
     const text = e.target.textContent;
+    const answers = questionData.answer.split("、");
+    const index = answers.indexOf(text);
+    if (index > -1) {
+      const word = answers[index];
+      const data = await createAudio(word);
+      const audioSRC = URL.createObjectURL(data);
+      const sound = new Howl({
+        src: [audioSRC],
+        autoplay: false,
+        loop: false,
+        volume: 3,
+        format: "wav",
+      });
+      if (!questionData.audio_disabled) {
+        sound.play();
+      }
+    }
     setRightSelect(text);
   };
 
