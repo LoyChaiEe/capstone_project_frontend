@@ -87,3 +87,4 @@ Please refer to the .env.sample file as an example of the keys required for this
 1. <a href="https://github.com/LoyChaiEe/capstone_project_frontend">Frontend</a>
 2. <a href="https://github.com/LoyChaiEe/capstone_project_backend">Backend</a>
 3. <a href="https://github.com/LoyChaiEe/capstone_flask">Flask</a>
+
