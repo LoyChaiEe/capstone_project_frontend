@@ -54,7 +54,7 @@ This app allows users to:
 - Sequelize
 - PostgreSQL
 - Docker
-- Voicevox (credit to Hiroshiba and the contributors, <a href="https://github.com/VOICEVOX/voicevox">github link</a> <a href="https://github.com/VOICEVOX/voicevox_engine">VoiceVox Engine</a>(used in this project)
+- Voicevox (credit to Hiroshiba and the contributors, <a href="https://github.com/VOICEVOX/voicevox">github link</a>) <a href="https://github.com/VOICEVOX/voicevox_engine">VoiceVox Engine</a>(used in this project)
 - Flask
 - Python
 - Tensorflow and other ML/AI 
