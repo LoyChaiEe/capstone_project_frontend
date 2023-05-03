@@ -63,6 +63,12 @@ This app allows users to:
 1. Docker
 2. Python (details in Flask Repo)
 
+# API required
+1. Auth0
+2. Firebase
+
+Please refer to the .env.sample file as an example of the keys required for this app
+
 ## Repository Links
 1. Frontend(this repo)
 2. <a href="https://github.com/LoyChaiEe/capstone_project_backend">Backend</a>
