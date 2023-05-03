@@ -66,11 +66,10 @@ This app allows users to:
 ## Installation of Docker and VoiceVox (Windows)
 
 1. Follow the guide in the <a>Official Docker Desktop Website</a> to install Docker Desktop
-2. Run this command in Windows Command prompt to pull Vocievox Engine
+2. Run this command in Windows Command prompt to pull Vocievox Engine. This will pull the voicevox engine for Docker
 ```
 docker pull voicevox/voicevox_engine
 ```
-This will pull the voicevox engine for Docker
 3. To run Voicevox engine, run the following command:
 ```
 docker run -d -p 50021:50021 voicevox/voicevox_engine
