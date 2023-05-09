@@ -29,7 +29,7 @@ export default function ProfileComponent() {
     getVoicevox();
   }, [userData]);
 
-  if (!userData?.email_address) return null;
+  if (!userData?.email_address) return null; // so we render nothing? How will we change that then? :) 
 
   return (
     <div className="profile-container">
@@ -54,10 +54,10 @@ export default function ProfileComponent() {
           <h1 className="profile-info">Name:</h1>
           <p className="profile-input-box">
             {isAuthenticated
-              ? `${userData.first_name} ${userData.last_name}`
-              : ""}
+              && (`${userData.first_name} ${userData.last_name}`)}
           </p>
         </div>
+        {/* This all seems very repetitive. Ideally we build a reusable component for this kind of element */}
         <div className="profile-info-wrapper">
           <h1 className="profile-info">Username:</h1>
           <p className="profile-input-box">{userData.username}</p>
@@ -65,7 +65,7 @@ export default function ProfileComponent() {
         <div className="profile-info-wrapper">
           <h1 className="profile-info">Email Address:</h1>
           <p className="profile-input-box">
-            {isAuthenticated ? userData.email_address : ""}
+            {isAuthenticated && userData.email_address}
           </p>
         </div>
         <div className="profile-info-wrapper">

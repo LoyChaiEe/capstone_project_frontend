@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Backend_URL } from "../BACKEND_URL";
+// I think you did enough vanilla CSS so far. I would recommend looking into styled-components next!
 import "./characters.css";
 import { Howl } from "howler";
 import { MiniCharacter } from "../components/PNG";
@@ -26,10 +27,12 @@ export default function Characters() {
       await axios
         .get(`${Backend_URL}/voicevoxes/speaker/${userData?.voicevox_id}`)
         .then((res) => {
+          // what if data is undefined? How do we handle this?
           setSpeaker(res.data?.voicevox_voice);
         });
     };
     voicevoxVoice();
+    // why is the voice and the lesson in the same effect? Seems a bit odd to me.
     const getLatestLesson = async () => {
       await axios
         .get(`${Backend_URL}/userLesson/${characterType}/${userData.id}`)
@@ -45,6 +48,7 @@ export default function Characters() {
       await axios
         .post(`${Backend_URL}/userWordbank/${characterType}/${userData?.id}`)
         .then((res) => {
+          // I think it would make more sense if the backend would return a unique array of words already
           const uniqueArr = res.data.filter((obj, index, self) => {
             return (
               index ===
@@ -57,6 +61,9 @@ export default function Characters() {
     getUserWordBank();
   }, [characterType, userData]);
 
+  // getter is a reserved keyword for classes, to get properties of a class. I think the naming should be better here.
+  // Maybe makeGETRequest or something.
+  // Nicely done making a generic function here however! One improvement would be to move this outside of the component and pass the token as a function argument
   const getter = async (url) => {
     const accessToken = await getAccessTokenSilently({
       audience: `${audience}`,
@@ -73,19 +80,23 @@ export default function Characters() {
 
   const { data: characters, mutate: refetch } = useSWR(
     `${Backend_URL}/characters/${characterType}`,
+    // oh it is your useSWR getter. Gotcha, but that should still be defined outside of the component. You could build a custom hook that uses useSWR under hood and use the token token there.
+    // Maybe you can think of even another way of handling the token issue here?
     getter
   );
   const changeCharacterType = (type) => {
     setCharacterType(type);
     refetch();
   };
+  // this could be named better
   const characterType_cap = characterType.replace(/^\w/, (c) =>
     c.toUpperCase()
   );
 
   const play = async (e) => {
     const button = e.target.closest("button");
-    if (button) {
+    // subjective, I prefer to return early and not work in if statements
+    if (!button) return
       const text = button.getAttribute("data-value");
       const data = await createAudio(text);
       const audioSRC = URL.createObjectURL(data);
@@ -97,9 +108,10 @@ export default function Characters() {
         format: "wav",
       });
       sound.play();
-    }
   };
-
+// if characters could be null, could we handle it differently instead of the optional chaining operator?
+// return early? render transitional state?
+// I think we could make a funtion for this, that we then pass characters.basic into, and import it here, instead of writing all this logic in this component.
   const displayBasic = characters?.basic.map((row, index) => {
     return row.map((ele, rowIndex) => {
       if (ele === null) {
@@ -124,6 +136,7 @@ export default function Characters() {
       }
     });
   });
+  // same as above
   const displayDakuon = characters?.dakuon.map((row, index) => {
     return row.map((ele, rowIndex) => {
       if (ele === null) {
@@ -164,6 +177,7 @@ export default function Characters() {
     return response.data;
   };
 
+  // isn't it rather getAudio?
   const createAudio = async (text) => {
     const data = await createVoice(text);
     return data;
@@ -173,6 +187,14 @@ export default function Characters() {
     <div className="character-container">
       <div className="character-selection-title">
         <div
+        // since your whole app uses hiragana and katakana, you should have a global ENUM for that.
+        /* 
+          const characterTypes = {
+            HIRAGANA: "hiragana",
+            KATAKANA: "katakana"
+          }
+        
+        */
           className={characterType === "hiragana" ? "active" : "inactive"}
           onClick={() => changeCharacterType("hiragana")}
         >

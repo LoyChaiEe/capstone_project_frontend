@@ -5,6 +5,8 @@ import { Backend_URL } from "../BACKEND_URL";
 import { useOutletContext } from "react-router-dom";
 import { Howl } from "howler";
 
+// I would create a folder for the Modal if it requires multiple components.
+// GuideModal/GuideModalBody.jsx and GuideModal/GuideModalButton.jsx etc.
 export default function GuideModalBody({ lesson_id, chapter }) {
   const [lessonWords, setLessonWords] = useState([]);
   const [userData] = useOutletContext();

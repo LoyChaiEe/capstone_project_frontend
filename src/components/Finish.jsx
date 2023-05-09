@@ -18,6 +18,7 @@ const Finish = (props) => {
           console.log(res.data);
         });
     };
+    // not all lower case please
     addintowordbank();
   };
 
