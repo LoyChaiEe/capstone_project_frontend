@@ -24,6 +24,7 @@ root.render(
       <ConfigProvider
         theme={{
           token: {
+            // I think it would be nice if we could give these color codes names as I wouldn't know what this would be
             colorText: "#570344",
             colorPrimary: "#570344",
           },

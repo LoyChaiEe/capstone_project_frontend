@@ -1,0 +1,10 @@
+Overall good guys!
+
+I think you can improve generally in a few ways.
+
+1. Try not to repeat yourself so much. This is a common theme across all projects so far, and the more we want to progress, the more we need to think about it. How can we not repeat ourselves? Always question your code. Refactor a lot, while you implement. When submitting code for code reviews, read your code yourself and ask what you would comment on.
+
+2. Try to utilise more functions to do the menial tasks for you (also fixes point 1)
+3. Think harder about naming things accurately. This will improve your code quality by a lot. Your colleagues will thank you! And you will thank others, when they named things properly before leaving the company and you taking over their code.
+4. Dip your feet in more architecture for FE. Try to define a better folder and file structure. Don't just throw everything in components and be content with it. If I got more than 2 files for a certain Module, like a Modal for example, then create a folder for it. You can see an extreme example of this when studying Atomic design. Highly recommend Atomic design if you want to create mobile codebases or want to work for modern companies.
+5. When writing functions, think about the responsibility of the function hard. What should it do? That will also help you with point 3.

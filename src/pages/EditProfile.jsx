@@ -36,6 +36,7 @@ export default function EditProfile() {
     });
   }, []);
 
+// I think you could define a function, that acceps input and calls notification.open with that input, instead of repeating yourself here.
   const fieldsAlert = () => {
     notification.open({
       message: `Error`,
@@ -80,7 +81,7 @@ export default function EditProfile() {
       loginWithRedirect();
       return;
     }
-    // get access token
+    // get access token, redundant comment
     const accessToken = await getAccessTokenSilently({
       audience: `${audience}`,
       scope: `${scope}`,
@@ -120,6 +121,7 @@ export default function EditProfile() {
         photoSuccess();
       })
       .catch((err) => {
+        // maybe add proper handling on the UI as well for errors. Just like you used the notifications on top.
         console.log("Axios profile photo update error", err);
       });
     setProfilePhotoURL("");
@@ -160,12 +162,10 @@ export default function EditProfile() {
       .then((response) => {
         setUserData({
           ...userData,
-          first_name: response.data.first_name,
-          last_name: response.data.last_name,
-          username: response.data.username,
-          voicevox_id: response.data.voicevox_id,
+          ...response.data, // maybe rather like so?
         });
         setIsUserDataUpdated(true);
+        // I think we could use a single state for this. That would make it way easier to handle all that data and would be safer and more performant in regards to rerenders
         setCurrentFirstName(response.data.first_name);
         setCurrentLastName(response.data.last_name);
         setCurrentUsername(response.data.username);
@@ -177,6 +177,7 @@ export default function EditProfile() {
         console.log("Axios profile update error", err);
         setIsProfileUpdated(false);
       });
+      // see this here is what I mean. Very inconvenient to constantly having to worry about so many states to update and reset etc.
     setIsProfileUpdated(true);
     setIsUserDataUpdated(false);
     setCurrentFirstName("");
@@ -195,6 +196,7 @@ export default function EditProfile() {
               <div className="custom-file-edit">
                 <EditBtn />
               </div>
+              {/* this variable name is not really descriptive. What is a changed photo? */}
               {isChangedPhoto === false ? (
                 <img
                   src={userData?.profile_pic_url}
@@ -214,12 +216,13 @@ export default function EditProfile() {
                 onChange={handleUpdatedPhoto}
               />
             </label>
-            {isChangedPhoto !== false ? (
+            {isChangedPhoto !== false && (
               <Button onClick={handlePhotoSubmit}>Submit</Button>
-            ) : null}
+            )}
           </div>
         </div>
         <div className="edit-profile-info-container">
+          {/* If we had a single state for all this currentXXX data, we could dynamically render this list, instead of having to repeat ourselves. */}
           <div className="edit-profile-info-wrapper">
             <h1 className="edit-profile-title-info">First Name:</h1>
             <input

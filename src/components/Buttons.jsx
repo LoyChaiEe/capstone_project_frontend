@@ -6,6 +6,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogOutBtn } from "./PNG";
 import { message, Popconfirm, ConfigProvider } from "antd";
 
+// I think the whole purpose of the {...props} is so you don't need to repeat buttons like in this file.
+// You could just pass the className to the Button component and it would be picked up, instead of redefining buttons with differing classNames here.
+// You could rename them by importing like: import { Button as AdvancementButton } from './Buttons.jsx' for example.
 export function Button(props) {
   return (
     <button className="button-wrapper" {...props} onClick={props.onClick}>

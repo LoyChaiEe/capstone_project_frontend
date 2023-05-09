@@ -20,6 +20,7 @@ import "./lesson.css";
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 const scope = process.env.REACT_APP_AUTH0_SCOPE;
 
+// why is this not in the lesson.css?
 const override = css`
   display: block;
   margin: 0 auto;
@@ -34,6 +35,8 @@ const LessonTest = () => {
   const [hasSubmit, setHasSubmit] = useState(true);
   const [canSubmit, setCanSubmit] = useState(false);
   const [userData] = useOutletContext();
+  // very hard to read component with all these code blocks commented out. Not good practice.
+
   //const [randomQuestionNumber, setRandomQuestionNumber] = useState([]);
   // the 1 at the end is userID, waiting for userContext, may need to refer to project 3
   //{ revalidateOnFocus: false } to prevent alt-tab from re-rendering
@@ -126,6 +129,8 @@ const LessonTest = () => {
       content: <Start type={state.type} />,
     },
   ];
+  // backend should return you the necessary data, instead of having to loop on the frontend for it.
+  // ideally we just get the data from the BE, push into the steps and done.
   for (let i = 0; i < 15; i++) {
     const questionData = questionsDatas[i];
     const type = questionData.question_type.split("-");
@@ -153,7 +158,7 @@ const LessonTest = () => {
     ),
   });
 
-  //Functions that facilitate the interactivity of the component
+  //Functions that facilitate the interactivity of the component // very vague comment
   //Functionality of Next, a reset of all input etc and enabling/disabling buttons
   const next = (e) => {
     e.preventDefault();
@@ -162,7 +167,7 @@ const LessonTest = () => {
     setHasSubmit(false);
     setCanSubmit(false);
   };
-  //Functionality of sumbit
+  //Functionality of sumbit // redundant comment
   const submit = (e) => {
     e.preventDefault();
     setHasSubmit(true);
@@ -178,6 +183,7 @@ const LessonTest = () => {
       <div className="lesson-container">
         <div className="lesson-wrapper">
           <Progress
+          // we should give this calculation a variable and name it appropriately, so it would make sense to anyone.
             percent={((current / 15) * 100).toFixed(0)}
             strokeColor={"#570344"}
             size={[500, 20]}
@@ -200,6 +206,23 @@ const LessonTest = () => {
                   type="primary"
                   size="large"
                   onClick={next}
+                  // I recommend not dealing with these double negative statements. This reads as:
+                  // If hasSubmit is not true and current is not 0 then the button will be disabled.
+                  // This does not make sense to anyone I think.
+                  // make a simple variable called isDisabled
+                  /*
+                    rename hasSubmit first of all to something that makes sense.
+                    const hasUserSubmittedLesson for example
+                    const isFirstStep = current == 0
+
+                    const isDisabled = !isFirstStep && !hasUserSubmittedLesson
+                    disabled={isDisabled}
+
+                    // now this reads as, button is disabled if isDisabled is true. Then upon inspection I can see that:
+                    // isDisabled is true if we are not on the first step and if the user has not submitted the lesson yet.
+
+                    In my opinion this is easier to understand thant the inline statement here.
+                  */
                   disabled={!hasSubmit && current !== 0}
                 >
                   NEXT
@@ -210,6 +233,7 @@ const LessonTest = () => {
               <ConfigProvider
                 theme={{
                   token: {
+                    // let's create variables for color codes
                     colorPrimary: "#ee9f90",
                   },
                 }}
@@ -218,6 +242,7 @@ const LessonTest = () => {
                   type="primary"
                   size="large"
                   onClick={submit}
+                  // the difference here needs to be clearer by better naming
                   disabled={!canSubmit || hasSubmit}
                 >
                   SUBMIT
@@ -232,7 +257,33 @@ const LessonTest = () => {
 };
 
 export default LessonTest;
+// we could possibly put this function into another file.
 // this function act as to display the type of question and also pass some impt question data and function into the question
+// can't we create a datastructure that helps us here?
+
+/*
+
+const questionTypes = {
+  RECOGNITION: "recognition",
+  MEANING: "meaning",
+  MATCHING: "matching",
+  ...
+}
+
+const questionSelections = {
+  [questionTypes.RECOGNITION]: Recognition,
+  [questionTypes.MATCHING]: Matching ,
+  ...
+}
+
+const getQuestionSelection = ({ type, ...props }) => {
+  const Component = questionSelections[type]
+  return <Component {...props} />
+}
+Now you can just feel free to not pick up the props on the child component.
+Might not be the best way to handle this, but with a bit more time spent, we might be able to make this a bit neater here and not so repetitive.
+
+*/
 function questionSelect(
   type,
   questionData,

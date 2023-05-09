@@ -1,4 +1,5 @@
 //This is an example of using it in a component where the text is dynamic
+// if you need a test component like so, I would highly recommend using Storybook. Vital FE dev tool. However mocking the voicevox capability will not really be possible with that.
 import { Button } from "antd";
 import axios from "axios";
 import { Howl } from "howler";

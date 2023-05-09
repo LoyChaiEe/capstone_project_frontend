@@ -16,6 +16,7 @@ export default function Landing() {
         setVoicevoxCharacters(res.data);
       });
     } catch (err) {
+      // the user wouldn't see this. Let's handle errors also by giving the user feedback.
       console.log("Error retrieving voicevox data", err);
     }
   }, []);

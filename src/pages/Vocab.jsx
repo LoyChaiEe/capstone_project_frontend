@@ -8,13 +8,14 @@ import { Backend_URL } from "../BACKEND_URL";
 export default function Vocab() {
   const [wordBank, setWordBank] = useState([]);
   const [userData] = useOutletContext();
-  // const [latestLesson, setLatestLesson] = useState("");
+  // const [latestLesson, setLatestLesson] = useState(""); // remove comments please
 
   useEffect(() => {
     const getUserWordBank = async () => {
       await axios
         .post(`${Backend_URL}/userWordbank/vocabs/${userData?.id}`)
         .then((res) => {
+          // backend should return unique wordbank. This request looks exactly like the other one, ideally we write a function to make this kind of request.
           const uniqueArr = res.data.filter((obj, index, self) => {
             return (
               index ===
@@ -27,7 +28,7 @@ export default function Vocab() {
     getUserWordBank();
   }, [userData]);
 
-  //get latest lesson
+  //get latest lesson // remove comments in production code
   // useEffect(() => {
   //   const getLatestLesson = async () => {
   //     await axios
@@ -50,6 +51,7 @@ export default function Vocab() {
           <GuideModalButton lesson_id={1} chapter={1} />
         </div>
         <div className="chapter-lesson-wrapper">
+          {/* Very repetitive code here. We can use a data structure to store the relevant options, and then run a map to generate all the Link tags for us. */}
           <Link
             to="/vocabs/lesson"
             className="chapter-lesson-btn"
